@@ -10,6 +10,7 @@
 		margin: 0;
 		padding: 0;
 	}
+	/* ======================================================================================== */	
 	header {
 		width: 100%;
 		background-color: #f5f5f5;
@@ -25,6 +26,7 @@
 	}
 	#head1 ul {
 		float: right;
+		padding: 5px 0;
 	}
 	#head1 li a {
 		font-size: 0.8em;
@@ -77,6 +79,11 @@
 		font-weight: bold;
 		padding-left: 10px;
 	}
+	
+	/* ======================================================================================== */
+	nav {
+		background-color: white;
+	}
 </style>
 </head>
 <body>
@@ -104,6 +111,9 @@
 	</header>
 	<nav>
 		<ul>
+			<li><a href="">승차권</a></li>
+			<li><a href="">승차권</a></li>
+			<li><a href="">승차권</a></li>
 		</ul>
 	</nav>
 </body>

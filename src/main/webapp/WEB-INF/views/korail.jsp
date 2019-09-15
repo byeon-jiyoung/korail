@@ -21,7 +21,7 @@
 		width: 100%;
 	}
 	#head1 {
-		width: 60%;
+		width: 1070px;
 		margin: 0 auto;
 		overflow: hidden;
 	}
@@ -43,7 +43,7 @@
 		clear: both;
 	}
 	#head2_in {
-		width: 60%;
+		width: 1070px;
 		margin: 0 auto;
 		height: 50px;
 		line-height: 50px;
@@ -90,9 +90,10 @@
 		border-bottom: 1px solid #0397d6;
 		height: 60px;
 		line-height: 60px;
+		margin-bottom: 10px;
 	}
 	#nav_ul {
-		width: 60%;
+		width: 1070px;
 		margin: 0 auto;
 	}
 	#nav_ul ul li {
@@ -110,7 +111,7 @@
 	
 	/* ====================================== nav ====================================== */	
 	section {
-		width: 60%;
+		width: 1070px;
 		margin: 0 auto;
 	}
 	article {
@@ -134,6 +135,23 @@
 	.article_div3 {
 		width: 20%;
 	}
+	
+	#article_reserve1 {
+		border: 1px solid black;
+		height: 250px;
+	}
+	#article_reserve2 img {
+		width: 50%;
+		height: 60px;
+		float: left;
+	}
+	#article_notice_img {
+		height: 440px;
+		border: 1px solid black;
+	}
+	
+	
+	
 	
 	.more {
 		float: right;
@@ -190,7 +208,7 @@
 		height: 60px;
 	}
 	#footer1 > div {
-		width: 60%;
+		width: 1070px;
 		height: 60px;
 		margin: 0 auto;
 	}
@@ -199,7 +217,7 @@
 		height: 60px;
 	}
 	#footer2 > div {
-		width: 60%;
+		width: 1070px;
 		margin: 0 auto;
 		overflow: hidden;
 		padding: 8px 0;
@@ -233,7 +251,7 @@
 		font-size: 12px;
 	}
 	#footer3 > div {
-		width: 60%;
+		width: 1070px;
 		height: 70px;
 		margin: 0 auto;
 		overflow: hidden;
@@ -294,19 +312,19 @@
 	<section>
 		<article>
 			<div class="article_div1">
-				<div>
+				<div id="article_reserve1">
 				</div>
-				<div id="">
-					<%-- <img src="${pageContext.request.contextPath}/resources/images/tab_site11.jpg">
+				<div id="article_reserve2">
+					<img src="${pageContext.request.contextPath}/resources/images/tab_site11.jpg">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site12.jpg">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site13.jpg">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site14.jpg">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site15.jpg">
-					<img src="${pageContext.request.contextPath}/resources/images/tab_site16.jpg"> --%>
+					<img src="${pageContext.request.contextPath}/resources/images/tab_site16.jpg">
 				</div>
 			</div>
 			<div class="article_div2">
-				<div></div>
+				<div id="article_notice_img"></div>
 			</div>
 			<div class="article_div3">
 				<div>

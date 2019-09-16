@@ -36,4 +36,8 @@ public class HomeController {
 		return "korail";
 	}
 	
+	@RequestMapping(value = "/notice", method = RequestMethod.GET)
+	public String notice() {
+		return "notice/notice";
+	}
 }

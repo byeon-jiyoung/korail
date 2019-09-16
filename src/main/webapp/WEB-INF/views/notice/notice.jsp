@@ -27,7 +27,8 @@
 		height: 1000px;
 	}
 	#notice_back {
-		background: url("${pageContext.request.contextPath}/resources/images/notice/cmt_snv_tit_bg.png") no-repeat 100% 0;
+		background: url("${pageContext.request.contextPath}/resources/images/notice/cmt_snv_tit_bg.png") no-repeat;
+		background-size: 100%;
 		padding-left: 20px;
 	}
 	#notice_back span {
@@ -42,7 +43,6 @@
 	.notice_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
-		font-weight: bold;
 	}
 	.notice_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;
@@ -50,12 +50,12 @@
 	.notice_color {
 		background-color: #266fcb;
 		color: white;
+		font-weight: bold;
 	}
 	
 	
 	
 	#notice_back2 {
-		width: 100%;
 		background: url("${pageContext.request.contextPath}/resources/images/notice/tra_visual16.jpg") no-repeat right top;
 		padding-left: 30px;
 	}
@@ -82,6 +82,40 @@
 		color: #3590d2;
 		font-weight: normal;
 	}
+	#searchDiv {
+		overflow: hidden;
+		margin-bottom: 10px;
+	}
+	#sectionSearchForm {
+		float: right;
+		margin-right: 30px;
+	}
+	#sectionSearchForm select {
+		float: left;
+		height: 23px;
+		width: 70px;
+		border: 1px solid #ccc;
+		margin-right: 5px;
+		font-size: 0.8em;
+	}
+	#sectionSearchForm input[name="search"] {
+		float: left;
+		height: 20px;
+		width: 130px;
+		border: 1px solid #ccc;
+		margin-right: 5px;
+	}
+	#form_search {
+		float: left;
+		background: url("${pageContext.request.contextPath}/resources/images/notice/btn_srch.png") no-repeat;
+		background-size: 100% 100%;
+		width:65px;
+		height: 23px;
+		border: none;
+		outline: none;
+	}
+	
+	
 	#notice_list table {
 		border-top: 2px solid #0097d0;
 		margin: 0 30px;
@@ -105,6 +139,7 @@
 	#notice_list table th:last-child {
 		width: 20%;
 	}
+	
 	#notice_etc {
 		padding: 0 30px;
 		margin-top: 35px;
@@ -127,7 +162,7 @@
 			<div id="notice_back2">
 				<p><img src="${pageContext.request.contextPath}/resources/images/notice/ico_home.gif"> 
 					<a href="${pageContext.request.contextPath}/">홈</a> > 
-					<a href="">레츠코레일 소식</a> > 
+					<a href="${pageContext.request.contextPath}/notice">레츠코레일 소식</a> > 
 					<a href="">공지사항</a></p>
 				<h1>공지사항</h1>
 			</div>
@@ -136,14 +171,14 @@
 					<img src="${pageContext.request.contextPath}/resources/images/notice/bu_c_tit.gif"> 공지사항
 					<span> | <b>신규서비스 및 이벤트</b>에 대한 공지 확인이 가능합니다.</span>
 				</h4>
-				<div>
-					<%-- <form action="">
+				<div id="searchDiv">
+					<form id="sectionSearchForm">
 						<select>
 							<option>제목</option>
 						</select>
-						<input type="text">
-						<button><img src="${pageContext.request.contextPath}/resources/images/notice/btn_srch.png"></button>
-					</form> --%>
+						<input type="text" name="search">
+						<input type="submit" value="" id="form_search">
+					</form>
 				</div>
 				<table>
 					<tr>

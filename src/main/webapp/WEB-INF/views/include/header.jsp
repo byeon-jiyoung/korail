@@ -48,7 +48,9 @@
 		height: 50px;
 		line-height: 50px;
 		overflow: hidden;
-		background: url("${pageContext.request.contextPath}/resources/images/include/lets_logo.png") no-repeat;
+	}
+	#head2_in a {
+		float: left;
 	}
 	#searchForm {
 		margin-left: 250px;
@@ -126,7 +128,7 @@
 		</div>
 		<div id="head2">
 			<div id="head2_in">
-				<a href=""></a>
+				<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/include/lets_logo.png"></a>
 				<form id="searchForm">
 					<div>통합검색</div><img src="${pageContext.request.contextPath}/resources/images/include/btn_sel.png">
 					<input type="text" size="25"><img src="${pageContext.request.contextPath}/resources/images/include/btn_sel.png">

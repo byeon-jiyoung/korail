@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.EventMapper"> <!-- impl할거면 namespace 이름은 개발자 마음대로 하면 됨.근데 만약에 impl이 없으면 dao에 있는 패키지랑 파일이름이랑 동일하게 적어줘야 됨!!! -->
+	<select id="listEvent" resultType="Event">
+		select * from event order by e_no desc limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id="listEventCount" resultType="int">
+		select count(e_no) from event	
+	</select>
+	
+	<insert id="insertEvent" parameterType="Event">
+		insert into event(e_writer, e_title, e_content, e_img) values (#{eWriter}, #{eTitle}, #{eContent}, #{eImg})
+	</insert>
+	
+	<select id="readEvent" resultType="Event">
+		select * from event where e_no = #{eNo}
+	</select>
+	
+	<update id="eventReadcnt">
+		update event set e_readcnt = #{eReadcnt} where e_no = #{eNo}
+	</update>
+	
+	<select id="top2Event" resultType="Event"> <!-- 최근 이벤트 3개 뽑는 sql(이미지 있는 이벤트만) -->
+		select * from event where e_img is not null order by e_no desc limit 2
+	</select>
+</mapper>

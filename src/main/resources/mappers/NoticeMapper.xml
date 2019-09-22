@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.NoticeMapper"> <!-- impl할거면 namespace 이름은 개발자 마음대로 하면 됨.근데 만약에 impl이 없으면 dao에 있는 패키지랑 파일이름이랑 동일하게 적어줘야 됨!!! -->
+	<select id="listNotice" resultType="Notice">
+		select * from notice order by no_no desc limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<insert id="insertNotice" parameterType="Notice">
+		insert into notice(no_writer, no_title, no_content, no_img) values (#{noWriter}, #{noTitle}, #{noContent}, #{noImg})
+	</insert>
+	
+	<select id="readNotice" resultType="Notice">
+		select * from notice where no_no = #{noNo}
+	</select>
+	
+	<select id="top6Notice" resultType="Notice"> <!-- 최근 공지사항 6개 뽑는 sql -->
+		select * from notice order by no_no desc limit 6
+	</select>
+	
+	<select id="listNoticeCount" resultType="int">
+		select count(no_no) from notice	
+	</select>
+	
+	<update id="noticeReadcnt">
+		update notice set no_readcnt = #{noReadcnt} where no_no = #{noNo}
+	</update>
+</mapper>

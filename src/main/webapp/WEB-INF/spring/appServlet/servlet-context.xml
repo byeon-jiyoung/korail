@@ -21,7 +21,17 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- 파일 업로드 전에 파일 이미지 용량 제한을 주는 역할. (서버 내부에서 돌아가는 건 서블릿에서 선언을 한다) -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property> <!-- 업로드 시 크기 제한주는 함수 -->
+											<!-- 10MB로 지정함(1024를 10번 곱하면 10MB..?) -->
+	</beans:bean>
+	
+	<!-- 외부에 저장하는 경로를 bean으로 등록해줄거야 -->
+	<beans:bean id="uploadPath" class="java.lang.String"> <!-- 우리가 경로를 string으로 저장하니까 class를 String으로 해줌 -->
+		<beans:constructor-arg value="c:/korail/upload"></beans:constructor-arg>
+	</beans:bean>
+	
 	<context:component-scan base-package="com.yi.controller" />
 	
-	<!-- <resources mapping="/images/**" location="/resources/images/" /> -->
 </beans:beans>

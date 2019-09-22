@@ -29,6 +29,19 @@
 	}
 	.article_div3 {
 		width: 20%;
+		height: 440px;
+	}
+	.article_event {
+		width: 100%;
+		border: 1px solid #c5c6c7;
+		height: 215px;
+	}
+	.article_event:first-child {
+		margin-bottom: 8px;
+	}
+	.article_event img {
+		width: 100%;
+		height: 100%;
 	}
 	
 	#article_reserve1 {
@@ -51,10 +64,27 @@
 	#article_notice_ul {
 		border: 1px solid #c5c6c7;
 		border-top: 2px solid black;
-		width: 100%;
-		height: 200px;
+		max-width: 100%;
+		height: 175px;
 		margin-top: 5px;
+		padding: 15px 10px 10px;
+		background-color: white;
 	}
+	#article_notice_ul li {
+		border-bottom: 1px solid #ebebeb;
+		padding: 4px;
+		font-size: 0.9em;
+	}
+	#article_notice_ul li:nth-child(2n) {
+		background-color: #fafafa;
+	}
+	#article_notice_ul li:last-child {
+		border: none;
+	}
+	#article_notice_ul a {
+		color: #666;
+	}
+	
 	#article_news {
 		border: 1px solid black;
 		width: 100%;
@@ -89,7 +119,7 @@
 	#article_guide img {
 		width: 50%;
 		float: left;
-		height: 25%;
+		height: 110.5px;
 	}
 </style>
 
@@ -111,10 +141,13 @@
 				<div id="article_notice_img"></div>
 			</div>
 			<div class="article_div3">
-				<div>
-				</div>
-				<div>
-				</div>
+				<c:forEach var="event" items="${eventList}">
+					<div class="article_event">
+						<a href="${pageContext.request.contextPath}/event/read?eNo=${event.eNo}">
+							<img src="${pageContext.request.contextPath}/event/displayFile?filename=${event.eImg}">
+						</a>
+					</div>
+				</c:forEach>
 			</div>
 		</article>
 		<article>
@@ -124,7 +157,12 @@
 					<img src="${pageContext.request.contextPath}/resources/images/btn_more.png" class="more" id="noticeMore">
 					<div id="article_notice_ul">
 						<ul>
-							<li></li>
+							<c:forEach var="notice" items="${noticeList}">
+								<li>
+									<span><img src="${pageContext.request.contextPath}/resources/images/bu_arr_new.png"></span>
+									<a href="${pageContext.request.contextPath}/notice/read?noNo=${notice.noNo}">${notice.noTitle}</a>
+								</li>
+							</c:forEach>
 						</ul>
 					</div>
 				</div>
@@ -175,7 +213,7 @@
 		
 		<script>
 			$("#noticeMore").click(function() {
-				location.href = "${pageContext.request.contextPath}/notice";
+				location.href = "${pageContext.request.contextPath}/notice/notice";
 			})
 		</script>
 	</section>

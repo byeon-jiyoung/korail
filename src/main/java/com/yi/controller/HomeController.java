@@ -2,14 +2,21 @@ package com.yi.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.yi.domain.Event;
+import com.yi.domain.Notice;
+import com.yi.service.EventService;
+import com.yi.service.NoticeService;
 
 /**
  * Handles requests for the application home page.
@@ -19,25 +26,23 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	@Autowired
+	private NoticeService noService;
+	
+	@Autowired
+	private EventService eService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model) throws Exception {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		List<Notice> noticeList = noService.top6Notice();
+		List<Event> eventList = eService.top2Event();
 		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("eventList", eventList);
 		
 		return "korail";
 	}
 	
-	@RequestMapping(value = "/notice", method = RequestMethod.GET)
-	public String notice() {
-		return "notice/notice";
-	}
 }

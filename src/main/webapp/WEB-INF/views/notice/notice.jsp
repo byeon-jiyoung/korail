@@ -14,7 +14,7 @@
 		background-color: white;
 		border-left: 1px solid #d6d3d3;
 		border-right: 1px solid #d6d3d3;
-		height: 1000px;
+		min-height: 1000px;
 	}
 	.notice_sec_left {
 		float: left;
@@ -24,7 +24,7 @@
 		float: left;
 		width: 80%;
 		border-left: 1px solid #d6d3d3;
-		height: 1000px;
+		min-height: 1000px;
 	}
 	#notice_back {
 		background: url("${pageContext.request.contextPath}/resources/images/notice/cmt_snv_tit_bg.png") no-repeat;
@@ -124,7 +124,7 @@
 	}
 	#notice_list table tr:first-child {
 		background-color: #f8f8f8;
-		border-bottom: 1px solid #aaa;
+		border-bottom: 2px solid #aaa;
 	}
 	#notice_list table th {
 		padding: 10px 0;
@@ -142,8 +142,47 @@
 	
 	#notice_etc {
 		padding: 0 30px;
-		margin-top: 35px;
+		margin-top: 20px;
 		font-size: 0.8em;
+	}
+	.boardlist td {
+		text-align: center;
+		padding: 8px 0;
+		color: #8C8C8C;
+		border-bottom: 1px solid #bbb;
+	}
+	.boardlist td:nth-child(2) {
+		text-align: left;
+		padding-left: 20px;
+	}
+	.boardlist td:nth-child(1), .boardlist td:nth-child(3) {
+		font-size: 0.9em;
+	}
+	.boardlist a {
+		color: #8C8C8C;
+		text-decoration: none;
+	}
+	
+	/* ----------------- 페이징처리 css ----------------- */
+	#paging {
+		text-align: center;
+		margin-top: 20px;
+	}
+	.pagination li {
+		list-style: none;
+		margin-right: 10px;
+		display: inline-block;
+	}
+	.pagination li a {
+		color: black;
+		text-decoration: none;
+	}
+	.active {
+		font-weight: bold;
+		font-size: 1.1em;
+	}
+	.active a {
+		color: #4285f4 !important;
 	}
 </style>
 
@@ -154,16 +193,16 @@
 				<h3>레츠코레일 소식</h3>
 			</div>
 			<div>
-				<p class="notice_color">공지사항</p>
-				<p>관광이벤트</p>
+				<a href="${pageContext.request.contextPath}/notice/notice"><p class="notice_color">공지사항</p></a>
+				<a href="${pageContext.request.contextPath}/event/event"><p>관광이벤트</p></a>
 			</div>
 		</div>
 		<div class="notice_sec_right">
 			<div id="notice_back2">
 				<p><img src="${pageContext.request.contextPath}/resources/images/notice/ico_home.gif"> 
 					<a href="${pageContext.request.contextPath}/">홈</a> > 
-					<a href="${pageContext.request.contextPath}/notice">레츠코레일 소식</a> > 
-					<a href="">공지사항</a></p>
+					<a href="${pageContext.request.contextPath}/notice/notice">레츠코레일 소식</a> > 
+					<a href="${pageContext.request.contextPath}/notice/notice">공지사항</a></p>
 				<h1>공지사항</h1>
 			</div>
 			<div id="notice_list">
@@ -186,12 +225,39 @@
 						<th>제목</th>
 						<th>등록일</th>
 					</tr>
+					<c:forEach var="notice" items="${list}">
+						<tr class="boardlist">
+							<td>${notice.noNo}</td>
+							<td><a href="${pageContext.request.contextPath}/notice/read?noNo=${notice.noNo}&page=${pageMaker.cri.page}">${notice.noTitle}</a></td>
+							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noRegdate}"/></td>
+						</tr>
+					</c:forEach>
 				</table>
+			</div>
+			<div id="paging">
+				<ul class="pagination">
+					<c:if test="${pageMaker.prev}">
+						<li><a href="notice?page=${pageMaker.startPage-1}">&laquo;</a></li>
+					</c:if>
+					<c:forEach var="idx" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+						<li ${pageMaker.cri.page == idx ? 'class="active"' : ''}><a href="notice?page=${idx}">${idx}</a></li>
+					</c:forEach>
+					<c:if test="${pageMaker.next}">
+						<li><a href="notice?page=${pageMaker.endPage+1}">&raquo;</a></li>
+					</c:if>
+				</ul>
 			</div>
 			<div id="notice_etc">
 				※ 첨부된 파일을 찾을 수 없다고 나오는 경우, <strong>웹브라우저의 '도구 > 인터넷옵션'의 고급탭을 클릭하여 'URL을 항상 UTF-8로 보냄(다시 시작해야 함)'</strong>의 설정을 <strong>체크해제</strong> 하신 후 웹브라우저를 다시 실행시키시면 정상적으로 다운로드 가능합니다.
 			</div>
+			<button>글쓰기</button>
 		</div>
+		
+		<script>
+			$("button").click(function() {
+				location.href="${pageContext.request.contextPath}/notice/insert";
+			})
+		</script>
 	</section>
     
 <%@ include file="../include/footer.jsp" %>

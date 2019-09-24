@@ -10,14 +10,10 @@ select count(no_no) from notice;
 select * from event;
 insert into event(e_writer, e_title, e_content) values ("a", "aaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaa");
 
-
 select * from event order by e_no desc limit 3 where e_img is not null;
 
 select * from event order by e_no desc;
 select * from event where e_img is not null order by e_no desc limit 3;
-
-
-select citycode from city where cityname = '대구광역시';
 
 
 
@@ -40,10 +36,16 @@ select p.p_no, p.price, p.nodeid_s as 'startCode', ct.nodename as '출발역', c
 select * from price p join city_train ct on p.nodeid_a = ct.nodeid;
 select p.p_no, p.price, p.nodeid_a as 'arrvieCode', ct.nodename as '도착역', ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid;
 
-select startStation.p_no , startStation.price, startStation.nodename '출발역', arriveStation.nodename '도착역'
+select startStation.p_no , startStation.price, startStation.nodename, startStation.nodeid, arriveStation.nodename, arriveStation.nodeid
 from 
-	(select p.p_no, p.price, p.nodeid_s, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
+	(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
 join
-	(select p.p_no, p.price, p.nodeid_a, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
+	(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
 on 
 	startStation.p_no = arriveStation.p_no;
+	
+
+select nodeid, nodename from city_train where nodename like '%서울%';
+
+select * from train_time;
+select * from train;

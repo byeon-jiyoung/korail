@@ -16,6 +16,6 @@
 	</insert>
 	
 	<select id="searchCityCode" resultType="int" parameterType="String">
-		select citycode from city where cityname like concat('%',#{cityname},'%')
+		select citycode, cityname from city where cityname like concat('%',#{cityname},'%')
 	</select>
 </mapper>

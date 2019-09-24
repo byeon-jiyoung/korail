@@ -1,11 +1,10 @@
-package com.yi.persistence;
+package com.yi.service;
 
 import java.util.List;
 
 import com.yi.domain.Price;
 
-public interface PriceDao {
+public interface PriceService {
 	
 	public List<Price> listPrice() throws Exception;
-	public void insertPrice(Price price) throws Exception;
 }

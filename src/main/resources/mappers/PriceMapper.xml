@@ -3,23 +3,30 @@
 <mapper namespace="com.yi.mapper.PriceMapper">
 	
 	<resultMap type="Price" id="resultPrice">
-		<id column="p_no" property="pNo"/>
-		<result column="price" property="price"/>
+		<!-- <id column="p_no" property="pNo"/>
+		<result column="price" property="price"/> -->
+		<association property="nodeidS" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" columnPrefix="start_"/>
 	</resultMap>
 	
 	<resultMap type="Price" id="resultPrice2" extends="resultPrice">
-		<association property="nodeidS" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" />
-		<association property="nodeidA" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" />
+		<id column="p_no" property="pNo"/>
+		<result column="price" property="price"/>
+		<association property="nodeidA" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2_2" columnPrefix="arrive_"/>
 	</resultMap>
 	
 	<select id="listPrice" resultMap="resultPrice2">
 		<!-- select startStation.p_no , startStation.price, startStation.nodename, startStation.nodeid_s, arriveStation.nodename, arriveStation.nodeid_a -->
-		select *
+		select startStation.p_no , startStation.price, startStation.nodeid as start_nodeid, startStation.nodename as start_nodename, 
+		arriveStation.nodeid as arrive_nodeid, arriveStation.nodename as arrive_nodename
 		from	
-			(select p.p_no, p.price, p.nodeid_s, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
+			(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
 		join
-			(select p.p_no, p.price, p.nodeid_a, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
+			(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
 		on 
 			startStation.p_no = arriveStation.p_no;
 	</select>
+	
+	<insert id="insertPrice" parameterType="Price">
+		insert into price(price, nodeid_s, nodeid_a) value (#{price},#{nodeidS.nodeid},#{nodeidA.nodeid})
+	</insert>
 </mapper>

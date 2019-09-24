@@ -11,6 +11,10 @@
 		<association property="citycode" resultMap="com.yi.mapper.CityMapper.resultCity" />
 	</resultMap>
 	
+	<resultMap type="CityTrain" id="resultCityTrain2_2" extends="resultCityTrain">
+		<association property="citycode" resultMap="com.yi.mapper.CityMapper.resultCity" />
+	</resultMap>
+	
 	<select id="listCityTrain" resultMap="resultCityTrain2">
 		select nodeid, nodename, ct.citycode, cityname from city_train ct join city c on ct.citycode = c.citycode order by c.citycode
 	</select>
@@ -18,4 +22,8 @@
 	<insert id="insertCityTrain" parameterType="CityTrain">
 		insert into city_train values (#{nodeid}, #{nodename}, #{citycode.citycode})
 	</insert>
+	
+	<select id="searchNodeid" resultType="CityTrain" parameterType="CityTrain">
+		select nodeid, nodename from city_train where nodename like concat('%',#{nodename},'%')
+	</select>
 </mapper>

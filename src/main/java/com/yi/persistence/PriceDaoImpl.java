@@ -20,4 +20,9 @@ public class PriceDaoImpl implements PriceDao {
 		return sqlsession.selectList(namespace + ".listPrice");
 	}
 
+	@Override
+	public void insertPrice(Price price) throws Exception {
+		sqlsession.insert(namespace + ".insertPrice", price);
+	}
+
 }

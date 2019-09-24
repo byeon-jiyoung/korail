@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.CityTrainMapper">
+	
+	<resultMap type="CityTrain" id="resultCityTrain">
+		<id column="nodeid" property="nodeid"/>
+		<result column="nodename" property="nodename"/>
+	</resultMap>
+	
+	<resultMap type="CityTrain" id="resultCityTrain2" extends="resultCityTrain">
+		<association property="citycode" resultMap="com.yi.mapper.CityMapper.resultCity" />
+	</resultMap>
+	
+	<select id="listCityTrain" resultMap="resultCityTrain2">
+		select nodeid, nodename, ct.citycode, cityname from city_train ct join city c on ct.citycode = c.citycode order by c.citycode
+	</select>
+	
+	<insert id="insertCityTrain" parameterType="CityTrain">
+		insert into city_train values (#{nodeid}, #{nodename}, #{citycode.citycode})
+	</insert>
+</mapper>

@@ -42,8 +42,8 @@ public class HomeController {
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("eventList", eventList);
 		
-//		return "korail";
-		return "home";
+		return "korail";
+//		return "home";
 	}
 	
 }

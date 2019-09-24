@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.CityMapper">
+	
+	<resultMap type="City" id="resultCity">
+		<id column="citycode" property="citycode"/>
+		<result column="cityname" property="cityname"/>
+	</resultMap>
+	
+	<select id="listCity" resultType="City">
+		select * from city	
+	</select>
+	
+	<insert id="insertCity" parameterType="City">
+		insert into city values (#{citycode}, #{cityname})
+	</insert>
+	
+	<select id="searchCityCode" resultType="int" parameterType="String">
+		select citycode from city where cityname like concat('%',#{cityname},'%')
+	</select>
+</mapper>

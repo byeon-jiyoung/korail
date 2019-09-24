@@ -29,12 +29,14 @@ ALTER TABLE korail.member
 -- 예매
 CREATE TABLE korail.reservation (
 	res_no     INT         NOT NULL COMMENT '예매번호', -- 예매번호
-	res_id     VARCHAR(10) NULL     COMMENT '아이디', -- 아이디
-	res_train  INT         NULL     COMMENT '예매열차', -- 예매열차
+	mem_id     VARCHAR(10) NULL     COMMENT '아이디', -- 아이디
 	res_date   DATETIME    NULL     COMMENT '예매일', -- 예매일
-	res_person INT         NULL     COMMENT '인원', -- 인원
 	res_cancel TINYINT     NULL     DEFAULT false COMMENT '예매취소여부', -- 예매취소여부
-	res_sale   INT         NULL     COMMENT '결제' -- 결제
+	sal_no     INT         NULL     COMMENT '결제', -- 결제
+	tt_no_s    INT         NULL     COMMENT '출발역', -- 출발역
+	tt_no_a    INT         NULL     COMMENT '도착역', -- 도착역
+	ts_car     INT         NULL     COMMENT '호차', -- 호차
+	ts_no      INT		   NULL     COMMENT '좌석번호' -- 좌석번호
 )
 COMMENT '예매';
 
@@ -168,17 +170,12 @@ ALTER TABLE korail.sale
 
 -- 열차정보
 CREATE TABLE korail.train (
-	t_no         INT         NOT NULL COMMENT '열차번호', -- 열차번호
-	t_tino       INT         NULL     COMMENT '열차분류', -- 열차분류
-	t_price      INT         NULL     COMMENT '가격', -- 가격
-	t_start      VARCHAR(20) NULL     COMMENT '출발역', -- 출발역
-	t_arrive     VARCHAR(20) NULL     COMMENT '도착역', -- 도착역
-	t_starttime  DATETIME    NULL     COMMENT '출발시간', -- 출발시간
-	t_arrivetime DATETIME    NULL     COMMENT '도착시간', -- 도착시간
-	t_tsno       VARCHAR(3)  NULL     COMMENT '좌석번호', -- 좌석번호
-	t_tscar      INT         NULL     COMMENT '호차', -- 호차
-	res_direct   TINYINT     NULL     COMMENT '환승직통', -- 환승직통
-	res_way      TINYINT     NULL     COMMENT '왕복편도' -- 왕복편도
+	t_code        VARCHAR(5)  NOT NULL COMMENT '열차번호', -- 열차번호
+	t_ti_no       INT         NULL     COMMENT '열차분류', -- 열차분류
+	t_star_time   DATETIME    NULL     COMMENT '출발시간', -- 출발시간
+	t_arrive_time DATETIME    NULL     COMMENT '도착시간', -- 도착시간
+	t_start       VARCHAR(15) NULL     COMMENT '출발역', -- 출발역
+	t_arrive      VARCHAR(15) NULL     COMMENT '도착역' -- 도착역
 )
 COMMENT '열차정보';
 
@@ -186,7 +183,7 @@ COMMENT '열차정보';
 ALTER TABLE korail.train
 	ADD CONSTRAINT PK_train -- 열차정보 기본키
 		PRIMARY KEY (
-			t_no -- 열차번호
+			t_code -- 열차번호
 		);
 
 -- 열차종류
@@ -208,9 +205,10 @@ ALTER TABLE korail.train_info
 
 -- 열차좌석
 CREATE TABLE korail.train_seat (
-	ts_no     VARCHAR(3) NOT NULL COMMENT '좌석번호', -- 좌석번호
 	ts_car    INT        NOT NULL COMMENT '호차', -- 호차
-	ts_choice TINYINT    NULL     DEFAULT false COMMENT '선택유무' -- 선택유무
+	ts_no     INT		 NOT NULL COMMENT '좌석번호', -- 좌석번호
+	ts_choice TINYINT    NULL     DEFAULT false COMMENT '선택유무', -- 선택유무
+	t_code    VARCHAR(5) NULL     COMMENT '열차번호' -- 열차번호
 )
 COMMENT '열차좌석';
 
@@ -218,15 +216,82 @@ COMMENT '열차좌석';
 ALTER TABLE korail.train_seat
 	ADD CONSTRAINT PK_train_seat -- 열차좌석 기본키
 		PRIMARY KEY (
-			ts_no,  -- 좌석번호
-			ts_car  -- 호차
+			ts_car, -- 호차
+			ts_no   -- 좌석번호
 		);
+
+-- 도시
+CREATE TABLE korail.city (
+	citycode INT         NOT NULL COMMENT '도시코드번호', -- 도시코드번호
+	cityname VARCHAR(15) NULL     COMMENT '도시명' -- 도시명
+)
+COMMENT '도시';
+
+-- 도시
+ALTER TABLE korail.city
+	ADD CONSTRAINT PK_city -- 도시 기본키
+		PRIMARY KEY (
+			citycode -- 도시코드번호
+		);
+
+-- 도시별 기차역
+CREATE TABLE korail.city_train (
+	nodeid   VARCHAR(15) NOT NULL COMMENT '기차역코드', -- 기차역코드
+	nodename VARCHAR(15) NULL     COMMENT '역이름', -- 역이름
+	citycode INT         NULL     COMMENT '도시코드번호' -- 도시코드번호
+)
+COMMENT '도시별 기차역';
+
+-- 도시별 기차역
+ALTER TABLE korail.city_train
+	ADD CONSTRAINT PK_city_train -- 도시별 기차역 기본키
+		PRIMARY KEY (
+			nodeid -- 기차역코드
+		);
+
+-- 시간표
+CREATE TABLE korail.train_time (
+	tt_no         INT        NOT NULL COMMENT '분류번호', -- 분류번호
+	tt_start_time DATETIME   NULL     COMMENT '출발시간', -- 출발시간
+	t_code        VARCHAR(5) NULL     COMMENT '열차번호', -- 열차번호
+	p_no          INT        NULL     COMMENT '가격' -- 가격
+)
+COMMENT '시간표';
+
+-- 시간표
+ALTER TABLE korail.train_time
+	ADD CONSTRAINT PK_train_time -- 시간표 기본키
+		PRIMARY KEY (
+			tt_no -- 분류번호
+		);
+
+ALTER TABLE korail.train_time
+	MODIFY COLUMN tt_no INT NOT NULL AUTO_INCREMENT COMMENT '분류번호';
+
+-- 구간별 가격
+CREATE TABLE korail.price (
+	p_no     INT         NOT NULL COMMENT '분류번호', -- 분류번호
+	price    INT         NULL     COMMENT '가격', -- 가격
+	nodeid_s VARCHAR(15) NULL     COMMENT '출발', -- 출발
+	nodeid_a VARCHAR(15) NULL     COMMENT '도착' -- 도착
+)
+COMMENT '구간별 가격';
+
+-- 구간별 가격
+ALTER TABLE korail.price
+	ADD CONSTRAINT PK_price -- 구간별 가격 기본키
+		PRIMARY KEY (
+			p_no -- 분류번호
+		);
+
+ALTER TABLE korail.price
+	MODIFY COLUMN p_no INT NOT NULL AUTO_INCREMENT COMMENT '분류번호';
 
 -- 예매
 ALTER TABLE korail.reservation
 	ADD CONSTRAINT FK_member_TO_reservation -- 회원 -> 예매
 		FOREIGN KEY (
-			res_id -- 아이디
+			mem_id -- 아이디
 		)
 		REFERENCES korail.member ( -- 회원
 			mem_id -- 아이디
@@ -236,7 +301,7 @@ ALTER TABLE korail.reservation
 ALTER TABLE korail.reservation
 	ADD CONSTRAINT FK_sale_TO_reservation -- 결제 -> 예매
 		FOREIGN KEY (
-			res_sale -- 결제
+			sal_no -- 결제
 		)
 		REFERENCES korail.sale ( -- 결제
 			sal_no -- 결제번호
@@ -244,12 +309,34 @@ ALTER TABLE korail.reservation
 
 -- 예매
 ALTER TABLE korail.reservation
-	ADD CONSTRAINT FK_train_TO_reservation -- 열차정보 -> 예매
+	ADD CONSTRAINT FK_train_time_TO_reservation2 -- 시간표 -> 예매
 		FOREIGN KEY (
-			res_train -- 예매열차
+			tt_no_s -- 출발역
 		)
-		REFERENCES korail.train ( -- 열차정보
-			t_no -- 열차번호
+		REFERENCES korail.train_time ( -- 시간표
+			tt_no -- 분류번호
+		);
+
+-- 예매
+ALTER TABLE korail.reservation
+	ADD CONSTRAINT FK_train_time_TO_reservation -- 시간표 -> 예매2
+		FOREIGN KEY (
+			tt_no_a -- 도착역
+		)
+		REFERENCES korail.train_time ( -- 시간표
+			tt_no -- 분류번호
+		);
+
+-- 예매
+ALTER TABLE korail.reservation
+	ADD CONSTRAINT FK_train_seat_TO_reservation -- 열차좌석 -> 예매
+		FOREIGN KEY (
+			ts_car, -- 호차
+			ts_no   -- 좌석번호
+		)
+		REFERENCES korail.train_seat ( -- 열차좌석
+			ts_car, -- 호차
+			ts_no   -- 좌석번호
 		);
 
 -- 공지사항
@@ -296,7 +383,7 @@ ALTER TABLE korail.mem_discount
 ALTER TABLE korail.train
 	ADD CONSTRAINT FK_train_info_TO_train -- 열차종류 -> 열차정보
 		FOREIGN KEY (
-			t_tino -- 열차분류
+			t_ti_no -- 열차분류
 		)
 		REFERENCES korail.train_info ( -- 열차종류
 			ti_no -- 분류번호
@@ -304,12 +391,80 @@ ALTER TABLE korail.train
 
 -- 열차정보
 ALTER TABLE korail.train
-	ADD CONSTRAINT FK_train_seat_TO_train -- 열차좌석 -> 열차정보
+	ADD CONSTRAINT FK_city_train_TO_train -- 도시별 기차역 -> 열차정보
 		FOREIGN KEY (
-			t_tsno,  -- 좌석번호
-			t_tscar  -- 호차
+			t_start -- 출발역
 		)
-		REFERENCES korail.train_seat ( -- 열차좌석
-			ts_no,  -- 좌석번호
-			ts_car  -- 호차
+		REFERENCES korail.city_train ( -- 도시별 기차역
+			nodeid -- 기차역코드
+		);
+
+-- 열차정보
+ALTER TABLE korail.train
+	ADD CONSTRAINT FK_city_train_TO_train2 -- 도시별 기차역 -> 열차정보2
+		FOREIGN KEY (
+			t_arrive -- 도착역
+		)
+		REFERENCES korail.city_train ( -- 도시별 기차역
+			nodeid -- 기차역코드
+		);
+
+-- 열차좌석
+ALTER TABLE korail.train_seat
+	ADD CONSTRAINT FK_train_TO_train_seat -- 열차정보 -> 열차좌석
+		FOREIGN KEY (
+			t_code -- 열차번호
+		)
+		REFERENCES korail.train ( -- 열차정보
+			t_code -- 열차번호
+		);
+
+-- 도시별 기차역
+ALTER TABLE korail.city_train
+	ADD CONSTRAINT FK_city_TO_city_train -- 도시 -> 도시별 기차역
+		FOREIGN KEY (
+			citycode -- 도시코드번호
+		)
+		REFERENCES korail.city ( -- 도시
+			citycode -- 도시코드번호
+		);
+
+-- 시간표
+ALTER TABLE korail.train_time
+	ADD CONSTRAINT FK_train_TO_train_time -- 열차정보 -> 시간표
+		FOREIGN KEY (
+			t_code -- 열차번호
+		)
+		REFERENCES korail.train ( -- 열차정보
+			t_code -- 열차번호
+		);
+
+-- 시간표
+ALTER TABLE korail.train_time
+	ADD CONSTRAINT FK_price_TO_train_time -- 구간별 가격 -> 시간표
+		FOREIGN KEY (
+			p_no -- 가격
+		)
+		REFERENCES korail.price ( -- 구간별 가격
+			p_no -- 분류번호
+		);
+
+-- 구간별 가격
+ALTER TABLE korail.price
+	ADD CONSTRAINT FK_city_train_TO_price -- 도시별 기차역 -> 구간별 가격
+		FOREIGN KEY (
+			nodeid_s -- 출발
+		)
+		REFERENCES korail.city_train ( -- 도시별 기차역
+			nodeid -- 기차역코드
+		);
+
+-- 구간별 가격
+ALTER TABLE korail.price
+	ADD CONSTRAINT FK_city_train_TO_price2 -- 도시별 기차역 -> 구간별 가격2
+		FOREIGN KEY (
+			nodeid_a -- 도착
+		)
+		REFERENCES korail.city_train ( -- 도시별 기차역
+			nodeid -- 기차역코드
 		);

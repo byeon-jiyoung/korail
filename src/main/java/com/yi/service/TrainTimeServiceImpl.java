@@ -19,4 +19,9 @@ public class TrainTimeServiceImpl implements TrainTimeService {
 		return dao.listTrainTime();
 	}
 
+	@Override
+	public List<TrainTime> ListStartTimeByPno(String nodeidS, String nodeidA) throws Exception {
+		return dao.ListStartTimeByPno(nodeidS, nodeidA);
+	}
+
 }

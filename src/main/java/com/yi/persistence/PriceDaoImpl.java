@@ -1,6 +1,8 @@
 package com.yi.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,15 @@ public class PriceDaoImpl implements PriceDao {
 	@Override
 	public Price selectPriceByPno(int pNo) throws Exception {
 		return sqlsession.selectOne(namespace + ".selectPriceByPno", pNo);
+	}
+
+	@Override
+	public List<Integer> selectPnoBynodeId(String nodeidS, String nodeidA) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("startname", nodeidS);
+		map.put("arrivename", nodeidA);
+		
+		return sqlsession.selectList(namespace + ".selectPnoBynodeId", map);
 	}
 
 }

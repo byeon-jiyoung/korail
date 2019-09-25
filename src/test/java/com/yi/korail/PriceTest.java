@@ -34,12 +34,12 @@ public class PriceTest {
 	
 	@Test
 	public void testInsert() throws Exception {
-		List<CityTrain> ctS = ctDao.searchNodeid("부산");
-		List<CityTrain> ctA = ctDao.searchNodeid("서울");
+		CityTrain ctS = ctDao.searchNodeid("부산");
+		CityTrain ctA = ctDao.searchNodeid("서울");
 		
 		Price price = new Price();
-		price.setNodeidS(ctS.get(0));
-		price.setNodeidA(ctA.get(0));
+		price.setNodeidS(ctS);
+		price.setNodeidA(ctA);
 		price.setPrice(59800);
 		
 		dao.insertPrice(price);

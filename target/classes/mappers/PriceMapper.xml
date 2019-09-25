@@ -25,4 +25,8 @@
 	<select id="selectPriceByPno" resultMap="resultPrice2">
 		select * from priceTrainTime where p_no = #{p_no}
 	</select>
+	
+	<select id="selectPnoBynodeId" resultType="int" parameterType="String">
+		select p_no from priceTrainTime where start_nodename = #{startname} and arrive_nodename = #{arrivename}
+	</select>
 </mapper>

@@ -6,6 +6,14 @@ public class Price {
 	private CityTrain nodeidS;
 	private CityTrain nodeidA;
 	
+	public Price() {
+	}
+	
+	public Price(CityTrain nodeidS, CityTrain nodeidA) {
+		this.nodeidS = nodeidS;
+		this.nodeidA = nodeidA;
+	}
+
 	public int getpNo() {
 		return pNo;
 	}

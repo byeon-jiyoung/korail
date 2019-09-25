@@ -25,7 +25,7 @@ public class CityTrainServiceImpl implements CityTrainService {
 	}
 
 	@Override
-	public List<CityTrain> searchNodeid(String nodename) throws Exception {
+	public CityTrain searchNodeid(String nodename) throws Exception {
 		return dao.searchNodeid(nodename);
 	}
 

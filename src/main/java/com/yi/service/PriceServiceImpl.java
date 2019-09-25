@@ -29,4 +29,9 @@ public class PriceServiceImpl implements PriceService {
 		return dao.selectPriceByPno(pNo);
 	}
 
+	@Override
+	public List<Integer> selectPnoBynodeId(String nodeidS, String nodeidA) throws Exception {
+		return dao.selectPnoBynodeId(nodeidS, nodeidA);
+	}
+
 }

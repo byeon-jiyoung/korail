@@ -4,7 +4,7 @@ public class TrainSeat {
 	private int tsCar;
 	private int tsNo;
 	private boolean tsChoice;
-	private String tCode;
+	private Train tCode;
 	
 	public int getTsCar() {
 		return tsCar;
@@ -24,10 +24,10 @@ public class TrainSeat {
 	public void setTsChoice(boolean tsChoice) {
 		this.tsChoice = tsChoice;
 	}
-	public String gettCode() {
+	public Train gettCode() {
 		return tCode;
 	}
-	public void settCode(String tCode) {
+	public void settCode(Train tCode) {
 		this.tCode = tCode;
 	}
 

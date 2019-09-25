@@ -5,7 +5,7 @@ import java.util.Date;
 public class TrainTime {
 	private int ttNo;
 	private Date ttStartTime;
-	private String tCode;
+	private Train tCode;
 	private Price pNo;
 	
 	public int getTtNo() {
@@ -20,10 +20,10 @@ public class TrainTime {
 	public void setTtStartTime(Date ttStartTime) {
 		this.ttStartTime = ttStartTime;
 	}
-	public String gettCode() {
+	public Train gettCode() {
 		return tCode;
 	}
-	public void settCode(String tCode) {
+	public void settCode(Train tCode) {
 		this.tCode = tCode;
 	}
 	public Price getpNo() {

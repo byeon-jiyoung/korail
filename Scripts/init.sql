@@ -31,12 +31,12 @@ CREATE TABLE korail.reservation (
 	res_no     INT         NOT NULL COMMENT '예매번호', -- 예매번호
 	mem_id     VARCHAR(10) NULL     COMMENT '아이디', -- 아이디
 	res_date   DATETIME    NULL     COMMENT '예매일', -- 예매일
+	res_people INT         NULL     COMMENT '예매인원', -- 예매인원
 	res_cancel TINYINT     NULL     DEFAULT false COMMENT '예매취소여부', -- 예매취소여부
 	sal_no     INT         NULL     COMMENT '결제', -- 결제
-	tt_no_s    INT         NULL     COMMENT '출발역', -- 출발역
-	tt_no_a    INT         NULL     COMMENT '도착역', -- 도착역
+	tt_no      INT         NULL     COMMENT '역정보', -- 역정보
 	ts_car     INT         NULL     COMMENT '호차', -- 호차
-	ts_no      INT		   NULL     COMMENT '좌석번호' -- 좌석번호
+	ts_no      INT         NULL     COMMENT '좌석번호' -- 좌석번호
 )
 COMMENT '예매';
 
@@ -172,7 +172,7 @@ ALTER TABLE korail.sale
 CREATE TABLE korail.train (
 	t_code        VARCHAR(5)  NOT NULL COMMENT '열차번호', -- 열차번호
 	t_ti_no       INT         NULL     COMMENT '열차분류', -- 열차분류
-	t_star_time   DATETIME    NULL     COMMENT '출발시간', -- 출발시간
+	t_start_time  DATETIME    NULL     COMMENT '출발시간', -- 출발시간
 	t_arrive_time DATETIME    NULL     COMMENT '도착시간', -- 도착시간
 	t_start       VARCHAR(15) NULL     COMMENT '출발역', -- 출발역
 	t_arrive      VARCHAR(15) NULL     COMMENT '도착역' -- 도착역
@@ -206,7 +206,7 @@ ALTER TABLE korail.train_info
 -- 열차좌석
 CREATE TABLE korail.train_seat (
 	ts_car    INT        NOT NULL COMMENT '호차', -- 호차
-	ts_no     INT		 NOT NULL COMMENT '좌석번호', -- 좌석번호
+	ts_no     INT        NOT NULL COMMENT '좌석번호', -- 좌석번호
 	ts_choice TINYINT    NULL     DEFAULT false COMMENT '선택유무', -- 선택유무
 	t_code    VARCHAR(5) NULL     COMMENT '열차번호' -- 열차번호
 )
@@ -311,17 +311,7 @@ ALTER TABLE korail.reservation
 ALTER TABLE korail.reservation
 	ADD CONSTRAINT FK_train_time_TO_reservation2 -- 시간표 -> 예매
 		FOREIGN KEY (
-			tt_no_s -- 출발역
-		)
-		REFERENCES korail.train_time ( -- 시간표
-			tt_no -- 분류번호
-		);
-
--- 예매
-ALTER TABLE korail.reservation
-	ADD CONSTRAINT FK_train_time_TO_reservation -- 시간표 -> 예매2
-		FOREIGN KEY (
-			tt_no_a -- 도착역
+			tt_no -- 역정보
 		)
 		REFERENCES korail.train_time ( -- 시간표
 			tt_no -- 분류번호
@@ -468,3 +458,15 @@ ALTER TABLE korail.price
 		REFERENCES korail.city_train ( -- 도시별 기차역
 			nodeid -- 기차역코드
 		);
+		
+		
+-- view
+create view priceTrainTime as
+select startStation.p_no , startStation.price, startStation.nodeid as start_nodeid, startStation.nodename as start_nodename, 
+arriveStation.nodeid as arrive_nodeid, arriveStation.nodename as arrive_nodename
+from	
+	(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
+join
+	(select p.p_no, p.price, ct.nodeid, ct.nodename, ct.citycode from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
+on 
+	startStation.p_no = arriveStation.p_no;

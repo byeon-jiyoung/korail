@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yi.mapper.TrainInfoMapper">
 	
+	<resultMap type="TrainInfo" id="resultTrainInfo">
+		<id column="ti_no" property="tiNo"/>
+		<result column="ti_name" property="tiName"/>
+	</resultMap>
+	
 	<insert id="insertTrainInfo" parameterType="TrainInfo">
 		insert into train_info(ti_name) values (#{tiName})
 	</insert>

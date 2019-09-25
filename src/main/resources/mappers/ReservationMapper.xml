@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.ReservationMapper">
+	
+	<resultMap type="Reservation" id="resultReservation">
+		<id column="res_no" property="resNo"/>
+		<result column="res_date" property="resDate"/>
+		<result column="res_cancel" property="resCancel"/>
+		<association property="memId" resultMap="com.yi.mapper.MemberMapper.resultMember" />
+		<association property="salNo" resultMap="com.yi.mapper.SaleMapper.resultSale" />
+		<association property="tsCar" resultMap="com.yi.mapper.TrainSeatMapper.resultTrainSeat" />
+		<association property="tsNo" resultMap="com.yi.mapper.TrainSeatMapper.resultTrainSeat" />
+		<association property="ttNo" resultMap="com.yi.mapper.TrainTimeMapper.resultTrainTime" />
+	</resultMap>
+	
+	<select id="listReservation" resultMap="resultReservation">
+		select * from reservation r join member m on r.mem_id = m.mem_id join train_time tt on r.tt_no = tt.tt_no
+	</select>
+	
+</mapper>

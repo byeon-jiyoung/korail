@@ -47,5 +47,43 @@ on
 
 select nodeid, nodename from city_train where nodename like '%서울%';
 
-select * from train_time;
+
+
 select * from train;
+select * from train t join city_train ct on t.t_start = ct.nodeid;
+select * from train t join city_train ct on t.t_arrive = ct.nodeid;
+
+select startStation.t_code , startStation.t_ti_no, startStation.t_start_time, startStation.t_arrive_time, startStation.nodeid as start_nodeid, startStation.nodename as start_nodename, 
+arriveStation.nodeid as arrive_nodeid, arriveStation.nodename as arrive_nodename
+from	
+	(select * from train t join city_train ct on t.t_start = ct.nodeid) startStation
+join
+	(select * from train t join city_train ct on t.t_arrive = ct.nodeid) arriveStation
+on 
+	startStation.t_code = arriveStation.t_code;
+
+select * from train_time;
+select * from train_time tt join price p on tt.p_no = p.p_no;
+
+select * from train_seat;
+
+select * from reservation where tt_no in (select tt_no from train_time tt join price p on tt.p_no = p.p_no);
+select * from reservation r join member m on r.mem_id = m.mem_id join;
+
+select * from reservation r join member m on r.mem_id = m.mem_id join train_time tt on r.tt_no = tt.tt_no;
+
+select * from train_time tt join price p on tt.p_no = p.p_no;
+
+
+
+select * from train_time tt join price p on tt.p_no in (
+	select startStation.p_no
+	from	
+		(select * from price p join city_train ct on p.nodeid_s = ct.nodeid) startStation
+	join
+		(select * from price p join city_train ct on p.nodeid_a = ct.nodeid) arriveStation
+	on 
+		startStation.p_no = arriveStation.p_no
+) group by tt_no;
+
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.TrainMapper">
+	
+	<resultMap type="Train" id="resultTrain">
+		<association property="tStart" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" columnPrefix="start_"/>
+	</resultMap>
+	
+	<resultMap type="Train" id="resultTrain2" extends="resultTrain">
+		<id column="t_code" property="tCode"/>
+		<result column="t_start_time" property="tStartTime"/>
+		<result column="t_arrive_time" property="tArriveTime"/>
+		<association property="tTiNo" resultMap="com.yi.mapper.TrainInfoMapper.resultTrainInfo" />
+		<association property="tArrive" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" columnPrefix="arrive_"/>
+	</resultMap>
+	
+	<select id="listTrain" resultMap="resultTrain2">
+		select startStation.t_code , startStation.t_ti_no as ti_no, 
+		startStation.t_start_time, startStation.t_arrive_time, startStation.nodeid as start_nodeid, startStation.nodename as start_nodename, 
+		arriveStation.nodeid as arrive_nodeid, arriveStation.nodename as arrive_nodename
+		from	
+			(select * from train t join city_train ct on t.t_start = ct.nodeid) startStation
+		join
+			(select * from train t join city_train ct on t.t_arrive = ct.nodeid) arriveStation
+		on 
+			startStation.t_code = arriveStation.t_code		
+	</select>
+	
+</mapper>

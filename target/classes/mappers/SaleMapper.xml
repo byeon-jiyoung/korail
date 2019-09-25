@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.SaleMapper">
+	
+	<resultMap type="Sale" id="resultSale">
+		<id column="sal_no" property="salNo"/>
+		<result column="sal_price" property="salNo"/>
+		<result column="sal_discount" property="salDiscount"/>
+		<result column="sal_classify" property="salClassify"/>
+	</resultMap>
+	
+	<select id="listSale" resultMap="resultSale">
+		select * from sale
+	</select>
+</mapper>

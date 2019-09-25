@@ -4,12 +4,11 @@ import java.util.Date;
 
 public class Reservation {
 	private int resNo;
-	private String memId;
+	private Member memId;
 	private Date resDate;
 	private boolean resCancel;
 	private Sale salNo;
-	private TrainTime ttNoS;
-	private TrainTime ttNoA;
+	private TrainTime ttNo;
 	private TrainSeat tsCar;
 	private TrainSeat tsNo;
 	
@@ -19,10 +18,10 @@ public class Reservation {
 	public void setResNo(int resNo) {
 		this.resNo = resNo;
 	}
-	public String getMemId() {
+	public Member getMemId() {
 		return memId;
 	}
-	public void setMemId(String memId) {
+	public void setMemId(Member memId) {
 		this.memId = memId;
 	}
 	public Date getResDate() {
@@ -43,17 +42,11 @@ public class Reservation {
 	public void setSalNo(Sale salNo) {
 		this.salNo = salNo;
 	}
-	public TrainTime getTtNoS() {
-		return ttNoS;
+	public TrainTime getTtNo() {
+		return ttNo;
 	}
-	public void setTtNoS(TrainTime ttNoS) {
-		this.ttNoS = ttNoS;
-	}
-	public TrainTime getTtNoA() {
-		return ttNoA;
-	}
-	public void setTtNoA(TrainTime ttNoA) {
-		this.ttNoA = ttNoA;
+	public void setTtNo(TrainTime ttNo) {
+		this.ttNo = ttNo;
 	}
 	public TrainSeat getTsCar() {
 		return tsCar;
@@ -71,7 +64,6 @@ public class Reservation {
 	@Override
 	public String toString() {
 		return "Reservation [resNo=" + resNo + ", memId=" + memId + ", resDate=" + resDate + ", resCancel=" + resCancel
-				+ ", salNo=" + salNo + ", ttNoS=" + ttNoS + ", ttNoA=" + ttNoA + ", tsCar=" + tsCar + ", tsNo=" + tsNo
-				+ "]";
+				+ ", salNo=" + salNo + ", ttNo=" + ttNo + ", tsCar=" + tsCar + ", tsNo=" + tsNo + "]";
 	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.TrainSeatMapper">
+	
+	<resultMap type="TrainSeat" id="resultTrainSeat">
+		<id column="ts_car" property="tsCar"/>
+		<id column="ts_no" property="tsNo"/>
+		<result column="ts_choice" property="tsChoice"/>
+		<association property="tCode" resultMap="com.yi.mapper.TrainMapper.resultTrain2" />
+	</resultMap>
+	
+	<select id="listTrainSeat" resultMap="resultTrainSeat">
+		select ts.ts_car, ts.ts_no, ts.ts_choice, t.t_code from train_seat ts join train t on ts.t_code = t.t_code
+	</select>
+	
+</mapper>

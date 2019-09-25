@@ -2,6 +2,23 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yi.mapper.MemberMapper"> <!-- impl할거면 namespace 이름은 개발자 마음대로 하면 됨.근데 만약에 impl이 없으면 dao에 있는 패키지랑 파일이름이랑 동일하게 적어줘야 됨!!! -->
-
+<mapper namespace="com.yi.mapper.MemberMapper">
+	
+	<resultMap type="Member" id="resultMember">
+		<id column="mem_id" property="memId"/>
+		<result column="mem_pw" property="memPw"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_birth" property="memBirth"/>
+		<result column="mem_phone" property="memPhone"/>
+		<result column="mem_address" property="memAddress"/>
+		<result column="mem_detailaddr" property="memdetailaddr"/>
+		<result column="mem_mileage" property="memMileage"/>
+		<result column="mem_join" property="memJoin"/>
+		<result column="mem_withdrawal" property="memWithdrawal"/>
+		<collection property="discount" resultMap="com.yi.mapper.DiscountMapper.resultDiscount" />
+	</resultMap>
+	
+	<select id="listMember" resultMap="resultMember">
+		select * from member;
+	</select>
 </mapper>

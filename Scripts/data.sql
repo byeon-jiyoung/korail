@@ -19,25 +19,38 @@ select * from city_train order by citycode;
 load data local infile 'd://city_train.csv' into table city_train
 character set 'utf8'
 fields terminated by ',';
-delete from city_train where citycode = 0;
+-- delete from city_train where citycode = 0;
 
-select * from price;
-insert into price(price, nodeid_s, nodeid_a) values (43500,'NAT010000','NAT013271');
-insert into price(price, nodeid_s, nodeid_a) values (23700,'NAT010000','NAT011668');
-
+select * from city_train;
 
 select * from train;
 insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arrive) 
-values ('K001',1,'2019-09-30 11:30:00.000','2019-09-30 13:30:00.000','NAT010000','NAT013271');
+values ('K001',1,'2019-09-30 11:30:00.000','2019-09-30 13:30:00.000','NAT010000','NAT014445');
+insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arrive) 
+values ('S001',2,'2019-09-30 11:30:00.000','2019-09-30 14:30:00.000','NAT010000','NAT013271');
+insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arrive) 
+values ('K002',1,'2019-09-30 14:30:00.000','2019-09-30 16:30:00.000','NAT010000','NAT013271');
 
 select * from train_time;
-insert into train_time(tt_start_time, t_code, p_no) values ('2019-09-30 11:30:00.000','K001',1);
-insert into train_time(tt_start_time, t_code, p_no) values ('2019-09-30 12:30:00.000','K001',2);
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 11:30:00.000','K001',20000,'NAT011668');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 12:30:00.000','K001',30000,'NAT012546');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 13:00:00.000','K001',40000,'NAT013271');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 14:00:00.000','K001',50000,'NAT014445');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 11:30:00.000','S001',15000,'NAT011668');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 13:00:00.000','S001',30000,'NAT013271');
 
 select * from city_train where citycode = (select citycode from city where cityname like '%대구%');
 
 select * from train_seat;
 insert into train_seat(ts_car, ts_no, t_code) values (1,1,'K001'),(1,2,'K001'),(1,3,'K001'),(1,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (2,1,'K001'),(2,2,'K001'),(2,3,'K001'),(2,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (3,1,'K001'),(3,2,'K001'),(3,3,'K001'),(3,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (4,1,'K001'),(4,2,'K001'),(4,3,'K001'),(4,4,'K001');
+
+insert into train_seat(ts_car, ts_no, t_code) values (1,1,'S001'),(1,2,'S001'),(1,3,'S001'),(1,4,'S001');
+insert into train_seat(ts_car, ts_no, t_code) values (2,1,'S001'),(2,2,'S001'),(2,3,'S001'),(2,4,'S001');
+insert into train_seat(ts_car, ts_no, t_code) values (3,1,'S001'),(3,2,'S001'),(3,3,'S001'),(3,4,'S001');
+insert into train_seat(ts_car, ts_no, t_code) values (4,1,'S001'),(4,2,'S001'),(4,3,'S001'),(4,4,'S001');
 
 
 select * from city_train where nodeid = 'NAT013271';
@@ -49,9 +62,4 @@ insert into member values ('test','test','변지영','1993-01-29','01020544177',
 
 select * from reservation;
 insert into reservation(mem_id, res_date, tt_no, ts_car, ts_no, res_people) values ('test',now(),1,1,4,3);
-
-select price from price where p_no = (
-select p_no from reservation r join train_time tt on r.tt_no = tt.tt_no);
-
-select * from price where nodeid_a in (select nodeid from city_train where nodename like '%대전%');
 

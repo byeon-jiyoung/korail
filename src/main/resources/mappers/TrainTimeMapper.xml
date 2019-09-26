@@ -5,17 +5,16 @@
 	<resultMap type="TrainTime" id="resultTrainTime">
 		<id column="tt_no" property="ttNo"/>
 		<result column="tt_start_time" property="ttStartTime"/>
+		<result column="price" property="price"/>
 		<association property="tCode" resultMap="com.yi.mapper.TrainMapper.resultTrain2" />
-		<association property="pNo" resultMap="com.yi.mapper.PriceMapper.resultPrice2" />
+		<association property="nodeid" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" />
 	</resultMap>
 	
 	<select id="listTrainTime" resultMap="resultTrainTime">
-		select * from train_time tt join price p on tt.p_no = p.p_no
+		select * from train_time tt join city_train ct on tt.nodeid = ct.nodeid
 	</select>
 	
-	<select id="ListStartTimeByPno" resultMap="resultTrainTime">
-		select * from train_time where p_no in (
-		select p_no from priceTrainTime where start_nodename = #{startname} and arrive_nodename = #{arrivename})
-	</select>
-	
+	<select id="listNodeByTCode" resultMap="resultTrainTime" parameterType="String">
+		select * from train_time where t_code = #{tCode}
+	</select>	
 </mapper>

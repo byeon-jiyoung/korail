@@ -19,4 +19,14 @@ public class TrainServiceImpl implements TrainService {
 		return dao.listTrain();
 	}
 
+	@Override
+	public List<Train> listTrainByTStart(String tStart) throws Exception {
+		return dao.listTrainByTStart(tStart);
+	}
+
+	@Override
+	public List<Train> listTrainByTStartAndPNo(String tStart, int tTiNo) throws Exception {
+		return dao.listTrainByTStartAndPNo(tStart, tTiNo);
+	}
+
 }

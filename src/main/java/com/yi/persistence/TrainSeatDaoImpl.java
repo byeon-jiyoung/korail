@@ -16,8 +16,13 @@ public class TrainSeatDaoImpl implements TrainSeatDao {
 	SqlSession sqlsession;
 	
 	@Override
-	public List<TrainSeat> listTrainSeat() throws Exception {
-		return sqlsession.selectList(namespace + ".listTrainSeat");
+	public List<TrainSeat> listTrainSeat(TrainSeat ts) throws Exception {
+		return sqlsession.selectList(namespace + ".listTrainSeat",ts);
+	}
+
+	@Override
+	public void updateTsChoice(TrainSeat ts) throws Exception {
+		sqlsession.update(namespace + ".updateTsChoice", ts);
 	}
 
 }

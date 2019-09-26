@@ -9,8 +9,12 @@
 		<association property="tCode" resultMap="com.yi.mapper.TrainMapper.resultTrain2" />
 	</resultMap>
 	
-	<select id="listTrainSeat" resultMap="resultTrainSeat">
-		select ts.ts_car, ts.ts_no, ts.ts_choice, t.t_code from train_seat ts join train t on ts.t_code = t.t_code
+	<select id="listTrainSeat" resultMap="resultTrainSeat" parameterType="TrainSeat">
+		<!-- select ts.ts_car, ts.ts_no, ts.ts_choice, t.t_code from train_seat ts join train t on ts.t_code = t.t_code -->
+		select * from train_seat ts join train t on ts.t_code = t.t_code where ts.t_code = #{tCode.tCode}
 	</select>
 	
+	<update id="updateTsChoice" parameterType="TrainSeat">
+		update train_seat set ts_choice = true where t_code = #{tCode.tCode}
+	</update>
 </mapper>

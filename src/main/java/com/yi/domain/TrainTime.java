@@ -6,7 +6,8 @@ public class TrainTime {
 	private int ttNo;
 	private Date ttStartTime;
 	private Train tCode;
-	private Price pNo;
+	private int price;
+	private CityTrain nodeid;
 	
 	public int getTtNo() {
 		return ttNo;
@@ -26,15 +27,22 @@ public class TrainTime {
 	public void settCode(Train tCode) {
 		this.tCode = tCode;
 	}
-	public Price getpNo() {
-		return pNo;
+	public int getPrice() {
+		return price;
 	}
-	public void setpNo(Price pNo) {
-		this.pNo = pNo;
+	public void setPrice(int price) {
+		this.price = price;
 	}
-
+	public CityTrain getNodeid() {
+		return nodeid;
+	}
+	public void setNodeid(CityTrain nodeid) {
+		this.nodeid = nodeid;
+	}
+	
 	@Override
 	public String toString() {
-		return "TrainTime [ttNo=" + ttNo + ", ttStartTime=" + ttStartTime + ", tCode=" + tCode + ", pNo=" + pNo + "]";
+		return "TrainTime [ttNo=" + ttNo + ", ttStartTime=" + ttStartTime + ", tCode=" + tCode + ", price=" + price
+				+ ", nodeid=" + nodeid + "]";
 	}
 }

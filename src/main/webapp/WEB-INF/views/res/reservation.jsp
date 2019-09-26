@@ -8,16 +8,46 @@
 		width: 1070px;
 		margin: 0 auto;
 	}
+	#time {
+		display: none;
+	}
 </style>
 
 <script>
 	$(function() {
-		$("#resForm").submit(function(e) {
-			e.preventDefault();
-			
+		$("#search").click(function() {
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/reservation",
 				type: "post",
+				data: {"startStation":$("select[name='startStation']").val(),"arriveStation":$("select[name='arriveStation']").val(),"tTiNo":$("input[type='radio']:checked").val()},
+				dataType:"json",
+				success: function(res) {
+					console.log(res);
+					
+					$("#startTime").empty();
+					$("#time").css("display", "inline");
+					
+					if(res.length == 0) {
+						alert("기차없음");
+					}
+					
+					$(res).each(function(i, obj) {
+						var start_time = new Date(obj.tStartTime); 
+						
+						$option = $("<option>").text(start_time.getHours()+":"+start_time.getMinutes());
+						$option.attr("value", start_time);
+						$("#startTime").append($option);
+					})
+				}
+			})
+		})
+		
+		$("#startTime").change(function() {
+			$.ajax({
+				url: "${pageContext.request.contextPath}/res/seat",
+				type: "post",
+				data: {"startStation":$("select[name='startStation']").val(),"arriveStation":$("select[name='arriveStation']").val(),
+						"tTiNo":$("input[type='radio']:checked").val(),"startTime":$("#startTime").val()},
 				dataType:"json",
 				success: function(res) {
 					console.log(res);
@@ -30,36 +60,41 @@
 </script>
 
 	<section>
-		<form action="reservation" method="post" id="resForm">
+		<div id="resForm">
 			<div>
 				<label>열차종류선택</label>
+				<input type="radio" value="0" name="tTiNo" checked="checked">전체
 				<c:forEach var="trainInfo" items="${tiList}">
-					<input type="radio" value="${trainInfo.tiNo}" name="tiNo">${trainInfo.tiName}
+					<input type="radio" value="${trainInfo.tiNo}" name="tTiNo">${trainInfo.tiName}
 				</c:forEach>
 			</div>
 
 			<label>출발역</label>
-			<select name="nodeidS">
-				<c:forEach var="start" items="${pList}">
-					<c:if test="${start.nodeidS.nodename != startStation}">
-						<option>${start.nodeidS.nodename}</option>
-						<c:set var="startStation" value="${start.nodeidS.nodename}" />
+			<select name="startStation">
+				<c:forEach var="start" items="${tList}">
+					<c:if test="${start.tStart.nodename != startS}">
+						<option>${start.tStart.nodename}</option>
+						<%-- <c:set var="startS" value="${start.tStart.nodename}" /> --%>
 					</c:if>
 				</c:forEach>
 			</select>
 			<label>도착역</label>
-			<select name="nodeidA">
-				<c:forEach var="arrive" items="${pList}">
-					<c:if test="${arrive.nodeidA.nodename != arriveStation}">
-						<option>${arrive.nodeidA.nodename}</option>
-						<c:set var="arriveStation" value="${arrive.nodeidA.nodename}" />
+			<select name="arriveStation">
+				<c:forEach var="arrive" items="${ttList}" varStatus="status">
+					<c:if test="${arrive.nodeid.nodename != arriveS}">
+						<option>${arrive.nodeid.nodename}</option>
+						<%-- <c:set var="arriveS" value="${arrive.tArrive.nodename}" /> --%>
 					</c:if>
 				</c:forEach>
 			</select>
-			<label>출발시간</label>
-			
-			<input type="submit">
-		</form>
+			<span id="time">
+				<label>출발시간</label>
+				<select name="startTime" id="startTime">
+					<option>시간선택</option>
+				</select>
+			</span>
+			<button id="search">조회</button>
+		</div>
 	</section>
 	
 <%@ include file="../include/footer.jsp" %>

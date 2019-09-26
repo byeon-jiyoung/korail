@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yi.domain.Train;
 import com.yi.domain.TrainTime;
 import com.yi.persistence.TrainTimeDao;
 
@@ -20,8 +21,8 @@ public class TrainTimeServiceImpl implements TrainTimeService {
 	}
 
 	@Override
-	public List<TrainTime> ListStartTimeByPno(String nodeidS, String nodeidA) throws Exception {
-		return dao.ListStartTimeByPno(nodeidS, nodeidA);
+	public List<TrainTime> listNodeByTCode(String train) throws Exception {
+		return dao.listNodeByTCode(train);
 	}
 
 }

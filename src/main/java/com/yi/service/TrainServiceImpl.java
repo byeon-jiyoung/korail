@@ -29,4 +29,9 @@ public class TrainServiceImpl implements TrainService {
 		return dao.listTrainByTStartAndPNo(tStart, tTiNo);
 	}
 
+	@Override
+	public List<Train> listTrainByArriveS(String tArrive) throws Exception {
+		return dao.listTrainByArriveS(tArrive);
+	}
+
 }

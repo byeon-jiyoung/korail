@@ -89,9 +89,7 @@
 			</select>
 			<span id="time">
 				<label>출발시간</label>
-				<select name="startTime" id="startTime">
-					<option>시간선택</option>
-				</select>
+				<select name="startTime" id="startTime"></select>
 			</span>
 			<button id="search">조회</button>
 		</div>

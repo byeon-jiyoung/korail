@@ -65,13 +65,11 @@ public class ReservationController {
 		List<Train> tList = new ArrayList<Train>();
 		
 		if(tTiNo == 0) {
-			logger.info("0000000000");
 			tList = tService.listTrainByTStart(startStation);
 			for(Train t : tList) {
 				logger.info(t.toString());
 			}
 		}else {
-			logger.info("123456789");
 			tList = tService.listTrainByTStartAndPNo(startStation, tTiNo);
 			for(Train t : tList) {
 				logger.info(t.toString());
@@ -88,6 +86,13 @@ public class ReservationController {
 		logger.info("arriveStation : " + arriveStation);
 		logger.info("tTiNo : " + tTiNo);
 		logger.info("startTime" + startTime);
+		
+		List<Train> tList = tService.listTrainByArriveS(arriveStation);
+		logger.info(tList.toString());
+		for(Train t : tList) {
+			logger.info("dfsdfsdfsdf");
+			logger.info(t.toString());
+		}
 		
 		return null;
 	}

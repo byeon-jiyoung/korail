@@ -22,7 +22,11 @@
 		select * from TrainCityTrain where start_nodename = #{tStart}
 	</select>
 	
-	<select id="listTrainByTStartAndPNo" resultMap="resultTrain2" >
+	<select id="listTrainByTStartAndPNo" resultMap="resultTrain2">
 		select * from TrainCityTrain where start_nodename = #{tStart} and ti_no = #{tTiNo}
+	</select>
+	
+	<select id="listTrainByArriveS" resultMap="resultTrain2" parameterType="String">
+		select * from train t join train_time tt on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid where ct.nodename = #{tArrive}
 	</select>
 </mapper>

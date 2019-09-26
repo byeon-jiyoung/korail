@@ -36,4 +36,9 @@ public class TrainDaoImpl implements TrainDao {
 		return sqlsession.selectList(namespace + ".listTrainByTStartAndPNo", map);
 	}
 
+	@Override
+	public List<Train> listTrainByArriveS(String tArrive) throws Exception {
+		return sqlsession.selectList(namespace + ".listTrainByTStart", tArrive);
+	}
+
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.TrainTrainTimeMapper">
+	
+	<resultMap type="TrainTrainTime" id="resultTrainTrainTime">
+		<association property="tStart" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" columnPrefix="start_"/>
+	</resultMap>
+	
+	<resultMap type="TrainTrainTime" id="resultTrainTrainTime2" extends="resultTrainTrainTime">
+		<result column="t_code" property="tCode"/>
+		<result column="t_start_time" property="tStartTime"/>
+		<result column="price" property="price"/>
+		<result column="tt_start_time" property="ttStartTime"/>
+		<association property="tTiNo" resultMap="com.yi.mapper.TrainInfoMapper.resultTrainInfo" />
+		<association property="nodeid" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" columnPrefix="arrive_"/>
+	</resultMap>
+	
+	
+	<select id="listTrainByStartArrive" resultMap="resultTrainTrainTime2" parameterType="String">
+		select tr.t_code, tr.t_ti_no as ti_no, tr.ti_name, tr.t_start_time, trti.tt_start_time, tr.t_start as start_nodeid, tr.nodename as start_nodename, trti.nodeid as arrive_nodeid, trti.nodename as arrive_nodename, trti.price from 
+		(select t.t_code, t.t_ti_no, t.t_start_time, t.t_arrive_time, t.t_start, ct.nodename, ti.ti_name from train t join city_train ct on t.t_start = ct.nodeid join train_info ti on ti.ti_no = t.t_ti_no where ct.nodeid = #{start}) tr join 
+		(select tt.t_code, tt.tt_start_time, tt.price, ct.nodename, tt.nodeid from train_time tt join city_train ct on tt.nodeid = ct.nodeid where tt.nodeid = #{arrive}) trti
+		on tr.t_code = trti.t_code
+	</select>
+	
+	<select id="listTrainByStartArriveByTiNo" resultMap="resultTrainTrainTime2">
+		select tr.t_code, tr.t_ti_no as ti_no, tr.ti_name, tr.t_start_time, trti.tt_start_time, tr.t_start as start_nodeid, tr.nodename as start_nodename, trti.nodeid as arrive_nodeid, trti.nodename as arrive_nodename, trti.price from 
+		(select t.t_code, t.t_ti_no, t.t_start_time, t.t_arrive_time, t.t_start, ct.nodename, ti.ti_name from train t join city_train ct on t.t_start = ct.nodeid join train_info ti on ti.ti_no = t.t_ti_no where ct.nodeid = #{start}) tr join 
+		(select tt.t_code, tt.tt_start_time, tt.price, ct.nodename, tt.nodeid from train_time tt join city_train ct on tt.nodeid = ct.nodeid where tt.nodeid = #{arrive}) trti
+		on tr.t_code = trti.t_code where t_ti_no = #{tiNo}
+	</select>
+</mapper>

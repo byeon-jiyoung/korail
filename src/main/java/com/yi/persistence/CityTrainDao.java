@@ -8,5 +8,5 @@ public interface CityTrainDao {
 	
 	public List<CityTrain> listCityTrain() throws Exception;
 	public void insertCityTrain(CityTrain ct) throws Exception;
-	public CityTrain searchNodeid(String nodename) throws Exception;
+	public String searchNodeid(String nodename) throws Exception;
 }

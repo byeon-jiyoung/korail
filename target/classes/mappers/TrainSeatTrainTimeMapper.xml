@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.TrainSeatTrainTimeMapper">
+	
+	<resultMap type="TrainSeatTrainTime" id="resultTrainSeatTrainTime">
+		<result column="ts_car" property="tsCar"/>
+		<result column="ts_no" property="tsNo"/>
+		<result column="ts_choice" property="tsChoice"/>
+		<result column="tt_start_time" property="ttStartTime"/>
+		<association property="tCode" resultMap="com.yi.mapper.TrainMapper.resultTrain2" />
+		<association property="nodeid" resultMap="com.yi.mapper.CityTrainMapper.resultCityTrain2" />
+	</resultMap>
+	
+	<select id="listTrainSeat" resultMap="resultTrainSeatTrainTime">
+		select * from train_seat ts join train_time tt on ts.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid 
+		where ts.t_code = #{tCode} and tt.tt_start_time = #{startTime}
+	</select>
+</mapper>

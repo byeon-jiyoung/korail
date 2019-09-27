@@ -2,6 +2,7 @@ package com.yi.service;
 
 import java.util.List;
 
+import com.yi.domain.CityTrain;
 import com.yi.domain.Train;
 
 public interface TrainService {

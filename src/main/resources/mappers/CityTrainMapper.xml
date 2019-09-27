@@ -19,7 +19,7 @@
 		insert into city_train values (#{nodeid}, #{nodename}, #{citycode.citycode})
 	</insert>
 	
-	<select id="searchNodeid" resultType="CityTrain" parameterType="CityTrain">
-		select nodeid, nodename from city_train where nodename like concat('%',#{nodename},'%')
+	<select id="searchNodeid" resultType="String" parameterType="String">
+		select nodeid from city_train where nodename = #{nodename}
 	</select>
 </mapper>

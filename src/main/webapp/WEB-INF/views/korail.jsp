@@ -127,6 +127,20 @@
 		<article>
 			<div class="article_div1">
 				<div id="article_reserve1">
+					<select name="start">
+						<c:forEach var="train" items="${tList}">
+							<option value="${train.tStart.nodeid}">${train.tStart.nodename}</option>
+						</c:forEach>
+					</select>
+					<select name="arrive">
+						<c:forEach var="traintime" items="${ttList}">
+							<option value="${traintime.nodeid.nodeid}">${traintime.nodeid.nodename}</option>
+						</c:forEach>
+						<c:forEach var="train" items="${tList}">
+							<option value="${train.tArrive.nodeid}">${train.tArrive.nodename}</option>
+						</c:forEach>
+					</select>
+					<button id="goRes">예약</button>
 				</div>
 				<div id="article_reserve2">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site11.jpg">
@@ -212,6 +226,12 @@
 		</article>
 		
 		<script>
+			$("#goRes").click(function() {
+				var start = $("select[name=start]").val();
+				var arrive = $("select[name=arrive]").val();
+				location.href = "${pageContext.request.contextPath}/res/reservation?start="+start+"&arrive="+arrive;
+			})
+			
 			$("#noticeMore").click(function() {
 				location.href = "${pageContext.request.contextPath}/notice/notice";
 			})

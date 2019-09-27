@@ -1,5 +1,6 @@
 package com.yi.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,12 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yi.domain.CityTrain;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
+import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
+import com.yi.domain.TrainTrainTime;
+import com.yi.service.CityTrainService;
 import com.yi.service.TrainInfoServivce;
+import com.yi.service.TrainSeatTrainTimeService;
 import com.yi.service.TrainService;
 import com.yi.service.TrainTimeService;
+import com.yi.service.TrainTrainTimeService;
 
 @Controller
 @RequestMapping("/res/*")
@@ -32,14 +39,22 @@ public class ReservationController {
 	TrainInfoServivce tiService;
 	@Autowired
 	TrainTimeService ttService;
+	@Autowired
+	CityTrainService ctService;
+	@Autowired
+	TrainTrainTimeService tttService;
+	@Autowired
+	TrainSeatTrainTimeService tsttService;
 	
 	@RequestMapping(value="reservation", method=RequestMethod.GET)
-	public void reserveGet(Model model) throws Exception {
+	public void reserveGet(String start, String arrive, Model model) throws Exception {
 		logger.info("------------------- reserveGet --------------------");
+		logger.info(start + "," + arrive);
 		
 		List<Train> tList = tService.listTrain();
 		List<TrainInfo> tiList = tiService.listTrainInfo();
 		List<TrainTime> ttList = ttService.listTrainTime();
+		List<TrainTrainTime> tttList = tttService.listTrainByStartArrive(start, arrive);
 		
 		for(Train t : tList) {
 			logger.info(t.toString());
@@ -49,52 +64,62 @@ public class ReservationController {
 			logger.info(tt.toString());
 		}
 		
+		for(TrainTrainTime ttt : tttList) {
+			logger.info(ttt.toString());
+		}
+		
 		model.addAttribute("tList", tList);
 		model.addAttribute("tiList", tiList);
 		model.addAttribute("ttList", ttList);
+		model.addAttribute("tttList", tttList);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="reservation", method=RequestMethod.POST)
-	public List<Train> reservePost(int tTiNo, String startStation, String arriveStation, Model model) throws Exception {
+	public List<TrainTrainTime> reservePost(int tTiNo, String startStation, String arriveStation, Model model) throws Exception {
 		logger.info("------------------- reservePost --------------------");
 		logger.info("startStation : " + startStation);
 		logger.info("arriveStation : " + arriveStation);
 		logger.info("tTiNo : " + tTiNo);
 		
-		List<Train> tList = new ArrayList<Train>();
+		String ctS = ctService.searchNodeid(startStation);
+		String ctA = ctService.searchNodeid(arriveStation);
+		
+		List<TrainTrainTime> tttList = new ArrayList<TrainTrainTime>();
 		
 		if(tTiNo == 0) {
-			tList = tService.listTrainByTStart(startStation);
-			for(Train t : tList) {
+			tttList = tttService.listTrainByStartArrive(ctS, ctA);
+			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
 		}else {
-			tList = tService.listTrainByTStartAndPNo(startStation, tTiNo);
-			for(Train t : tList) {
+			tttList = tttService.listTrainByStartArriveByTiNo(ctS, ctA, tTiNo);
+			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
 		}
-		return tList;
+		return tttList;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="seat", method=RequestMethod.POST)
-	public List<TrainTime> seatPost(int tTiNo, String startStation, String arriveStation, String startTime, Model model) throws Exception {
+	public List<TrainSeatTrainTime> seatPost(int tTiNo, String startStation, String arriveStation, String startTime, String tCode, Model model) throws Exception {
 		logger.info("------------------- seatPost --------------------");
 		logger.info("startStation : " + startStation);
 		logger.info("arriveStation : " + arriveStation);
 		logger.info("tTiNo : " + tTiNo);
-		logger.info("startTime" + startTime);
+		logger.info("startTime : " + startTime);
+		logger.info("tCode : " + tCode);
 		
-		List<Train> tList = tService.listTrainByArriveS(arriveStation);
-		logger.info(tList.toString());
-		for(Train t : tList) {
-			logger.info("dfsdfsdfsdf");
-			logger.info(t.toString());
+//		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
+		
+		List<TrainSeatTrainTime> tsttList = tsttService.listTrainSeat(tCode, startTime);
+
+		for(TrainSeatTrainTime tstt : tsttList) {
+			logger.info(tstt.toString());
 		}
 		
-		return null;
+		return tsttList;
 	}
 	
 }

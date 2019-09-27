@@ -26,7 +26,7 @@ public class CityTrainDaoImpl implements CityTrainDao {
 	}
 
 	@Override
-	public CityTrain searchNodeid(String nodename) throws Exception {
+	public String searchNodeid(String nodename) throws Exception {
 		return sqlsession.selectOne(namespace + ".searchNodeid", nodename);
 	}
 

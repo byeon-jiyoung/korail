@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yi.domain.CityTrain;
 import com.yi.domain.Train;
 import com.yi.persistence.TrainDao;
 

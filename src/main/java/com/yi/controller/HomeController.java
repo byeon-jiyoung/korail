@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yi.domain.Event;
 import com.yi.domain.Notice;
+import com.yi.domain.Train;
+import com.yi.domain.TrainTime;
 import com.yi.service.EventService;
 import com.yi.service.NoticeService;
+import com.yi.service.TrainService;
+import com.yi.service.TrainTimeService;
 
 /**
  * Handles requests for the application home page.
@@ -28,9 +32,12 @@ public class HomeController {
 	
 	@Autowired
 	private NoticeService noService;
-	
 	@Autowired
 	private EventService eService;
+	@Autowired
+	TrainService tService;
+	@Autowired
+	TrainTimeService ttService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws Exception {
@@ -38,9 +45,13 @@ public class HomeController {
 		
 		List<Notice> noticeList = noService.top6Notice();
 		List<Event> eventList = eService.top2Event();
+		List<Train> tList = tService.listTrain();
+		List<TrainTime> ttList = ttService.listTrainTime();
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("eventList", eventList);
+		model.addAttribute("tList", tList);
+		model.addAttribute("ttList", ttList);
 		
 		return "korail";
 //		return "home";

@@ -129,16 +129,24 @@
 				<div id="article_reserve1">
 					<select name="start">
 						<c:forEach var="train" items="${tList}">
-							<option value="${train.tStart.nodeid}">${train.tStart.nodename}</option>
+							<option>${train.tStart.nodename}</option>
 						</c:forEach>
 					</select>
 					<select name="arrive">
 						<c:forEach var="traintime" items="${ttList}">
-							<option value="${traintime.nodeid.nodeid}">${traintime.nodeid.nodename}</option>
+							<option>${traintime.nodeid.nodename}</option>
 						</c:forEach>
-						<c:forEach var="train" items="${tList}">
-							<option value="${train.tArrive.nodeid}">${train.tArrive.nodename}</option>
-						</c:forEach>
+					</select>
+					<select name="people">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
 					</select>
 					<button id="goRes">예약</button>
 				</div>
@@ -229,7 +237,9 @@
 			$("#goRes").click(function() {
 				var start = $("select[name=start]").val();
 				var arrive = $("select[name=arrive]").val();
-				location.href = "${pageContext.request.contextPath}/res/reservation?start="+start+"&arrive="+arrive;
+				var people = $("select[name=people]").val();
+				
+				location.href = "${pageContext.request.contextPath}/res/reservation?start="+start+"&arrive="+arrive+"&people="+people;
 			})
 			
 			$("#noticeMore").click(function() {

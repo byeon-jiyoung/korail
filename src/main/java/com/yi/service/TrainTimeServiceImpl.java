@@ -21,8 +21,13 @@ public class TrainTimeServiceImpl implements TrainTimeService {
 	}
 
 	@Override
+	public List<TrainTime> listTrainTimeNodeName() throws Exception {
+		return dao.listTrainTimeNodeName();
+	}
+
+	/*@Override
 	public List<TrainTime> listNodeByTCode(String train) throws Exception {
 		return dao.listNodeByTCode(train);
-	}
+	}*/
 
 }

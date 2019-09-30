@@ -45,8 +45,8 @@ public class HomeController {
 		
 		List<Notice> noticeList = noService.top6Notice();
 		List<Event> eventList = eService.top2Event();
-		List<Train> tList = tService.listTrain();
-		List<TrainTime> ttList = ttService.listTrainTime();
+		List<Train> tList = tService.listTrainNodeName();
+		List<TrainTime> ttList = ttService.listTrainTimeNodeName();
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("eventList", eventList);

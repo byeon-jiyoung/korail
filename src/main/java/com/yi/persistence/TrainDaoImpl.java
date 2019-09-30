@@ -23,7 +23,7 @@ public class TrainDaoImpl implements TrainDao {
 		return sqlsession.selectList(namespace + ".listTrain");
 	}
 
-	@Override
+	/*@Override
 	public List<Train> listTrainByTStart(String tStart) throws Exception {
 		return sqlsession.selectList(namespace + ".listTrainByTStart", tStart);
 	}
@@ -40,6 +40,11 @@ public class TrainDaoImpl implements TrainDao {
 	@Override
 	public List<Train> listTrainByArriveS(String tArrive) throws Exception {
 		return sqlsession.selectList(namespace + ".listTrainByTStart", tArrive);
+	}*/
+
+	@Override
+	public List<Train> listTrainNodeName() throws Exception {
+		return sqlsession.selectList(namespace + ".listTrainNodeName");
 	}
 
 }

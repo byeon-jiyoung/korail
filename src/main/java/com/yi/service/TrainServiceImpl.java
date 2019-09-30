@@ -21,6 +21,11 @@ public class TrainServiceImpl implements TrainService {
 	}
 
 	@Override
+	public List<Train> listTrainNodeName() throws Exception {
+		return dao.listTrainNodeName();
+	}
+
+	/*@Override
 	public List<Train> listTrainByTStart(String tStart) throws Exception {
 		return dao.listTrainByTStart(tStart);
 	}
@@ -33,6 +38,6 @@ public class TrainServiceImpl implements TrainService {
 	@Override
 	public List<Train> listTrainByArriveS(String tArrive) throws Exception {
 		return dao.listTrainByArriveS(tArrive);
-	}
+	}*/
 
 }

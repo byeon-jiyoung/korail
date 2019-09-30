@@ -18,7 +18,11 @@
 		select * from TrainCityTrain	
 	</select>
 	
-	<select id="listTrainByTStart" resultMap="resultTrain2" parameterType="String">
+	<select id="listTrainNodeName" resultMap="resultTrain2">
+		select * from TrainCityTrain group by start_nodename
+	</select>
+	
+	<!-- <select id="listTrainByTStart" resultMap="resultTrain2" parameterType="String">
 		select * from TrainCityTrain where start_nodename = #{tStart}
 	</select>
 	
@@ -27,8 +31,8 @@
 	</select>
 	
 	<select id="listTrainByArriveS" resultMap="resultTrain2" parameterType="String">
-		<!-- select * from train t join train_time tt on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid where ct.nodename = #{tArrive} -->
+		select * from train t join train_time tt on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid where ct.nodename = #{tArrive}
 		select * from train t join train_time tt on t.t_code = tt.t_code where tt.nodeid = #{tArrive}
-	</select>
+	</select> -->
 	
 </mapper>

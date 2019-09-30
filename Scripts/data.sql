@@ -43,8 +43,11 @@ select * from city_train where citycode = (select citycode from city where cityn
 
 select * from train_seat;
 insert into train_seat(ts_car, ts_no, t_code) values (1,1,'K001'),(1,2,'K001'),(1,3,'K001'),(1,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (1,5,'K001'),(1,6,'K001'),(1,7,'K001'),(1,8,'K001');
 insert into train_seat(ts_car, ts_no, t_code) values (2,1,'K001'),(2,2,'K001'),(2,3,'K001'),(2,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (2,5,'K001'),(2,6,'K001');
 insert into train_seat(ts_car, ts_no, t_code) values (3,1,'K001'),(3,2,'K001'),(3,3,'K001'),(3,4,'K001');
+insert into train_seat(ts_car, ts_no, t_code) values (3,5,'K001');
 insert into train_seat(ts_car, ts_no, t_code) values (4,1,'K001'),(4,2,'K001'),(4,3,'K001'),(4,4,'K001');
 
 insert into train_seat(ts_car, ts_no, t_code) values (1,1,'S001'),(1,2,'S001'),(1,3,'S001'),(1,4,'S001');

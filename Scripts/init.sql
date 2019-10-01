@@ -30,7 +30,7 @@ ALTER TABLE korail.member
 CREATE TABLE korail.reservation (
 	res_no     INT         NOT NULL COMMENT '예매번호', -- 예매번호
 	mem_id     VARCHAR(10) NULL     COMMENT '아이디', -- 아이디
-	res_date   DATETIME    NULL     COMMENT '예매일', -- 예매일
+	res_date   DATETIME    NULL     DEFAULT now() COMMENT '예매일', -- 예매일
 	res_people INT         NULL     COMMENT '예매인원', -- 예매인원
 	res_cancel TINYINT     NULL     DEFAULT false COMMENT '예매취소여부', -- 예매취소여부
 	sal_no     INT         NULL     COMMENT '결제', -- 결제

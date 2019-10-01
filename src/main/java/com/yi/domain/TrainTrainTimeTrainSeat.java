@@ -2,14 +2,17 @@ package com.yi.domain;
 
 import java.util.Date;
 
-public class TrainTrainTime {
+public class TrainTrainTimeTrainSeat {
 	private String tCode;
 	private TrainInfo tTiNo;
 	private CityTrain tStart;
+	private CityTrain tArrive;
 	private Date tStartTime;
 	private CityTrain nodeid;
 	private int price;
 	private Date ttStartTime;
+	private int tsCar;
+	private int tsNo;
 	
 	public String gettCode() {
 		return tCode;
@@ -28,6 +31,12 @@ public class TrainTrainTime {
 	}
 	public void settStart(CityTrain tStart) {
 		this.tStart = tStart;
+	}
+	public CityTrain gettArrive() {
+		return tArrive;
+	}
+	public void settArrive(CityTrain tArrive) {
+		this.tArrive = tArrive;
 	}
 	public Date gettStartTime() {
 		return tStartTime;
@@ -53,10 +62,23 @@ public class TrainTrainTime {
 	public void setTtStartTime(Date ttStartTime) {
 		this.ttStartTime = ttStartTime;
 	}
-
+	public int getTsCar() {
+		return tsCar;
+	}
+	public void setTsCar(int tsCar) {
+		this.tsCar = tsCar;
+	}
+	public int getTsNo() {
+		return tsNo;
+	}
+	public void setTsNo(int tsNo) {
+		this.tsNo = tsNo;
+	}
+	
 	@Override
 	public String toString() {
-		return "TrainTrainTime [tCode=" + tCode + ", tTiNo=" + tTiNo + ", tStart=" + tStart + ", tStartTime="
-				+ tStartTime + ", nodeid=" + nodeid + ", price=" + price + ", ttStartTime=" + ttStartTime + "]";
+		return "TrainTrainTimeTrainSeat [tCode=" + tCode + ", tTiNo=" + tTiNo + ", tStart=" + tStart + ", tArrive="
+				+ tArrive + ", tStartTime=" + tStartTime + ", nodeid=" + nodeid + ", price=" + price + ", ttStartTime="
+				+ ttStartTime + ", tsCar=" + tsCar + ", tsNo=" + tsNo + "]";
 	}
 }

@@ -18,8 +18,10 @@ public class TrainSeatTrainTimeDaoImpl implements TrainSeatTrainTimeDao {
 	SqlSession sqlsession;
 	
 	@Override
-	public List<TrainSeatTrainTime> listTrainSeat(String tCode, String startTime) throws Exception {
+	public List<TrainSeatTrainTime> listTrainSeat(String start, String arrive, String tCode, String startTime) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("arrive", arrive);
 		map.put("tCode", tCode);
 		map.put("startTime", startTime);
 		

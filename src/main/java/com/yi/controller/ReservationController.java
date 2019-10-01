@@ -110,7 +110,7 @@ public class ReservationController {
 		
 //		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
 		
-		List<TrainSeatTrainTime> tsttList = tsttService.listTrainSeat(tCode, startTime);
+		List<TrainSeatTrainTime> tsttList = tsttService.listTrainSeat(startStation, arriveStation, tCode, startTime);
 		
 		for(TrainSeatTrainTime tstt : tsttList) {
 			logger.info(tstt.toString());
@@ -119,8 +119,14 @@ public class ReservationController {
 		return tsttList;
 	}
 	
-	@RequestMapping(value="finishRes", method=RequestMethod.GET)
-	public void finishResGet() {
-		logger.info("------------------- finishResGet --------------------");
+	@RequestMapping(value="finishRes", method=RequestMethod.POST)
+	public void finishResPost(TrainTrainTime ttt) {
+		logger.info("------------------- finishResPost --------------------");
+		
+	/*	logger.info(tCode);
+		logger.info(tArrive);
+		logger.info(ttStartTime);*/
+		logger.info(ttt.toString());
+		
 	}
 }

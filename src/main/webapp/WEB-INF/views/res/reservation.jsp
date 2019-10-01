@@ -118,6 +118,7 @@
 	}
 	#nums {
 		margin-top: 10px;
+		display: inline-block;
 	}
 	#moveCar {
 		border: #367ce6;
@@ -134,7 +135,12 @@
 		font-weight: bold;
 		float: right;
 		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_blue.png") repeat-x;
+		margin-top: 10px;
 	}
+	#goResForm {
+		margin-bottom: 30px;
+	}
+	
 	
 	
 	/* ========== ajax로 추가한 부분 css ========== */
@@ -177,6 +183,7 @@
 <script>
 	$(function() {
 		$("#search").click(function() {
+			selPeople = 0;
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/reservation",
 				type: "post",
@@ -200,7 +207,8 @@
 						
 						var $tr = $("<tr>");
 						var $tiName = $("<td>").attr("data-code", obj.tCode).text(obj.tTiNo.tiName);
-						var $tStart = $("<td>").html(obj.tStart.nodename+"<br>"+start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2));
+						var $span1 = $("<span>").addClass("st").html(start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2));
+						var $tStart = $("<td>").html(obj.tStart.nodename+"<br>").append($span1);
 						var $tArrive = $("<td>").html(obj.nodeid.nodename+"<br>"+arrive_time.getHours()+":"+("00" + arrive_time.getMinutes()).slice(-2));
 						var $td = $("<td>").append("<button class='searchSeat' data-time='"+arriveTime+"'>좌석선택</button>");
 						var $price = $("<td>").text(obj.price);
@@ -208,12 +216,14 @@
 						$tr.append($tiName).append($tStart).append($tArrive).append($td).append($price);
 						$("table").append($tr);
 					})
+					
 				}
 			})
 		})
 		
 		var compareCar = 0;
 		$(document).on("click", ".searchSeat", function(){
+			selPeople = 0;
 			var startTime = $(this).attr("data-time");
 			var tCode = $(this).parents("tr").find("td").attr("data-code");
 			
@@ -232,7 +242,7 @@
 					$("#carList").empty();
 					$("#seatList").empty();
 					
-					$(".redBold").text($("select[name='startStation']").val() + " ⇒ " + $("select[name='arriveStation']").val() + "행");
+					$(".redBold").html("<span class='ss'>" + $("select[name='startStation']").val() + "</span> ⇒ <span class='as'>" + $("select[name='arriveStation']").val() + "</span>행");
 					
 					$(res).each(function(i, obj) {
 						var car = obj.tsCar;
@@ -255,12 +265,13 @@
 						if(compareCar == 1) {
 							var $div = $("<div>").addClass("seat").attr("data-seatnum", no).text(no);
 							$("#seatList").append($div);
-							$(".carText").html("<b>" + obj.tCode.tCode + "열차&nbsp;&nbsp;&nbsp;<span class='decCar'>1</span>호차</b>에 대한 좌석정보입니다.");
+							$(".carText").html("<b><span class='codeNum'>" + obj.tCode.tCode + "</span>열차&nbsp;&nbsp;&nbsp;<span class='decCar'>1</span>호차</b>에 대한 좌석정보입니다.");
 						}
 						
 						$(document).on("click", ".car", function(){
+							selPeople = 0;
+
 							$(".selSeat").text("");
-							
 							var car = $(this).attr("data-carnum");
 							
 							$(".car").removeClass("carColor");
@@ -279,7 +290,7 @@
 								$("#seatList").append($div);
 							}
 							
-							$(".carText").html("<b>" + obj.tCode.tCode + "열차&nbsp;&nbsp;&nbsp;<span class='decCar'>" + car +"</span>호차</b>에 대한 좌석정보입니다.");
+							$(".carText").html("<b><span class='codeNum'>" + obj.tCode.tCode + "</span>열차&nbsp;&nbsp;&nbsp;<span class='decCar'>" + car +"</span>호차</b>에 대한 좌석정보입니다.");
 						})
 						
 						/* 
@@ -296,19 +307,73 @@
 				}
 			})
 		})
-
+		
+		var selPeople = 0;
 		$(document).on("click", ".seat", function(){
-			var seat = $(this).attr("data-seatnum");
+			var seat = $(this).attr("data-seatnum")+"석";
 			var adult = $("select[name='adult']").val();
+			var selSeat  = $(".selSeat").text();
 			
-			$(".selSeat").text(seat);
+			var result = "";
+			
+			if($(this).css("background").indexOf("seat_s") < 0) {
+				result = selSeat + " " +  seat;
+				$(this).css("background", "url('${pageContext.request.contextPath}/resources/images/res/seat_s.png') no-repeat");
+				$(this).css("background-size", "100% 100%");
+				selPeople = selPeople + 1;
+			}else {
+				result = selSeat.replace(seat, "");
+				$(this).css("background", "url('${pageContext.request.contextPath}/resources/images/res/seat_o.png') no-repeat");
+				$(this).css("background-size", "100% 100%");
+				selPeople = selPeople - 1;
+			}
+			
+			if(selPeople > adult) {
+				alert("요청하신 승객 수를 초과하여 좌석을 선택할 수 없습니다.");
+				$(this).css("background", "url('${pageContext.request.contextPath}/resources/images/res/seat_o.png') no-repeat");
+				$(this).css("background-size", "100% 100%");
+				selPeople = selPeople - 1;
+				return false;
+			}
+			
+			$(".selSeat").text(result);
 		}) 
 		
-		$("#goRes").click(function() {
-			var seat = $(".selSeat").text();
-			var car = $(".decCar").text();
+		$("#goResForm").submit(function() {
+			if($(".selSeat").text() == "") {
+				alert("좌석을 선택해 주세요.");
+				return false;
+			}
 			
-			location.href="${pageContext.request.contextPath}/res/finishRes";
+			if(selPeople != $("select[name='adult']").val()) {
+				alert("인원 수에 맞게 선택해 주세요.");
+				return false;
+			}
+			
+			$("input[name='tCode']").attr("value", $(".codeNum").text());
+			if($(".codeNum").text().indexOf("K") >= 0) {
+				$("input[name='tTiNo.tiName']").attr("value", "KTX");
+			}else {
+				$("input[name='tTiNo.tiName']").attr("value", "새마을");
+			}
+			$("input[name='tStart.nodename']").attr("value", $(".ss").text());
+			$("input[name='nodeid.nodename']").attr("value", $(".as").text());
+			/*
+			<input type="hidden" name="tStartTime">
+			<input type="hidden" name="price">
+			<input type="hidden" name="ttStartTime">
+			*/
+			$("input[name='price']").attr("value", $(".price").text());
+			
+			alert($(".st").text());
+			
+		})
+		
+		
+		$("#closeImg").click(function() {
+			selPeople = 0;
+			$("#seatChoice").css("display", "none");
+			$(".selSeat").text("");
 		})
 		
 	})
@@ -349,9 +414,11 @@
 			<label>인원정보</label>
 			<select name="adult">
 				<c:forEach begin="1" end="9" var="adult">
-					<option>${adult}</option>
-					<c:if test="${people ==  adult}">
+					<c:if test="${people == adult}">
 						<option selected="selected">${adult}</option>
+					</c:if>
+					<c:if test="${people != adult}">
+						<option>${adult}</option>
 					</c:if>
 				</c:forEach>
 			</select>
@@ -369,45 +436,54 @@
 				<c:forEach var="ttt" items="${tttList}">
 					<tr>
 						<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
-						<td>${ttt.tStart.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></td>
+						<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
 						<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
 						<td><button class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">좌석선택</button></td>
-						<td>${ttt.price}</td>
+						<td class="price">${ttt.price}</td>
 					</tr>					
 				</c:forEach>
 			</table>			
 		</article>
 		<article id="seatChoice">
 			<h3>좌석선택</h3>
-			<img src="${pageContext.request.contextPath}/resources/images/res/btn_pop_close.png">
+			<img src="${pageContext.request.contextPath}/resources/images/res/btn_pop_close.png" id="closeImg">
 			<div id="wrap">
 				<p class="num">1</p><b>원하시는 좌석을 선택하여 주십시오.</b> <br>
 				<p class="num">2</p>발매가 가능한 자석을 선택하실 수 있습니다. <br>
 				<p class="num">3</p>원하시는 좌석을 선택 후 <b>선택좌석예약하기</b> 버튼을 클릭하시면 예약이 완료됩니다. <span class="red">(복수선택가능)</span> <br>
 				<p class="num">4</p>원하지 않은 좌석이 선택된 경우 좌석을 한번 더 클릭하시면 취소됩니다. <br>
-				<div>
-					<div id="carList">
-					</div>
-					<div id="stationText">
-						<p class="circle"></p><span class="redBold"></span><span class="carText"></span>
-					</div>
-					<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
-					<div id="seatInfo">
-						<div id="sNum"><b>좌석번호</b></div>
-						<div id="line">
-							<div id="sWrap">
-								<img src="${pageContext.request.contextPath}/resources/images/res/seat_n.png"> <b> : 예약불가</b>
-								<img src="${pageContext.request.contextPath}/resources/images/res/seat_o.png"> <b> : 예약가능</b>
+				<form action="finishRes" method="post" id="goResForm">
+					<div id="resWrap">
+						<div id="carList">
+						</div>
+						<div id="stationText">
+							<p class="circle"></p><span class="redBold"></span><span class="carText"></span>
+						</div>
+						<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
+						<div id="seatInfo">
+							<div id="sNum"><b>좌석번호</b></div>
+							<div id="line">
+								<div id="sWrap">
+									<img src="${pageContext.request.contextPath}/resources/images/res/seat_n.png"> <b> : 예약불가</b>
+									<img src="${pageContext.request.contextPath}/resources/images/res/seat_o.png"> <b> : 예약가능</b>
+								</div>
 							</div>
 						</div>
+						<div id="seatList">
+						</div>
 					</div>
-					<div id="seatList">
+					<div id="nums">
+						<p class="circle"></p>선택한 좌석번호 :<span class="selSeat"></span>
 					</div>
-				</div>
-				<div id="nums">
-					<p class="circle"></p>선택한 좌석번호 :<span class="selSeat"></span>
-				</div> 
-				<div class="btnWrap"><button id="goRes">선택좌석예약하기</button></div>
+					<input type="hidden" name="tCode">
+					<input type="hidden" name="tTiNo.tiName">
+					<input type="hidden" name="tStart.nodename">
+					<input type="hidden" name="nodeid.nodename">
+					<!-- <input type="hidden" name="tStartTime"> -->
+					<input type="hidden" name="price">
+					<!-- <input type="hidden" name="ttStartTime"> -->
+					<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">
+				</form> 
 			</div>
 		</article>
 	</section>

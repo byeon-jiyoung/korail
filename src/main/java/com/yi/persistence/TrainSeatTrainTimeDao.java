@@ -6,6 +6,6 @@ import com.yi.domain.TrainSeatTrainTime;
 
 public interface TrainSeatTrainTimeDao {
 	
-	public List<TrainSeatTrainTime> listTrainSeat(String tCode, String startTime) throws Exception;
+	public List<TrainSeatTrainTime> listTrainSeat(String start, String arrive, String tCode, String startTime) throws Exception;
 	
 }

@@ -148,6 +148,7 @@
 						<option>8</option>
 						<option>9</option>
 					</select>
+					<!-- 1px solid #01285f 승차권간편예매 바탕색 -->
 					<button id="goRes">예약</button>
 				</div>
 				<div id="article_reserve2">

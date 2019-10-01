@@ -16,8 +16,8 @@ public class TrainSeatTrainTimeServiceImpl implements TrainSeatTrainTimeService 
 	TrainSeatTrainTimeDao dao;
 	
 	@Override
-	public List<TrainSeatTrainTime> listTrainSeat(String tCode, String startTime) throws Exception {
-		return dao.listTrainSeat(tCode, startTime);
+	public List<TrainSeatTrainTime> listTrainSeat(String start, String arrive, String tCode, String startTime) throws Exception {
+		return dao.listTrainSeat(start, arrive, tCode, startTime);
 	}
 
 }

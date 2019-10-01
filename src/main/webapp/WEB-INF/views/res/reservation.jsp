@@ -360,12 +360,13 @@
 			$("input[name='nodeid.nodename']").attr("value", $(".as").text());
 			/*
 			<input type="hidden" name="tStartTime">
-			<input type="hidden" name="price">
 			<input type="hidden" name="ttStartTime">
 			*/
 			$("input[name='price']").attr("value", $(".price").text());
 			
-			alert($(".st").text());
+			alert($(".st").text().parse("yyyy-MM-dd HH:mm"));
+			
+			//스트링 데이트변환해서 값 넘어가게 해야된다
 			
 		})
 		

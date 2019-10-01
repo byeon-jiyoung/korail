@@ -47,7 +47,55 @@
 	#article_reserve1 {
 		border: 1px solid black;
 		height: 250px;
+		background-color: #e7f1ff;
 	}
+	#half_res {
+		overflow: hidden;
+	}
+	#half_res p {
+		float: left;
+		width: 50%;
+		text-align: center;
+		padding: 10px 0;
+		font-size: 0.9em;
+		font-weight: bold;
+	}
+	#half_res p:first-child {
+		background-color: #01285f;
+		color: white;
+	}
+	#half_res p:last-child {
+		background-color: #0397d6;
+		color: #01285f;
+	}
+	#choiceStation {
+		padding: 7px 20px;
+		border-bottom: 1px dotted;
+	}
+	#article_reserve1 label {
+		font-weight: bold;
+		font-size: 0.9em;
+		margin-right: 5px;
+		width: 50px;
+		float: left;
+		padding-top: 3px;
+	}
+	#article_reserve1 select {
+		width: 150px;
+		padding: 3px 0;
+		margin-bottom: 3px;
+	}
+	input[type="date"] {
+		width: 145px;
+		margin-bottom: 3px;
+	}
+	#resInfo {
+		padding: 7px 20px;
+	}
+	#goRes {
+		margin-left: 60px;
+	}
+	
 	#article_reserve2 img {
 		width: 50%;
 		height: 60px;
@@ -127,29 +175,46 @@
 		<article>
 			<div class="article_div1">
 				<div id="article_reserve1">
-					<select name="start">
-						<c:forEach var="train" items="${tList}">
-							<option>${train.tStart.nodename}</option>
-						</c:forEach>
-					</select>
-					<select name="arrive">
-						<c:forEach var="traintime" items="${ttList}">
-							<option>${traintime.nodeid.nodename}</option>
-						</c:forEach>
-					</select>
-					<select name="people">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-					</select>
-					<!-- 1px solid #01285f 승차권간편예매 바탕색 -->
-					<button id="goRes">예약</button>
+					<div id="half_res">
+						<p>승차권간편예매</p>
+						<p>기차여행검색</p>
+					</div>
+					<div id="choiceStation">
+						<label>출발역</label>
+						<select name="start">
+							<c:forEach var="train" items="${tList}">
+								<option>${train.tStart.nodename}</option>
+							</c:forEach>
+						</select> <br>
+						<label>도착역</label>
+						<select name="arrive">
+							<c:forEach var="traintime" items="${ttList}">
+								<option>${traintime.nodeid.nodename}</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div id="resInfo">
+						<label>출발일</label>
+						<input type="date"> <br>
+						<label>시간</label>
+						<select name="time">
+							<c:forEach var="t" begin="0" end="23">
+								<c:if test="${t <= 11}">
+									<option>${t} (오전 ${t}) 시</option>
+								</c:if>
+								<c:if test="${t > 11}">
+									<option>${t} (오후 ${t-12}) 시</option>
+								</c:if>
+							</c:forEach>
+						</select> <br>
+						<label>인원</label>
+						<select name="people">
+							<c:forEach var="p" begin="1" end="9">
+								<option value="${p}">어른 ${p}명</option>
+							</c:forEach>
+						</select>
+					</div>
+					<img src="${pageContext.request.contextPath}/resources/images/btn_reserve.png" id="goRes">
 				</div>
 				<div id="article_reserve2">
 					<img src="${pageContext.request.contextPath}/resources/images/tab_site11.jpg">

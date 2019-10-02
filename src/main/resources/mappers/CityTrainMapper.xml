@@ -22,4 +22,8 @@
 	<select id="searchNodeid" resultType="String" parameterType="String">
 		select nodeid from city_train where nodename = #{nodename}
 	</select>
+	
+	<select id="selectCityTrain" resultType="CityTrain">
+		select * from city_train where nodename = #{nodename}
+	</select>
 </mapper>

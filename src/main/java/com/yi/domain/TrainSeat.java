@@ -6,6 +6,15 @@ public class TrainSeat {
 	private boolean tsChoice;
 	private Train tCode;
 	
+	public TrainSeat() {}
+	
+	public TrainSeat(int tsCar, int tsNo, Train tCode) {
+		super();
+		this.tsCar = tsCar;
+		this.tsNo = tsNo;
+		this.tCode = tCode;
+	}
+
 	public int getTsCar() {
 		return tsCar;
 	}

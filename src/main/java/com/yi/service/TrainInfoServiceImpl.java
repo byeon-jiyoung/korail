@@ -24,4 +24,9 @@ public class TrainInfoServiceImpl implements TrainInfoServivce {
 		return dao.listTrainInfo();
 	}
 
+	@Override
+	public TrainInfo selectTrainInfo(int tiNo) throws Exception {
+		return dao.selectTrainInfo(tiNo);
+	}
+
 }

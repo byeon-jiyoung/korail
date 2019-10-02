@@ -25,4 +25,9 @@ public class TrainInfoDaoImpl implements TrainInfoDao {
 		return sqlsession.selectList(namespace + ".listTrainInfo");
 	}
 
+	@Override
+	public TrainInfo selectTrainInfo(int tiNo) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectTrainInfo", tiNo);
+	}
+
 }

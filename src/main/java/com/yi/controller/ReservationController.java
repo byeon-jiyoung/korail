@@ -1,6 +1,8 @@
 package com.yi.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yi.domain.CityTrain;
+import com.yi.domain.Reservation;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
 import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
 import com.yi.service.CityTrainService;
+import com.yi.service.ReservationService;
 import com.yi.service.TrainInfoServivce;
 import com.yi.service.TrainSeatTrainTimeService;
 import com.yi.service.TrainService;
@@ -42,6 +47,8 @@ public class ReservationController {
 	TrainTrainTimeService tttService;
 	@Autowired
 	TrainSeatTrainTimeService tsttService;
+	@Autowired
+	ReservationService rService;
 	
 	@RequestMapping(value="reservation", method=RequestMethod.GET)
 	public void reserveGet(String start, String arrive, String people, Model model) throws Exception {
@@ -120,13 +127,42 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value="finishRes", method=RequestMethod.POST)
-	public void finishResPost(TrainTrainTime ttt) {
+	public void finishResPost(String tCode, int tTiNo, String tStart, String tArrive, String tStartTime, int price, String tArriveTime, int peoA, int tsCar, String tsNo, Model model) throws Exception {
 		logger.info("------------------- finishResPost --------------------");
+		logger.info("tCode : " + tCode + ", tTiNo : " + tTiNo);
+		logger.info("tStart : " + tStart + ", tArrive : " + tArrive);
+		logger.info("tStartTime : " + tStartTime + ", tArriveTime : " + tArriveTime);
+		logger.info("price : " + price + ", peoA : " + peoA);
+		logger.info("tsCar : " + tsCar + ", tsNo : " + tsNo);
 		
-	/*	logger.info(tCode);
-		logger.info(tArrive);
-		logger.info(ttStartTime);*/
-		logger.info(ttt.toString());
+		TrainInfo ti = tiService.selectTrainInfo(tTiNo);
+		CityTrain ctS = ctService.selectCityTrain(tStart);
+		CityTrain ctA = ctService.selectCityTrain(tArrive);
 		
+		Date dateS = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tStartTime);
+		Date dateA = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tArriveTime);
+		
+		TrainTrainTime ttt = new TrainTrainTime(tCode, ti, ctS, dateS, ctA, price, dateA);
+		model.addAttribute("ttt", ttt);
+		
+		logger.info("ttt => " + ttt);
+		
+		int resNo = rService.selectResNo();
+		int resClaNum = rService.selectResClaNum();
+		resClaNum++;
+		
+		String[] c = tsNo.split("석");
+		for(String s : c) {
+			rService.insertReservation(++resNo, resClaNum, peoA, tStart, tArrive, tStartTime, tCode, tsCar, Integer.parseInt(s.trim()));
+		}
+		
+		List<Reservation> resList = rService.listReservationByResClaNum(resClaNum);
+		model.addAttribute("resList", resList);
+		
+		for(Reservation r : resList) {
+			logger.info("r => " + r);
+		}
+		
+		//return "redirect:/res/finishRes";
 	}
 }

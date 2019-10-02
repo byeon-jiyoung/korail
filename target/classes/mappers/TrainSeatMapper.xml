@@ -15,6 +15,6 @@
 	</select>
 	
 	<update id="updateTsChoice" parameterType="TrainSeat">
-		update train_seat set ts_choice = true where t_code = #{tCode.tCode}
+		update train_seat set ts_choice = true where t_code = #{tCode.tCode} and ts_no = #{tsNo} and ts_car = #{tsCar}
 	</update>
 </mapper>

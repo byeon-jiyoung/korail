@@ -95,6 +95,7 @@
 		width: 800px;
 		border-collapse: collapse;
 		font-size: 0.8em;
+		text-align: center;
 	}
 	table tr:first-child {
 		background-color: #f8f8f8;
@@ -173,7 +174,44 @@
 				"\n\n4. 열차정보, 구입기간, 매수 금액, 주의사항 등을 최종 확인하였습니다.");
 	}) 
 	*/
+	
+	/* 
+	// 뒤로가기 방지
+	window.history.forward(1);
 
+	// 우클릭방지
+	oncontextmenu='return false' 
+
+	// 드래그 방지
+	ondragstart='return false'
+
+	// 선택복사 방지
+	onselectstart='return false'
+	
+	//새로고침, 뒤로가기 막기
+	document.onkeydown = function(e) {
+		key = (e) ? e.keyCode : event.keyCode;
+		if(key==8 || key==116) {
+			if(e) {
+				e.preventDefault();
+			} else {
+				event.keyCode = 0;
+				event.returnValue = false;
+			}
+		}
+	}
+
+	//오른쪽마우스 막기
+	document.oncontextmenu = function(e){
+		if(e){
+			e.preventDefault();
+		} else {
+			event.keyCode = 0;
+			event.returnValue = false;
+		}
+	} 
+	*/
+	
 </script>
 
 	<section>
@@ -212,20 +250,21 @@
 						<th class="red">총결제금액</th>
 					</tr>
 					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td class="red"></td>
+						<td><fmt:formatDate pattern="MM월dd일" value="${ttt.tStartTime}"/></td>
+						<td>${ttt.tCode}</td>
+						<td>${ttt.tTiNo.tiName}</td>
+						<td>${ttt.tStart.nodename}</td>
+						<td><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></td>
+						<td>${ttt.nodeid.nodename}</td>
+						<td><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
+						<c:forEach var="res" items="${resList}" begin="0" end="0">
+							<td>${res.resPeople}</td>
+							<td class="red"><fmt:formatNumber pattern="###,###" value="${res.resPeople * res.ttNo.price}"/></td>
+						</c:forEach>
 					</tr>
 				</table>
 				<table>
 					<tr>
-						<th>객실등급</th>
 						<th colspan="2">좌석정보</th>
 						<th>승객유형</th>
 						<th>운임요금</th>
@@ -234,13 +273,22 @@
 						<th colspan="2">운임추가할인선택</th>
 					</tr>
 					<tr>
-						<td></td>
-						<td colspan="2"></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td colspan="2"></td>
+						<c:forEach var="res" items="${resList}">
+							<tr>
+								<td colspan="2">
+									${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}
+								</td>
+								<td></td>
+								<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
+								<td></td>
+								<td></td>
+								<td colspan="2">
+									<select>
+										<option>선택안함</option>
+									</select>
+								</td>
+							</tr>
+						</c:forEach>
 					</tr>
 				</table>
 				<div id="rightDiv">

@@ -94,6 +94,7 @@
 	}
 	#goRes {
 		margin-left: 60px;
+		cursor: pointer;
 	}
 	
 	#article_reserve2 img {
@@ -108,6 +109,7 @@
 	
 	.more {
 		float: right;
+		cursor: pointer;
 	}
 	#article_notice_ul {
 		border: 1px solid #c5c6c7;

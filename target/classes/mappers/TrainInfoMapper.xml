@@ -14,4 +14,8 @@
 	<select id="listTrainInfo" resultType="TrainInfo">
 		select * from train_info
 	</select>
+	
+	<select id="selectTrainInfo" resultType="TrainInfo">
+		select * from train_info where ti_no = #{tiNo}
+	</select>
 </mapper>

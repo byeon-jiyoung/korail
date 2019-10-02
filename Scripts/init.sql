@@ -48,8 +48,13 @@ ALTER TABLE korail.reservation
 			res_no -- 예매번호
 		);
 
+/*ALTER TABLE korail.reservation
+	MODIFY COLUMN res_no INT NOT NULL AUTO_INCREMENT COMMENT '예매번호';*/
 ALTER TABLE korail.reservation
-	MODIFY COLUMN res_no INT NOT NULL AUTO_INCREMENT COMMENT '예매번호';
+	MODIFY COLUMN res_no INT COMMENT '예매번호'; -- 자동증가삭제
+	
+ALTER TABLE korail.reservation
+	ADD COLUMN res_cla_num INT null COMMENT '분류번호'; -- 분류번호
 
 -- 관리자
 CREATE TABLE korail.manager (

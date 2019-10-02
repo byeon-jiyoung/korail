@@ -10,6 +10,13 @@ public class Train {
 	private CityTrain tStart;
 	private CityTrain tArrive;
 	
+	public Train() {}
+	
+	public Train(String tCode) {
+		super();
+		this.tCode = tCode;
+	}
+
 	public String gettCode() {
 		return tCode;
 	}

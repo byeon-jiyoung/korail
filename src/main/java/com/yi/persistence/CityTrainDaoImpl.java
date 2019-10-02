@@ -30,4 +30,9 @@ public class CityTrainDaoImpl implements CityTrainDao {
 		return sqlsession.selectOne(namespace + ".searchNodeid", nodename);
 	}
 
+	@Override
+	public CityTrain selectCityTrain(String nodename) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectCityTrain", nodename);
+	}
+
 }

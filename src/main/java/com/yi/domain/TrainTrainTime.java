@@ -11,6 +11,20 @@ public class TrainTrainTime {
 	private int price;
 	private Date ttStartTime;
 	
+	public TrainTrainTime() {}
+
+	public TrainTrainTime(String tCode, TrainInfo tTiNo, CityTrain tStart, Date tStartTime, CityTrain nodeid, int price,
+			Date ttStartTime) {
+		super();
+		this.tCode = tCode;
+		this.tTiNo = tTiNo;
+		this.tStart = tStart;
+		this.tStartTime = tStartTime;
+		this.nodeid = nodeid;
+		this.price = price;
+		this.ttStartTime = ttStartTime;
+	}
+	
 	public String gettCode() {
 		return tCode;
 	}
@@ -53,7 +67,7 @@ public class TrainTrainTime {
 	public void setTtStartTime(Date ttStartTime) {
 		this.ttStartTime = ttStartTime;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "TrainTrainTime [tCode=" + tCode + ", tTiNo=" + tTiNo + ", tStart=" + tStart + ", tStartTime="

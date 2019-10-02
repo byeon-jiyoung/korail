@@ -15,6 +15,38 @@
 		border: 1px solid #aaa;
 		padding: 10px 20px;
 	}
+	#resForm {
+		overflow: hidden;
+	}
+	#personnelInfo {
+		border: 1px solid #c1c1c1;
+		box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+		background-color: white;
+		width:30%;
+		float: left;
+	}
+	#personnelInfo > label {
+		display: block;
+	}
+	#trainInfo {
+		border: 4px solid #0095cd;
+		background-color: #ecf1f4;
+		width:65%;
+		float: left;
+	}
+	#trainInfo > div {
+		border: 1px solid #dadada;
+		background-color: white;
+		width: 70%;
+		margin: 0 auto;
+	}
+	#search {
+		clear: both;
+		display: block;
+		float: right;
+	}
+	
+	
 	#seatChoice {
 		overflow: hidden;
 		color: #727272;
@@ -173,10 +205,26 @@
 		background-size: 100% 100%;
 		cursor: pointer;
 	}
+	.seatn {
+		width: 50px;
+		height: 35px;
+		line-height: 35px;
+		float: left;
+		text-align: center;
+		font-weight: bold;
+		color: white;
+		background: url("${pageContext.request.contextPath}/resources/images/res/seat_n.png") no-repeat;
+		background-size: 100% 100%;
+	}
 	.selSeat {
 		margin-left: 10px;
 		color: #1890D7;
 		font-weight: bold;
+	}
+	
+	/*---------------- 값 저장하려고 만든 span태그 ---------------------*/
+	.none {
+		display: none;
 	}
 </style>
 
@@ -184,6 +232,8 @@
 	$(function() {
 		$("#search").click(function() {
 			selPeople = 0;
+			$(".selSeat").empty();
+			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/reservation",
 				type: "post",
@@ -204,6 +254,8 @@
 						var arrive_time = new Date(obj.ttStartTime);
 						var arriveTime = arrive_time.getFullYear()+"-"+(arrive_time.getMonth()+1)+"-"+("00" + arrive_time.getDate()).slice(-2)+" "+
 										 arrive_time.getHours()+":"+("00" + arrive_time.getMinutes()).slice(-2);
+					 	var startTime = start_time.getFullYear()+"-"+(start_time.getMonth()+1)+"-"+("00" + start_time.getDate()).slice(-2)+" "+
+					 					start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2);
 						
 						var $tr = $("<tr>");
 						var $tiName = $("<td>").attr("data-code", obj.tCode).text(obj.tTiNo.tiName);
@@ -213,10 +265,15 @@
 						var $td = $("<td>").append("<button class='searchSeat' data-time='"+arriveTime+"'>좌석선택</button>");
 						var $price = $("<td>").text(obj.price);
 						
-						$tr.append($tiName).append($tStart).append($tArrive).append($td).append($price);
+						var st2 = $("<span>").addClass("st2").html(startTime);
+						var stTd = $("<td>").addClass("none").append(st2);
+						
+						var at = $("<span>").addClass("at").html(arriveTime);
+						var atTd = $("<td>").addClass("none").append(at);
+						
+						$tr.append($tiName).append($tStart).append($tArrive).append($td).append($price).append(stTd).append(atTd);
 						$("table").append($tr);
 					})
-					
 				}
 			})
 		})
@@ -224,6 +281,8 @@
 		var compareCar = 0;
 		$(document).on("click", ".searchSeat", function(){
 			selPeople = 0;
+			$(".selSeat").empty();
+			
 			var startTime = $(this).attr("data-time");
 			var tCode = $(this).parents("tr").find("td").attr("data-code");
 			
@@ -263,8 +322,13 @@
 						
 						//처음에 1호차가 선택되는게 디폴트
 						if(compareCar == 1) {
-							var $div = $("<div>").addClass("seat").attr("data-seatnum", no).text(no);
-							$("#seatList").append($div);
+							if(obj.tsChoice == false) {
+								var $div = $("<div>").addClass("seat").attr("data-seatnum", no).text(no);
+								$("#seatList").append($div);
+							}else {
+								var $div = $("<div>").addClass("seatn").attr("data-seatnum", no).text(no);
+								$("#seatList").append($div);
+							}
 							$(".carText").html("<b><span class='codeNum'>" + obj.tCode.tCode + "</span>열차&nbsp;&nbsp;&nbsp;<span class='decCar'>1</span>호차</b>에 대한 좌석정보입니다.");
 						}
 						
@@ -286,8 +350,13 @@
 							}
 							
 							if(car == obj.tsCar) {
-								var $div = $("<div>").addClass("seat").attr("data-seatnum", no).text(no);
-								$("#seatList").append($div);
+								if(obj.tsChoice == false) {
+									var $div = $("<div>").addClass("seat").attr("data-seatnum", no).text(no);
+									$("#seatList").append($div);
+								}else {
+									var $div = $("<div>").addClass("seatn").attr("data-seatnum", no).text(no);
+									$("#seatList").append($div);
+								}
 							}
 							
 							$(".carText").html("<b><span class='codeNum'>" + obj.tCode.tCode + "</span>열차&nbsp;&nbsp;&nbsp;<span class='decCar'>" + car +"</span>호차</b>에 대한 좌석정보입니다.");
@@ -352,27 +421,31 @@
 			
 			$("input[name='tCode']").attr("value", $(".codeNum").text());
 			if($(".codeNum").text().indexOf("K") >= 0) {
-				$("input[name='tTiNo.tiName']").attr("value", "KTX");
+				$("input[name='tTiNo']").attr("value", 1);
 			}else {
-				$("input[name='tTiNo.tiName']").attr("value", "새마을");
+				$("input[name='tTiNo']").attr("value", 2);
 			}
-			$("input[name='tStart.nodename']").attr("value", $(".ss").text());
-			$("input[name='nodeid.nodename']").attr("value", $(".as").text());
-			/*
-			<input type="hidden" name="tStartTime">
-			<input type="hidden" name="ttStartTime">
-			*/
-			$("input[name='price']").attr("value", $(".price").text());
+			$("input[name='tStart']").attr("value", $(".ss").text());
+			$("input[name='tArrive']").attr("value", $(".as").text());
 			
-			alert($(".st").text().parse("yyyy-MM-dd HH:mm"));
+			$("input[name='price']").attr("value", Number($(".price").text()));
+			$("input[name='peoA']").attr("value", Number($("select[name='adult']").val()));
 			
-			//스트링 데이트변환해서 값 넘어가게 해야된다
+			/* var st = $(".st2").eq(0).text();
+			st = new Date(st.substring(0, 4), st.substring(5, 7), st.substring(5, 7), st.substring(8, 10), st.substring(11, 13), st.substring(14, 16)); */
+			$("input[name='tStartTime']").attr("value", $(".st2").eq(0).text());
 			
+			/* var at = $(".at").eq(0).text();
+			at = new Date(at.substring(0, 4), at.substring(5, 7), at.substring(5, 7), at.substring(8, 10), at.substring(11, 13), at.substring(14, 16)); */
+			$("input[name='tArriveTime']").attr("value", $(".at").eq(0).text());
+			$("input[name='tsCar']").attr("value", Number($(".decCar").text()));
+			$("input[name='tsNo']").attr("value", $(".selSeat").text());
 		})
 		
 		
 		$("#closeImg").click(function() {
 			selPeople = 0;
+			$(".selSeat").empty();
 			$("#seatChoice").css("display", "none");
 			$(".selSeat").text("");
 		})
@@ -382,48 +455,63 @@
 
 	<section>
 		<div id="resForm">
-			<div>
-				<label>열차종류선택</label>
-				<input type="radio" value="0" name="tTiNo" checked="checked">전체
-				<c:forEach var="trainInfo" items="${tiList}">
-					<input type="radio" value="${trainInfo.tiNo}" name="tTiNo">${trainInfo.tiName}
-				</c:forEach>
+			<div id="personnelInfo">
+				<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq.png">인원정보</label>
+				<select name="adult">
+					<c:forEach begin="1" end="9" var="adult">
+						<c:if test="${people == adult}">
+							<option selected="selected">어른 ${adult}명</option>
+						</c:if>
+						<c:if test="${people != adult}">
+							<option>어른 ${adult}명</option>
+						</c:if>
+					</c:forEach>
+				</select> <br>
+				<select>
+					<option>만 6세 ~ 12세</option>
+					<c:forEach begin="1" end="9" var="child">
+						<option>어린이 ${child}명</option>
+					</c:forEach>
+				</select> <br>
+				<select>
+					<option>만 65세이상</option>
+					<c:forEach begin="1" end="9" var="oldMan">
+						<option>경로 ${oldMan}명</option>
+					</c:forEach>
+				</select>
 			</div>
-
-			<label>출발역</label>
-			<select name="startStation">
-				<c:forEach var="start" items="${tList}">
-					<c:if test="${ss != start.tStart.nodename}">
-						<option>${start.tStart.nodename}</option>
-					</c:if>
-					<c:if test="${ss == start.tStart.nodename}">
-						<option selected="selected">${start.tStart.nodename}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			<label>도착역</label>
-			<select name="arriveStation">
-				<c:forEach var="arrive" items="${ttList}" varStatus="status">
-					<c:if test="${as != arrive.nodeid.nodename}">
-						<option>${arrive.nodeid.nodename}</option>
-					</c:if>
-					<c:if test="${as == arrive.nodeid.nodename}">
-						<option selected="selected">${arrive.nodeid.nodename}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			<label>인원정보</label>
-			<select name="adult">
-				<c:forEach begin="1" end="9" var="adult">
-					<c:if test="${people == adult}">
-						<option selected="selected">${adult}</option>
-					</c:if>
-					<c:if test="${people != adult}">
-						<option>${adult}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			<button id="search">조회</button>
+			<div id="trainInfo">
+				<div>
+					<label>열차종류선택</label>
+					<input type="radio" value="0" name="tTiNo" checked="checked">전체
+					<c:forEach var="ti" items="${tiList}">
+						<input type="radio" value="${ti.tiNo}" name="tTiNo">${ti.tiName}
+					</c:forEach>
+				</div>
+				<label>출발역</label>
+				<select name="startStation">
+					<c:forEach var="start" items="${tList}">
+						<c:if test="${ss != start.tStart.nodename}">
+							<option>${start.tStart.nodename}</option>
+						</c:if>
+						<c:if test="${ss == start.tStart.nodename}">
+							<option selected="selected">${start.tStart.nodename}</option>
+						</c:if>
+					</c:forEach>
+				</select>
+				<label>도착역</label>
+				<select name="arriveStation">
+					<c:forEach var="arrive" items="${ttList}" varStatus="status">
+						<c:if test="${as != arrive.nodeid.nodename}">
+							<option>${arrive.nodeid.nodename}</option>
+						</c:if>
+						<c:if test="${as == arrive.nodeid.nodename}">
+							<option selected="selected">${arrive.nodeid.nodename}</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</div>
+			<img src="${pageContext.request.contextPath}/resources/images/res/btn_inq_tick.png" id="search">
 		</div>
 		<article>
 			<table>
@@ -441,6 +529,8 @@
 						<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
 						<td><button class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">좌석선택</button></td>
 						<td class="price">${ttt.price}</td>
+						<td class="none"><span class="st2"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.tStartTime}"/></span></td>
+						<td class="none"><span class="at"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/></span></td>
 					</tr>					
 				</c:forEach>
 			</table>			
@@ -477,12 +567,18 @@
 						<p class="circle"></p>선택한 좌석번호 :<span class="selSeat"></span>
 					</div>
 					<input type="hidden" name="tCode">
-					<input type="hidden" name="tTiNo.tiName">
+					<!-- <input type="hidden" name="tTiNo.tiName">
 					<input type="hidden" name="tStart.nodename">
-					<input type="hidden" name="nodeid.nodename">
-					<!-- <input type="hidden" name="tStartTime"> -->
+					<input type="hidden" name="nodeid.nodename"> 객체로 안받을거라서 이렇게 안함 -->
+					<input type="hidden" name="tTiNo">
+					<input type="hidden" name="tStart">
+					<input type="hidden" name="tArrive">
+					<input type="hidden" name="tStartTime">
 					<input type="hidden" name="price">
-					<!-- <input type="hidden" name="ttStartTime"> -->
+					<input type="hidden" name="tArriveTime">
+					<input type="hidden" name="peoA">
+					<input type="hidden" name="tsCar">
+					<input type="hidden" name="tsNo">
 					<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">
 				</form> 
 			</div>

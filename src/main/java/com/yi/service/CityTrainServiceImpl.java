@@ -29,4 +29,9 @@ public class CityTrainServiceImpl implements CityTrainService {
 		return dao.searchNodeid(nodename);
 	}
 
+	@Override
+	public CityTrain selectCityTrain(String nodename) throws Exception {
+		return dao.selectCityTrain(nodename);
+	}
+
 }

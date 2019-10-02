@@ -9,4 +9,5 @@ public interface CityTrainService {
 	public List<CityTrain> listCityTrain() throws Exception;
 	public void insertCityTrain(CityTrain ct) throws Exception;
 	public String searchNodeid(String nodename) throws Exception;
+	public CityTrain selectCityTrain(String nodename) throws Exception;
 }

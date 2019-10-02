@@ -87,3 +87,8 @@ select * from train_time tt join price p on tt.p_no in (
 ) group by tt_no;
 
 
+select * from reservation;
+truncate reservation;
+
+select * from train_seat where t_code = 'K001';
+update train_seat set ts_choice = 0;

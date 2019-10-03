@@ -4,62 +4,265 @@
 <%@ include file="../include/header.jsp" %>
 
 <style>
+	nav {
+		margin-bottom: 0;
+	}
 	section {
 		width: 1070px;
 		margin: 0 auto;
+		overflow: hidden;
+		background-color: white;
+		border-left: 1px solid #d6d3d3;
+		border-right: 1px solid #d6d3d3;
+		min-height: 1000px;
 	}
+	.res_sec_left {
+		float: left;
+		width: 19.7%;
+	}
+	.res_sec_right {
+		float: left;
+		width: 80%;
+		border-left: 1px solid #d6d3d3;
+		min-height: 1000px;
+	}
+	#res_list {
+		padding: 0 30px;
+	}
+	#res_back {
+		background: url("${pageContext.request.contextPath}/resources/images/notice/cmt_snv_tit_bg.png") no-repeat;
+		background-size: 100%;
+		padding-left: 20px;
+	}
+	#res_back span {
+		display: inline-block;
+		margin-top: 40px;
+		font-size: 0.7em;
+		color: #ccc;
+	}
+	#res_back h3 {
+		margin-bottom: 50px;
+	}
+	.res_sec_left p {
+		border-top: 1px solid #aaa;
+		padding: 10px 20px;
+	}
+	.res_sec_left p:last-child {
+		border-bottom: 1px solid #aaa;
+	}
+	.res_color {
+		background-color: #266fcb;
+		color: white;
+		font-weight: bold;
+	}
+	#res_back2 {
+		background: url("${pageContext.request.contextPath}/resources/images/res/tra_visual01.jpg") no-repeat right top;
+		padding-left: 30px;
+	}
+	#res_back2 p {
+		padding-top: 40px;
+	}
+	#res_back2 p a {
+		font-size: 0.8em;
+		color: #666;
+		text-decoration: none;
+	}
+	#res_back2 h1 {
+		padding-bottom: 40px;
+		padding-top: 10px;
+	}
+	
+	
+	
 	table {
 		border-collapse: collapse;
 	}
-	td, tr {
+	td, tr, th {
 		border: 1px solid #aaa;
 		padding: 10px 20px;
+	}
+	table tr:first-child {
+		background-color: #f8f8f8;
 	}
 	#resForm {
 		overflow: hidden;
 	}
+	
 	#personnelInfo {
 		border: 1px solid #c1c1c1;
 		box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
 		background-color: white;
 		width:30%;
 		float: left;
+		margin-right: 6px;
+		padding: 15px 25px;
 	}
 	#personnelInfo > label {
 		display: block;
+		font-weight: bold;
+		color: #464646;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+	#personnelInfo > select {
+		padding: 3px 0;
+		width: 150px;
+		margin-bottom: 5px;
 	}
 	#trainInfo {
 		border: 4px solid #0095cd;
 		background-color: #ecf1f4;
-		width:65%;
+		width:55%;
 		float: left;
+		padding: 15px 25px;
+		color: #383d41;
 	}
-	#trainInfo > div {
+	#trainInfo > ul {
 		border: 1px solid #dadada;
 		background-color: white;
-		width: 70%;
 		margin: 0 auto;
+		padding: 10px 20px;
+		color: #0097d0;
+		font-weight: bold;
+		font-size: 0.9em;
+		margin-bottom: 15px;
+	}
+	#trainInfo > ul li {
+		width: 120px;
+		display: inline-block;
+	}
+	#trainInfo > ul li:nth-child(4) {
+		margin-left: 125px;
+		margin-top: 7px;
+	}
+	#trainInfo > label {
+		color: #266dc8;
+		font-weight: bold;
+		font-size: 0.8em;
+		margin: 0 10px 0 5px;
+	}
+	#trainInfo select, #trainInfo input[type="text"] {
+		padding: 3px 0;
+		border: 1px solid #2876d6;
+		width: 200px;
+		margin-bottom: 3px;
+		color: #383d41;
 	}
 	#search {
 		clear: both;
 		display: block;
 		float: right;
+		margin: 3px 4px 0 0;
+	}
+	#startWrap {
+		overflow: hidden;
+		display: inline;
+		float: right;
+		margin-right: 37px;
+	}
+	#startWrap > select, #startWrap > span {
+		width: auto !important;
+		float: left;
+	}
+	#startWrap > input[type="text"] {
+		width: 23px;
+		float: left;
+	}
+	#startWrap > span {
+		font-size: 0.8em;
+		margin-right: 5px;
+		padding-top: 3px;
+	}
+	#ultext {
+		list-style: square;
+		color: #333;
+		font-size: 14px;
+		margin: 30px 0 15px 20px;
 	}
 	
 	
-	#seatChoice {
-		overflow: hidden;
-		color: #727272;
-		background-color: #0066a8; /*02418c */
-		padding: 10px 0;
+	
+	/* ========== ajax로 추가한 부분 css ========== */
+	.car {
+		width: 60px;
+		height: 44px;
+		float: left;
+		margin-right: 20px;
+		background: url("${pageContext.request.contextPath}/resources/images/res/seat_num_bg.png") repeat-x;
+		background-size: 100% 100%;
+		color: #666;
+		font-weight: bold;
+		text-align: center;
+		line-height: 40px;
+		cursor: pointer;
+	}
+	.carColor {
+		background: url("${pageContext.request.contextPath}/resources/images/res/seat_num_on.png") repeat-x;
+		color: white;
+	}
+	.seat {
+		width: 50px;
+		height: 35px;
+		line-height: 35px;
+		float: left;
+		text-align: center;
+		font-weight: bold;
+		color: white;
+		background: url("${pageContext.request.contextPath}/resources/images/res/seat_o.png") no-repeat;
+		background-size: 100% 100%;
+		cursor: pointer;
+	}
+	.seatn {
+		width: 50px;
+		height: 35px;
+		line-height: 35px;
+		float: left;
+		text-align: center;
+		font-weight: bold;
+		color: white;
+		background: url("${pageContext.request.contextPath}/resources/images/res/seat_n.png") no-repeat;
+		background-size: 100% 100%;
+	}
+	.selSeat {
+		margin-left: 10px;
+		color: #1890D7;
+		font-weight: bold;
+	}
+	
+	/*---------------- 값 저장하려고 만든 span태그 ---------------------*/
+	.none {
 		display: none;
 	}
-	#seatChoice h3 {
+	
+	/* ---------------------------modal----------------------------- */
+	/* The Modal (background) */
+	.modal {
+	    display: none; /* Hidden by default */
+	    position: fixed; /* Stay in place */
+	    z-index: 1; /* Sit on top */
+	    left: 0;
+	    top: 0;
+	    width: 100%; /* Full width */
+	    height: 100%; /* Full height */
+	    overflow: auto; /* Enable scroll if needed */
+	    background-color: rgb(0,0,0); /* Fallback color */
+	    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+	
+	/* Modal Content/Box */
+	.modal-content {
+	    background-color: #0066a8;/*02418c */
+	    margin: 3% auto;
+	    padding: 10px 0;
+	    width: 80%;
+	    color: #727272;                       
+	}
+	.modal-content h3 {
 		color: white;
 		display: inline-block;
 		margin-left: 10px;
 	}
-	#seatChoice > img {
+	.modal-content > img {
 		float: right;
 		margin-right: 10px;
 	}
@@ -71,7 +274,7 @@
 		font-size: 14px;
 		clear: both;
 	}
-	#seatChoice .num {
+	.modal-content .num {
 		display: inline-block;
 		width: 13px;
 		background-color: #656565;
@@ -172,60 +375,6 @@
 	#goResForm {
 		margin-bottom: 30px;
 	}
-	
-	
-	
-	/* ========== ajax로 추가한 부분 css ========== */
-	.car {
-		width: 60px;
-		height: 44px;
-		float: left;
-		margin-right: 20px;
-		background: url("${pageContext.request.contextPath}/resources/images/res/seat_num_bg.png") repeat-x;
-		background-size: 100% 100%;
-		color: #666;
-		font-weight: bold;
-		text-align: center;
-		line-height: 40px;
-		cursor: pointer;
-	}
-	.carColor {
-		background: url("${pageContext.request.contextPath}/resources/images/res/seat_num_on.png") repeat-x;
-		color: white;
-	}
-	.seat {
-		width: 50px;
-		height: 35px;
-		line-height: 35px;
-		float: left;
-		text-align: center;
-		font-weight: bold;
-		color: white;
-		background: url("${pageContext.request.contextPath}/resources/images/res/seat_o.png") no-repeat;
-		background-size: 100% 100%;
-		cursor: pointer;
-	}
-	.seatn {
-		width: 50px;
-		height: 35px;
-		line-height: 35px;
-		float: left;
-		text-align: center;
-		font-weight: bold;
-		color: white;
-		background: url("${pageContext.request.contextPath}/resources/images/res/seat_n.png") no-repeat;
-		background-size: 100% 100%;
-	}
-	.selSeat {
-		margin-left: 10px;
-		color: #1890D7;
-		font-weight: bold;
-	}
-	
-	/*---------------- 값 저장하려고 만든 span태그 ---------------------*/
-	.none {
-		display: none;
-	}
 </style>
 
 <script>
@@ -247,7 +396,7 @@
 					}
 					
 					$("table").empty();
-					$("table").append("<tr><td>열차번호</td><td>출발</td><td>도착</td><td>좌석</td><td>가격</td></tr>");
+					$("table").append("<tr><th>열차번호</th><th>출발</th><th>도착</th><th>좌석</th><th>가격</th></tr>");
 					
 					$(res).each(function(i, obj) {
 						var start_time = new Date(obj.tStartTime);
@@ -297,7 +446,7 @@
 				success: function(res) {
 					console.log(res);
 					
-					$("#seatChoice").css("display", "block");
+					$("#myModal").show();
 					$("#carList").empty();
 					$("#seatList").empty();
 					
@@ -446,143 +595,225 @@
 		$("#closeImg").click(function() {
 			selPeople = 0;
 			$(".selSeat").empty();
-			$("#seatChoice").css("display", "none");
+			$("#myModal").hide();
 			$(".selSeat").text("");
+			alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\n\n(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)");
 		})
 		
 	})
 </script>
 
 	<section>
-		<div id="resForm">
-			<div id="personnelInfo">
-				<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq.png">인원정보</label>
-				<select name="adult">
-					<c:forEach begin="1" end="9" var="adult">
-						<c:if test="${people == adult}">
-							<option selected="selected">어른 ${adult}명</option>
-						</c:if>
-						<c:if test="${people != adult}">
-							<option>어른 ${adult}명</option>
-						</c:if>
-					</c:forEach>
-				</select> <br>
-				<select>
-					<option>만 6세 ~ 12세</option>
-					<c:forEach begin="1" end="9" var="child">
-						<option>어린이 ${child}명</option>
-					</c:forEach>
-				</select> <br>
-				<select>
-					<option>만 65세이상</option>
-					<c:forEach begin="1" end="9" var="oldMan">
-						<option>경로 ${oldMan}명</option>
-					</c:forEach>
-				</select>
+		<div class="res_sec_left">
+			<div id="res_back">
+				<span>LET'S KORAIL TRAIN</span>
+				<h3>승차권</h3>
 			</div>
-			<div id="trainInfo">
-				<div>
-					<label>열차종류선택</label>
-					<input type="radio" value="0" name="tTiNo" checked="checked">전체
-					<c:forEach var="ti" items="${tiList}">
-						<input type="radio" value="${ti.tiNo}" name="tTiNo">${ti.tiName}
-					</c:forEach>
-				</div>
-				<label>출발역</label>
-				<select name="startStation">
-					<c:forEach var="start" items="${tList}">
-						<c:if test="${ss != start.tStart.nodename}">
-							<option>${start.tStart.nodename}</option>
-						</c:if>
-						<c:if test="${ss == start.tStart.nodename}">
-							<option selected="selected">${start.tStart.nodename}</option>
-						</c:if>
-					</c:forEach>
-				</select>
-				<label>도착역</label>
-				<select name="arriveStation">
-					<c:forEach var="arrive" items="${ttList}" varStatus="status">
-						<c:if test="${as != arrive.nodeid.nodename}">
-							<option>${arrive.nodeid.nodename}</option>
-						</c:if>
-						<c:if test="${as == arrive.nodeid.nodename}">
-							<option selected="selected">${arrive.nodeid.nodename}</option>
-						</c:if>
-					</c:forEach>
-				</select>
+			<div>
+				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
 			</div>
-			<img src="${pageContext.request.contextPath}/resources/images/res/btn_inq_tick.png" id="search">
 		</div>
-		<article>
-			<table>
-				<tr>
-					<td>열차번호</td>
-					<td>출발</td>
-					<td>도착</td>
-					<td>좌석</td>
-					<td>가격</td>
-				</tr>
-				<c:forEach var="ttt" items="${tttList}">
-					<tr>
-						<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
-						<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
-						<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
-						<td><button class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">좌석선택</button></td>
-						<td class="price">${ttt.price}</td>
-						<td class="none"><span class="st2"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.tStartTime}"/></span></td>
-						<td class="none"><span class="at"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/></span></td>
-					</tr>					
-				</c:forEach>
-			</table>			
-		</article>
-		<article id="seatChoice">
-			<h3>좌석선택</h3>
-			<img src="${pageContext.request.contextPath}/resources/images/res/btn_pop_close.png" id="closeImg">
-			<div id="wrap">
-				<p class="num">1</p><b>원하시는 좌석을 선택하여 주십시오.</b> <br>
-				<p class="num">2</p>발매가 가능한 자석을 선택하실 수 있습니다. <br>
-				<p class="num">3</p>원하시는 좌석을 선택 후 <b>선택좌석예약하기</b> 버튼을 클릭하시면 예약이 완료됩니다. <span class="red">(복수선택가능)</span> <br>
-				<p class="num">4</p>원하지 않은 좌석이 선택된 경우 좌석을 한번 더 클릭하시면 취소됩니다. <br>
-				<form action="finishRes" method="post" id="goResForm">
-					<div id="resWrap">
-						<div id="carList">
-						</div>
-						<div id="stationText">
-							<p class="circle"></p><span class="redBold"></span><span class="carText"></span>
-						</div>
-						<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
-						<div id="seatInfo">
-							<div id="sNum"><b>좌석번호</b></div>
-							<div id="line">
-								<div id="sWrap">
-									<img src="${pageContext.request.contextPath}/resources/images/res/seat_n.png"> <b> : 예약불가</b>
-									<img src="${pageContext.request.contextPath}/resources/images/res/seat_o.png"> <b> : 예약가능</b>
-								</div>
-							</div>
-						</div>
-						<div id="seatList">
-						</div>
-					</div>
-					<div id="nums">
-						<p class="circle"></p>선택한 좌석번호 :<span class="selSeat"></span>
-					</div>
-					<input type="hidden" name="tCode">
-					<!-- <input type="hidden" name="tTiNo.tiName">
-					<input type="hidden" name="tStart.nodename">
-					<input type="hidden" name="nodeid.nodename"> 객체로 안받을거라서 이렇게 안함 -->
-					<input type="hidden" name="tTiNo">
-					<input type="hidden" name="tStart">
-					<input type="hidden" name="tArrive">
-					<input type="hidden" name="tStartTime">
-					<input type="hidden" name="price">
-					<input type="hidden" name="tArriveTime">
-					<input type="hidden" name="peoA">
-					<input type="hidden" name="tsCar">
-					<input type="hidden" name="tsNo">
-					<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">
-				</form> 
+		<div class="res_sec_right">
+			<div id="res_back2">
+				<p><img src="${pageContext.request.contextPath}/resources/images/notice/ico_home.gif"> 
+					<a href="${pageContext.request.contextPath}/">홈</a> > 
+					<a href="${pageContext.request.contextPath}/">승차권</a> > 
+					<a href="${pageContext.request.contextPath}/">승차권예약</a> >
+					<a href="${pageContext.request.contextPath}/">일반승차권</a></p>
+				<h1>일반승차권</h1>
 			</div>
-		</article>
+			<div id="res_list">
+				<div id="resForm">
+					<div id="personnelInfo">
+						<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq.png"> 인원정보</label>
+						<select name="adult">
+							<c:forEach begin="1" end="9" var="adult">
+								<c:if test="${people == adult}">
+									<option selected="selected" value="${adult}">어른 ${adult}명</option>
+								</c:if>
+								<c:if test="${people != adult}">
+									<option value="${adult}">어른 ${adult}명</option>
+								</c:if>
+							</c:forEach>
+						</select> <br>
+						<select>
+							<option>만 6세 ~ 12세</option>
+							<c:forEach begin="1" end="9" var="child">
+								<option>어린이 ${child}명</option>
+							</c:forEach>
+						</select> <br>
+						<select>
+							<option>만 65세이상</option>
+							<c:forEach begin="1" end="9" var="oldMan">
+								<option>경로 ${oldMan}명</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div id="trainInfo">
+						<ul>
+							<li><input type="radio" value="0" name="tTiNo" checked="checked"> 전체</li>
+							<c:forEach var="ti" items="${tiList}">
+								<li><input type="radio" value="${ti.tiNo}" name="tTiNo"> ${ti.tiName}</li>
+							</c:forEach>
+						</ul>
+						<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq_arr03.png"> 출발역</label>
+						<select name="startStation">
+							<c:forEach var="start" items="${tList}">
+								<c:if test="${ss != start.tStart.nodename}">
+									<option>${start.tStart.nodename}</option>
+								</c:if>
+								<c:if test="${ss == start.tStart.nodename}">
+									<option selected="selected">${start.tStart.nodename}</option>
+								</c:if>
+							</c:forEach>
+						</select> <br>
+						<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq_arr03.png"> 도착역</label>
+						<select name="arriveStation">
+							<c:forEach var="arrive" items="${ttList}" varStatus="status">
+								<c:if test="${as != arrive.nodeid.nodename}">
+									<option>${arrive.nodeid.nodename}</option>
+								</c:if>
+								<c:if test="${as == arrive.nodeid.nodename}">
+									<option selected="selected">${arrive.nodeid.nodename}</option>
+								</c:if>
+							</c:forEach>
+						</select> <br>
+						<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq_arr03.png"> 출발일</label>
+						<div id="startWrap">
+							<c:set var="today" value="<%=new java.util.Date()%>" />
+							<select name="year">
+								<fmt:formatDate value="${today}" pattern="yyyy" var="year"/> 
+								<c:forEach var="y" begin="0" end="2">
+										<%-- <option value="<c:out value="${year + idx}"/>"><c:out value="${year + idx}"/></option> --%>
+										<option>${year + y}</option>
+								</c:forEach>
+							</select><span>년</span>
+							<select name="month">
+								<fmt:formatDate value="${today}" pattern="MM" var="month"/> 
+								<c:forEach var="m" begin="1" end="12">
+									<c:if test="${month ==  m}">
+										<option selected="selected">${m}</option>
+									</c:if>
+									<c:if test="${month != m}">
+										<option>${m}</option>
+									</c:if>
+								</c:forEach>
+							</select><span>월</span>
+							<select name="date">
+								<fmt:formatDate value="${today}" pattern="dd" var="date"/>
+								<c:forEach var="d" begin="1" end="31">
+									<c:if test="${date == d}">
+										<option selected="selected">${d}</option>
+									</c:if>
+									<c:if test="${date != d}">
+										<option>${d}</option>
+									</c:if>
+								</c:forEach>
+							</select><span>일</span>
+							<select name="time">
+								<c:forEach var="t" begin="0" end="23">
+									<c:if test="${t <= 11}">
+										<option value="${t}">${t}(오전 ${t})</option>
+									</c:if>
+									<c:if test="${t > 11}">
+										<option value="${t}">${t}(오후 ${t-12})</option>
+									</c:if>
+								</c:forEach>
+							</select><span>시</span>
+							<fmt:formatDate value="${today}" pattern="E" var="day"/>
+							<input type="text" value="${day}">
+							<!-- 
+							<fmt:parseDate value="20181101" var="dateFmt" pattern="yyyyMMdd"/>
+							<fmt:formatDate value="${dateFmt}" pattern="E" var="today"/>
+							 -->
+						</div>
+					</div>
+					<img src="${pageContext.request.contextPath}/resources/images/res/btn_inq_tick.png" id="search">
+				</div>
+				<ul id="ultext">
+					<li>승차권 예약을 원하시는 고객은 <img src="${pageContext.request.contextPath}/resources/images/res/icon1.png"> 또는 <img src="${pageContext.request.contextPath}/resources/images/res/icon2.gif"> 버튼을 클릭하여 주시기 바랍니다.</li>
+					<li>일반열차는 와이파이(WiFi)서비스를 제공하지 않습니다.</li>
+					<li>할인 승차권의 할인율은 별도 공지없이 변경될 수 있습니다.</li>
+				</ul>
+				<article>
+					<table>
+						<tr>
+							<th>열차번호</th>
+							<th>출발</th>
+							<th>도착</th>
+							<th>좌석</th>
+							<th>가격</th>
+						</tr>
+						<c:forEach var="ttt" items="${tttList}">
+							<tr>
+								<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
+								<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
+								<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
+								<td><button class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">좌석선택</button></td>
+								<td class="price">${ttt.price}</td>
+								<td class="none"><span class="st2"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.tStartTime}"/></span></td>
+								<td class="none"><span class="at"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/></span></td>
+							</tr>					
+						</c:forEach>
+					</table>			
+				</article>
+				
+				<!-- Modal Start -->
+				<div id="myModal" class="modal">
+					<!-- Modal content -->
+					<div class="modal-content">
+						<h3>좌석선택</h3>
+						<img src="${pageContext.request.contextPath}/resources/images/res/btn_pop_close.png" id="closeImg">
+						<div id="wrap">
+							<p class="num">1</p><b>원하시는 좌석을 선택하여 주십시오.</b> <br>
+							<p class="num">2</p>발매가 가능한 자석을 선택하실 수 있습니다. <br>
+							<p class="num">3</p>원하시는 좌석을 선택 후 <b>선택좌석예약하기</b> 버튼을 클릭하시면 예약이 완료됩니다. <span class="red">(복수선택가능)</span> <br>
+							<p class="num">4</p>원하지 않은 좌석이 선택된 경우 좌석을 한번 더 클릭하시면 취소됩니다. <br>
+							<form action="finishRes" method="post" id="goResForm">
+								<div id="resWrap">
+									<div id="carList">
+									</div>
+									<div id="stationText">
+										<p class="circle"></p><span class="redBold"></span><span class="carText"></span>
+									</div>
+									<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
+									<div id="seatInfo">
+										<div id="sNum"><b>좌석번호</b></div>
+										<div id="line">
+											<div id="sWrap">
+												<img src="${pageContext.request.contextPath}/resources/images/res/seat_n.png"> <b> : 예약불가</b>
+												<img src="${pageContext.request.contextPath}/resources/images/res/seat_o.png"> <b> : 예약가능</b>
+											</div>
+										</div>
+									</div>
+									<div id="seatList">
+									</div>
+								</div>
+								<div id="nums">
+									<p class="circle"></p>선택한 좌석번호 :<span class="selSeat"></span>
+								</div>
+								<input type="hidden" name="tCode">
+								<!-- <input type="hidden" name="tTiNo.tiName">
+								<input type="hidden" name="tStart.nodename">
+								<input type="hidden" name="nodeid.nodename"> 객체로 안받을거라서 이렇게 안함 -->
+								<input type="hidden" name="tTiNo">
+								<input type="hidden" name="tStart">
+								<input type="hidden" name="tArrive">
+								<input type="hidden" name="tStartTime">
+								<input type="hidden" name="price">
+								<input type="hidden" name="tArriveTime">
+								<input type="hidden" name="peoA">
+								<input type="hidden" name="tsCar">
+								<input type="hidden" name="tsNo">
+								<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">
+							</form> 
+						</div>
+					</div>
+				</div>
+				<!-- Modal End -->
+			</div>
+		</div>
+		
 	</section>
 	
 <%@ include file="../include/footer.jsp" %>

@@ -72,6 +72,7 @@
 		padding-top: 10px;
 	}
 	
+	
 	#resimg_top {
 		background: url("${pageContext.request.contextPath}/resources/images/res/tit_box_tick_bg.png") no-repeat;
 		width: 100%;
@@ -228,8 +229,8 @@
 			<div id="res_back2">
 				<p><img src="${pageContext.request.contextPath}/resources/images/notice/ico_home.gif"> 
 					<a href="${pageContext.request.contextPath}/">홈</a> > 
-					<a href="${pageContext.request.contextPath}/notice/notice">승차권</a> > 
-					<a href="${pageContext.request.contextPath}/notice/notice">승차권 예약</a></p>
+					<a href="${pageContext.request.contextPath}/">승차권</a> > 
+					<a href="${pageContext.request.contextPath}/">승차권 예약</a></p>
 				<h1>예약</h1>
 			</div>
 			<div id="res_list">

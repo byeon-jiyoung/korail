@@ -24,6 +24,7 @@ import com.yi.domain.TrainTrainTime;
 import com.yi.service.CityTrainService;
 import com.yi.service.ReservationService;
 import com.yi.service.TrainInfoServivce;
+import com.yi.service.TrainSeatService;
 import com.yi.service.TrainSeatTrainTimeService;
 import com.yi.service.TrainService;
 import com.yi.service.TrainTimeService;
@@ -49,6 +50,8 @@ public class ReservationController {
 	TrainSeatTrainTimeService tsttService;
 	@Autowired
 	ReservationService rService;
+	@Autowired
+	TrainSeatService tsService;
 	
 	@RequestMapping(value="reservation", method=RequestMethod.GET)
 	public void reserveGet(String start, String arrive, String people, Model model) throws Exception {
@@ -127,13 +130,16 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value="finishRes", method=RequestMethod.POST)
-	public void finishResPost(String tCode, int tTiNo, String tStart, String tArrive, String tStartTime, int price, String tArriveTime, int peoA, int tsCar, String tsNo, Model model) throws Exception {
+	public void finishResPost(String tCode, int tTiNo, String tStart, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
 		logger.info("------------------- finishResPost --------------------");
 		logger.info("tCode : " + tCode + ", tTiNo : " + tTiNo);
 		logger.info("tStart : " + tStart + ", tArrive : " + tArrive);
 		logger.info("tStartTime : " + tStartTime + ", tArriveTime : " + tArriveTime);
-		logger.info("price : " + price + ", peoA : " + peoA);
+		logger.info("price : " + price);
 		logger.info("tsCar : " + tsCar + ", tsNo : " + tsNo);
+		logger.info("peoA : " + peoA + ", peoC : " + peoC + ", peoO : " + peoO);
+		
+		int people = Integer.parseInt(peoA) + Integer.parseInt(peoC) + Integer.parseInt(peoO);
 		
 		TrainInfo ti = tiService.selectTrainInfo(tTiNo);
 		CityTrain ctS = ctService.selectCityTrain(tStart);
@@ -142,7 +148,7 @@ public class ReservationController {
 		Date dateS = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tStartTime);
 		Date dateA = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tArriveTime);
 		
-		TrainTrainTime ttt = new TrainTrainTime(tCode, ti, ctS, dateS, ctA, price, dateA);
+		TrainTrainTime ttt = new TrainTrainTime(tCode, ti, ctS, dateS, ctA, Integer.parseInt(price), dateA);
 		model.addAttribute("ttt", ttt);
 		
 		logger.info("ttt => " + ttt);
@@ -153,12 +159,15 @@ public class ReservationController {
 		
 		String[] c = tsNo.split("석");
 		for(String s : c) {
-			rService.insertReservation(++resNo, resClaNum, peoA, tStart, tArrive, tStartTime, tCode, tsCar, Integer.parseInt(s.trim()));
+			rService.insertReservation(++resNo, resClaNum, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 		}
 		
 		List<Reservation> resList = rService.listReservationByResClaNum(resClaNum);
 		model.addAttribute("resList", resList);
-		
+		model.addAttribute("a", peoA);
+		model.addAttribute("c", peoC);
+		model.addAttribute("o", peoO);
+
 		for(Reservation r : resList) {
 			logger.info("r => " + r);
 		}

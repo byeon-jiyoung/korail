@@ -20,6 +20,6 @@
 		(select tt.t_code, tt.tt_start_time, tt.price, ct.nodename, tt.nodeid from train_time tt join city_train ct on tt.nodeid = ct.nodeid where ct.nodename = #{arrive}) trti
 		on tr.t_code = trti.t_code) ttm
 		on ts.t_code = ttm.t_code
-		where tt_start_time = #{startTime} and ts.t_code = #{tCode};
+		where tt_start_time = #{startTime} and ts.t_code = #{tCode}
 	</select>
 </mapper>

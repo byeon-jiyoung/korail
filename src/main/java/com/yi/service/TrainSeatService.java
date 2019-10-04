@@ -8,4 +8,5 @@ import com.yi.domain.TrainSeat;
 public interface TrainSeatService {
 	
 	public List<TrainSeat> listTrainSeat(TrainSeat ts) throws Exception;
+
 }

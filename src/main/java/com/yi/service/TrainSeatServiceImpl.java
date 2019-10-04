@@ -19,4 +19,5 @@ public class TrainSeatServiceImpl implements TrainSeatService {
 	public List<TrainSeat> listTrainSeat(TrainSeat ts) throws Exception {
 		return dao.listTrainSeat(ts);
 	}
+
 }

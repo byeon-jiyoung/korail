@@ -1,6 +1,8 @@
 package com.yi.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,15 @@ public class TrainSeatDaoImpl implements TrainSeatDao {
 	@Override
 	public void updateTsChoice(TrainSeat ts) throws Exception {
 		sqlsession.update(namespace + ".updateTsChoice", ts);
+	}
+
+	@Override
+	public void updateTrainSeatByNow(String tCode, String arrive) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tCode", tCode);
+		map.put("arrive", arrive);
+		
+		sqlsession.update(namespace + ".updateTrainSeatByNow", map);
 	}
 
 }

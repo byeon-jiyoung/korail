@@ -77,17 +77,28 @@
 	table {
 		border-collapse: collapse;
 	}
-	td, tr, th {
+	td, th {
 		border: 1px solid #aaa;
 		padding: 10px 20px;
 	}
 	table tr:first-child {
 		background-color: #f8f8f8;
 	}
+	table th:first-child, table td:first-child {
+		border-left: none;
+	}
+	table th:last-child, .price {
+		border-right: none;
+	}
 	#resForm {
 		overflow: hidden;
 	}
-	
+	.searchSeat, .searchSeatRan {
+		display: block;
+	}
+	.searchSeatRan {
+		margin-bottom: 5px;
+	}
 	#personnelInfo {
 		border: 1px solid #c1c1c1;
 		box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
@@ -158,7 +169,7 @@
 		overflow: hidden;
 		display: inline;
 		float: right;
-		margin-right: 37px;
+		margin-right: 42px;
 	}
 	#startWrap > select, #startWrap > span {
 		width: auto !important;
@@ -296,7 +307,7 @@
 		overflow: hidden;
 		margin-top: 20px;
 	}
-	#sNum, #sWrap, #line {
+	#sNum, #sWrap {
 		display: inline-block;
 		float: left;
 	}
@@ -305,23 +316,23 @@
 		padding: 5px 20px;
 		border-bottom: none;
 	}
-	#line {
-		border-bottom: 2px solid black;
-		width: 90%;
-	}
 	#sWrap {
+		border-bottom: 2px solid black;
+		width: 100%;
+	}
+	#imgWrap {
 		float: right;
 	}
-	#sWrap > img, #sWrap > b {
+	#imgWrap > img, #imgWrap > b {
 		float: left;
 		margin-bottom: 5px;
 		height: 25px;
 		margin-right: 10px;
 	}
-	#sWrap > b {
+	#imgWrap > b {
 		line-height: 25px;
 	}
-	#sWrap > b:last-child {
+	#imgWrap > b:last-child {
 		margin-right: 0;
 	}
 	#seatList {
@@ -405,14 +416,17 @@
 										 arrive_time.getHours()+":"+("00" + arrive_time.getMinutes()).slice(-2);
 					 	var startTime = start_time.getFullYear()+"-"+(start_time.getMonth()+1)+"-"+("00" + start_time.getDate()).slice(-2)+" "+
 					 					start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2);
-						
-						var $tr = $("<tr>");
+					 	var price_str = String(obj.price).replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+
+					 	var $tr = $("<tr>");
 						var $tiName = $("<td>").attr("data-code", obj.tCode).text(obj.tTiNo.tiName);
 						var $span1 = $("<span>").addClass("st").html(start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2));
 						var $tStart = $("<td>").html(obj.tStart.nodename+"<br>").append($span1);
 						var $tArrive = $("<td>").html(obj.nodeid.nodename+"<br>"+arrive_time.getHours()+":"+("00" + arrive_time.getMinutes()).slice(-2));
-						var $td = $("<td>").append("<button class='searchSeat' data-time='"+arriveTime+"'>좌석선택</button>");
-						var $price = $("<td>").text(obj.price);
+						var $imgRan = $("<img>").attr("src", "${pageContext.request.contextPath}/resources/images/res/icon3.png").attr("data-time", arriveTime).addClass("searchSeatRan");
+						var $img = $("<img>").attr("src", "${pageContext.request.contextPath}/resources/images/res/icon4.png").attr("data-time", arriveTime).addClass("searchSeat");
+						var $td = $("<td>").append($imgRan).append($img);
+						var $price = $("<td>").addClass("price").text(price_str).attr("data-price", obj.price);
 						
 						var st2 = $("<span>").addClass("st2").html(startTime);
 						var stTd = $("<td>").addClass("none").append(st2);
@@ -526,11 +540,19 @@
 			})
 		})
 		
+		/* 
+		$(document).on("click", ".searchSeatRan", function(){
+			
+		}
+		*/
+		
 		var selPeople = 0;
 		$(document).on("click", ".seat", function(){
 			var seat = $(this).attr("data-seatnum")+"석";
-			var adult = $("select[name='adult']").val();
 			var selSeat  = $(".selSeat").text();
+			var adult = Number($("select[name='adult']").val());
+			var child = Number($("select[name='child']").val());
+			var oldMan = Number($("select[name='oldMan']").val());
 			
 			var result = "";
 			
@@ -546,7 +568,7 @@
 				selPeople = selPeople - 1;
 			}
 			
-			if(selPeople > adult) {
+			if(selPeople > (adult+child+oldMan)) {
 				alert("요청하신 승객 수를 초과하여 좌석을 선택할 수 없습니다.");
 				$(this).css("background", "url('${pageContext.request.contextPath}/resources/images/res/seat_o.png') no-repeat");
 				$(this).css("background-size", "100% 100%");
@@ -563,7 +585,7 @@
 				return false;
 			}
 			
-			if(selPeople != $("select[name='adult']").val()) {
+			if(selPeople != (Number($("select[name='adult']").val())+Number($("select[name='child']").val())+Number($("select[name='oldMan']").val()))) {
 				alert("인원 수에 맞게 선택해 주세요.");
 				return false;
 			}
@@ -577,8 +599,10 @@
 			$("input[name='tStart']").attr("value", $(".ss").text());
 			$("input[name='tArrive']").attr("value", $(".as").text());
 			
-			$("input[name='price']").attr("value", Number($(".price").text()));
-			$("input[name='peoA']").attr("value", Number($("select[name='adult']").val()));
+			$("input[name='price']").attr("value", $(".price").attr("data-price"));
+			$("input[name='peoA']").attr("value", $("select[name='adult']").val());
+			$("input[name='peoC']").attr("value", $("select[name='child']").val());
+			$("input[name='peoO']").attr("value", $("select[name='oldMan']").val());
 			
 			/* var st = $(".st2").eq(0).text();
 			st = new Date(st.substring(0, 4), st.substring(5, 7), st.substring(5, 7), st.substring(8, 10), st.substring(11, 13), st.substring(14, 16)); */
@@ -597,7 +621,7 @@
 			$(".selSeat").empty();
 			$("#myModal").hide();
 			$(".selSeat").text("");
-			alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\n\n(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)");
+			/* alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\n\n(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)"); */
 		})
 		
 	})
@@ -627,6 +651,7 @@
 					<div id="personnelInfo">
 						<label><img src="${pageContext.request.contextPath}/resources/images/res/bu_sq.png"> 인원정보</label>
 						<select name="adult">
+							<option value="0">어른 0명</option>
 							<c:forEach begin="1" end="9" var="adult">
 								<c:if test="${people == adult}">
 									<option selected="selected" value="${adult}">어른 ${adult}명</option>
@@ -636,16 +661,16 @@
 								</c:if>
 							</c:forEach>
 						</select> <br>
-						<select>
-							<option>만 6세 ~ 12세</option>
+						<select name="child">
+							<option value="0">만 6세 ~ 12세</option>
 							<c:forEach begin="1" end="9" var="child">
-								<option>어린이 ${child}명</option>
+								<option value="${child}">어린이 ${child}명</option>
 							</c:forEach>
 						</select> <br>
-						<select>
-							<option>만 65세이상</option>
+						<select name="oldMan">
+							<option value="0">만 65세이상</option>
 							<c:forEach begin="1" end="9" var="oldMan">
-								<option>경로 ${oldMan}명</option>
+								<option value="${oldMan}">경로 ${oldMan}명</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -743,16 +768,24 @@
 							<th>도착</th>
 							<th>좌석</th>
 							<th>가격</th>
+							<!-- <th>소요시간</th> -->
 						</tr>
 						<c:forEach var="ttt" items="${tttList}">
 							<tr>
 								<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
 								<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
 								<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
-								<td><button class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">좌석선택</button></td>
-								<td class="price">${ttt.price}</td>
+								<td>
+									<img src="${pageContext.request.contextPath}/resources/images/res/icon3.png" class="searchSeatRan" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">
+									<img src="${pageContext.request.contextPath}/resources/images/res/icon4.png" class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">
+								</td>
+								<td class="price" data-price="${ttt.price}"><fmt:formatNumber pattern="###,###" value="${ttt.price}"/></td>
 								<td class="none"><span class="st2"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.tStartTime}"/></span></td>
 								<td class="none"><span class="at"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/></span></td>
+								<%-- <td>
+									<fmt:parseNumber value="${ttt.ttStartTime.time - ttt.tStartTime.time}" var="diffTime"/>
+									<fmt:formatDate value="${diffTime}"/>
+								</td> --%>
 							</tr>					
 						</c:forEach>
 					</table>			
@@ -778,9 +811,9 @@
 									</div>
 									<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
 									<div id="seatInfo">
-										<div id="sNum"><b>좌석번호</b></div>
-										<div id="line">
-											<div id="sWrap">
+										<div id="sWrap">
+											<div id="sNum"><b>좌석번호</b></div>
+											<div id="imgWrap">
 												<img src="${pageContext.request.contextPath}/resources/images/res/seat_n.png"> <b> : 예약불가</b>
 												<img src="${pageContext.request.contextPath}/resources/images/res/seat_o.png"> <b> : 예약가능</b>
 											</div>
@@ -803,6 +836,8 @@
 								<input type="hidden" name="price">
 								<input type="hidden" name="tArriveTime">
 								<input type="hidden" name="peoA">
+								<input type="hidden" name="peoC">
+								<input type="hidden" name="peoO">
 								<input type="hidden" name="tsCar">
 								<input type="hidden" name="tsNo">
 								<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">

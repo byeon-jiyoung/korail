@@ -37,12 +37,23 @@
 	}
 	#head1 ul li {
 		float: left;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
 	}
 	#head1 li a {
 		font-size: 0.8em;
 		text-align: right;
 		margin-bottom: 5px;
 		font-weight: bold;
+	}
+	#head1 ul li > span {
+		cursor: default;
+	}
+	.color {
+		color: #2594da;
+		margin-top: 1px;
+		display: inline-block;
 	}
 	#head2 {
 		background-color: #083b82;
@@ -119,13 +130,30 @@
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	$(function() {
+		$("#logout_img").click(function() {
+			var result = confirm("로그아웃 하시겠습니까?");
+			
+			if(result == true) {
+				location.href = "${pageContext.request.contextPath}/login/logout";
+			}
+		})
+	})
+</script>
 </head>
 <body>
 	<header>
 		<div id="head1">
 			<ul>
 				<li><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_home.png"></a></li>
-				<li><a href="${pageContext.request.contextPath}/login/login"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_login.png"></a></li>
+				<c:if test="${Auth == null}">
+					<li><a href="${pageContext.request.contextPath}/login/login"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_login.png"></a></li>
+				</c:if>
+				<c:if test="${Auth != null}">
+					<li><span><span class="color">${Auth.memName}</span>님 환영합니다.</span></li>
+					<li><img src="${pageContext.request.contextPath}/resources/images/include/gnb_logout.png" id="logout_img"></li>
+				</c:if>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_mems.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_sh_basket.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_my.png"></a></li>

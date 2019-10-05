@@ -1,6 +1,8 @@
 package com.yi.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,15 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public List<Member> listMember() throws Exception {
 		return sqlsession.selectList(namespace + ".listMember");
+	}
+
+	@Override
+	public Member selectMemberByIdPw(String id, String pw) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memId", id);
+		map.put("memPw", pw);
+		
+		return sqlsession.selectOne(namespace + ".selectMemberByIdPw", map);
 	}
 
 }

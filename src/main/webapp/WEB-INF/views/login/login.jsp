@@ -110,11 +110,11 @@
 		width: 180px;
 		margin-bottom: 2px;
 	}
-	#loginWrap > div {
+	#btnWrap {
 		float: right;
 		padding-top: 10px;
 	}
-	#loginWrap button {
+	#btnWrap button {
 		background: url("${pageContext.request.contextPath}/resources/images/login/btn_bg_gray.png") repeat-x;
 		border: 1px solid #9e9e9e;
 		padding: 5px;
@@ -128,6 +128,10 @@
 	}
 	#loginBtn {
 		margin-left: 10px;
+	}
+	#loginBtn button {
+		border: none;
+		outline: none;
 	}
 	#noMemDiv {
 		background-color: #f0f0f0;
@@ -195,18 +199,18 @@
 						<li><input type="radio" name="classLogin" id="b"><label for="b"> 이메일 아이디 로그인</label></li>
 						<li><input type="radio" name="classLogin" id="c"><label for="c"> 휴대전화번호 로그인</label></li>
 					</ul>
-					<form id="loginForm" action="loginPost">
+					<form id="loginForm" action="loginPost" method="post">
 						<p>
 							<label>코레일멤버십번호</label>
-							<input type="text"> <br>
+							<input type="text" name="memId"> <br>
 							<label>비밀번호</label>
-							<input type="password">
+							<input type="password" name="memPw">
 						</p>
 						<p id="loginBtn">
-							<img src="${pageContext.request.contextPath}/resources/images/login/btn_login.png">
+							<button type="submit"><img src="${pageContext.request.contextPath}/resources/images/login/btn_login.png"></button>
 						</p>
 					</form>
-					<div>
+					<div id="btnWrap">
 						<button>멤버십(회원)번호 찾기</button>
 						<button>비밀번호 찾기</button>
 						<button id="goJoin">멤버십 가입</button>
@@ -225,6 +229,17 @@
 				</ul>
 			</div>
 		</div>
+		
+		<c:if test="${error == 'notMatch'}">
+			<script>
+				setTimeout(function(){
+					alert("아이디와 비밀번호가 일치하지 않습니다.");
+				}, 100); 
+			</script>
+			<%
+				session.removeAttribute("error");
+			%> 
+		</c:if>
 	</section>
     
 <%@ include file="../include/footer.jsp" %>

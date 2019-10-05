@@ -3,7 +3,16 @@ package com.yi.domain;
 public class Login {
 	private String memId;
 	private String memPw;
+	private String memName;
 	
+	public Login() {}
+	
+	public Login(String memId, String memPw, String memName) {
+		this.memId = memId;
+		this.memPw = memPw;
+		this.memName = memName;
+	}
+
 	public String getMemId() {
 		return memId;
 	}
@@ -16,9 +25,15 @@ public class Login {
 	public void setMemPw(String memPw) {
 		this.memPw = memPw;
 	}
-	
+	public String getMemName() {
+		return memName;
+	}
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
+
 	@Override
 	public String toString() {
-		return "Login [memId=" + memId + ", memPw=" + memPw + "]";
+		return "Login [memId=" + memId + ", memPw=" + memPw + ", memName=" + memName + "]";
 	}
 }

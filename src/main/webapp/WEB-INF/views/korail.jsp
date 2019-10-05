@@ -136,9 +136,24 @@
 	}
 	
 	#article_news {
-		border: 1px solid black;
 		width: 100%;
 		height: 200px;
+		position: relative;
+	}
+	#article_news img {
+		width: 100%;
+		height: 200px;
+	}
+	#newsA {
+		position: absolute;
+		bottom: 10px;
+		left: 0;
+		font-weight: bold;
+		color: white;
+		font-size: 0.9em;
+		text-align: center;
+		width: 90%;
+		margin-left: 10px;
 	}
 	#article_ktx {
 		width: 100%;
@@ -157,7 +172,10 @@
 		margin-left: 1%;
 	}
 	#article_best {
-		border: 1px solid black;
+		width: 100%;
+		height: 200px;
+	}
+	#article_best img {
 		width: 100%;
 		height: 200px;
 	}
@@ -258,16 +276,16 @@
 				</div>
 				<div class="article_div_div2">
 					<img src="${pageContext.request.contextPath}/resources/images/aaaa.png" alt="레일스토리 소식"> 
-					<img src="${pageContext.request.contextPath}/resources/images/btn_more.png" class="more">
+					<a href="http://story.korail.com/main" target="_blank"><img src="${pageContext.request.contextPath}/resources/images/btn_more.png" class="more"></a>
 					<div id="article_news">
-						
+						<img src="${pageContext.request.contextPath}/resources/images/3000.jpg">
+						<a href="http://story.korail.com/main" target="_blank" id="newsA"><span>[코레일 KTX 단거리 할인상품]<br>셋이서 3만원, 2만원/KTX5000특가</span></a>
 					</div>
 				</div>
 			</div>
 			<div class="article_div2">
 				<div>
 					<img src="${pageContext.request.contextPath}/resources/images/tit_ktx_discount.png" alt="ktx 할인상품">
-					<img src="${pageContext.request.contextPath}/resources/images/btn_more.png" class="more">
 					<div id="article_ktx">
 						<img src="${pageContext.request.contextPath}/resources/images/BnrDisplay_201710230150378540.jpg">
 						<img src="${pageContext.request.contextPath}/resources/images/BnrDisplay_201710230147548250.jpg">
@@ -277,9 +295,8 @@
 				</div>
 				<div class="article_div_div2">
 					<img src="${pageContext.request.contextPath}/resources/images/tit_best_prd.png" alt="best 여행상품">
-					<img src="${pageContext.request.contextPath}/resources/images/btn_more.png" class="more">
 					<div id="article_best">
-						
+						<img src="${pageContext.request.contextPath}/resources/images/best.jpg">
 					</div>
 				</div>
 			</div>

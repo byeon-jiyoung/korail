@@ -21,4 +21,8 @@
 	<select id="listMember" resultMap="resultMember">
 		select * from member;
 	</select>
+	
+	<select id="selectMemberByIdPw" resultMap="resultMember">
+		select * from member where mem_id = #{memId} and mem_pw = #{memPw}
+	</select>
 </mapper>

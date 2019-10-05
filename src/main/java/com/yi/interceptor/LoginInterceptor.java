@@ -2,6 +2,7 @@ package com.yi.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,20 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		logger.info("LoginInterceptor postHandler");
 		
+		HttpSession session = request.getSession();
+		
+		Object login = modelAndView.getModel().get("login");
+		
+		if(login != null) {
+			session.setAttribute("Auth", login);
+			
+			Object dest = session.getAttribute("dest");
+			String path = (dest != null) ? (String) dest : request.getContextPath();
+			response.sendRedirect(path);
+		} else { //로그인에 실패했을 경우
+			session.setAttribute("error", "notMatch");
+			response.sendRedirect(request.getContextPath() + "/login/login");
+		}
 	}
 
 	

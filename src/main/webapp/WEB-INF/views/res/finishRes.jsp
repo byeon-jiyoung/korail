@@ -280,18 +280,20 @@
 									${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}
 								</td>
 								<td>
-									<%-- <c:if test="${a > 0}">
-										성인${a}
-										<c:set var="a" value="${a-1}" />	
+									<c:if test="${a > 0}">
+										성인
 									</c:if>
-									<c:if test="${c > 0}">
-										어린이${c}
-										<c:set var="c" value="${c-1}" />	
+									<c:if test="${c > 0 && a <= 0}">
+										어린이
 									</c:if>
-									<c:if test="${o > 0}">
-										경로${o}
+									<c:if test="${o > 0 && c <= 0 && a <= 0}">
+										경로
 										<c:set var="o" value="${o-1}" />	
-									</c:if> --%>
+									</c:if>
+									<c:set var="a" value="${a-1}" />
+									<c:if test="${a < 0}">
+										<c:set var="c" value="${c-1}" />
+									</c:if>
 								</td>
 								<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
 								<td></td>

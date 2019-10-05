@@ -43,6 +43,7 @@
 	.notice_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
+		font-size: 14px;
 	}
 	.notice_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;

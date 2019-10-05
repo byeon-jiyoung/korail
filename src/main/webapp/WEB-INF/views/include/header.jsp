@@ -95,10 +95,11 @@
 	/* ====================================== nav ====================================== */	
 	nav {
 		background-color: white;
-		border-bottom: 1px solid #0397d6;
+		border-bottom: 1.5px solid #0397d6;
 		height: 60px;
 		line-height: 60px;
 		margin-bottom: 10px;
+		box-shadow: 2px 2px 3px rgba(0,0,0,0.2); 
 	}
 	#nav_ul {
 		width: 1070px;
@@ -123,8 +124,8 @@
 	<header>
 		<div id="head1">
 			<ul>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_home.png"></a></li>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_login.png"></a></li>
+				<li><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_home.png"></a></li>
+				<li><a href="${pageContext.request.contextPath}/login/login"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_login.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_mems.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_sh_basket.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_my.png"></a></li>

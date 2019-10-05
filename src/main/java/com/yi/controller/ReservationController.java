@@ -21,14 +21,7 @@ import com.yi.domain.TrainInfo;
 import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
-import com.yi.service.CityTrainService;
 import com.yi.service.ReservationService;
-import com.yi.service.TrainInfoServivce;
-import com.yi.service.TrainSeatService;
-import com.yi.service.TrainSeatTrainTimeService;
-import com.yi.service.TrainService;
-import com.yi.service.TrainTimeService;
-import com.yi.service.TrainTrainTimeService;
 
 @Controller
 @RequestMapping("/res/*")
@@ -37,31 +30,17 @@ public class ReservationController {
 	private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 	
 	@Autowired
-	TrainService tService;
-	@Autowired
-	TrainInfoServivce tiService;
-	@Autowired
-	TrainTimeService ttService;
-	@Autowired
-	CityTrainService ctService;
-	@Autowired
-	TrainTrainTimeService tttService;
-	@Autowired
-	TrainSeatTrainTimeService tsttService;
-	@Autowired
 	ReservationService rService;
-	@Autowired
-	TrainSeatService tsService;
 	
 	@RequestMapping(value="reservation", method=RequestMethod.GET)
 	public void reserveGet(String start, String arrive, String people, Model model) throws Exception {
 		logger.info("------------------- reserveGet --------------------");
 		logger.info(start + "," + arrive + "," + people);
 		
-		List<Train> tList = tService.listTrainNodeName();
-		List<TrainInfo> tiList = tiService.listTrainInfo();
-		List<TrainTime> ttList = ttService.listTrainTimeNodeName();
-		List<TrainTrainTime> tttList = tttService.listTrainByStartArrive(start, arrive);
+		List<Train> tList = rService.listTrainNodeName();
+		List<TrainInfo> tiList = rService.listTrainInfo();
+		List<TrainTime> ttList = rService.listTrainTimeNodeName();
+		List<TrainTrainTime> tttList = rService.listTrainByStartArrive(start, arrive);
 		
 		for(Train t : tList) {
 			logger.info(t.toString());
@@ -95,12 +74,12 @@ public class ReservationController {
 		List<TrainTrainTime> tttList = new ArrayList<TrainTrainTime>();
 		
 		if(tTiNo == 0) {
-			tttList = tttService.listTrainByStartArrive(startStation, arriveStation);
+			tttList = rService.listTrainByStartArrive(startStation, arriveStation);
 			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
 		}else {
-			tttList = tttService.listTrainByStartArriveByTiNo(startStation, arriveStation, tTiNo);
+			tttList = rService.listTrainByStartArriveByTiNo(startStation, arriveStation, tTiNo);
 			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
@@ -120,7 +99,7 @@ public class ReservationController {
 		
 //		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
 		
-		List<TrainSeatTrainTime> tsttList = tsttService.listTrainSeat(startStation, arriveStation, tCode, startTime);
+		List<TrainSeatTrainTime> tsttList = rService.listTrainSeat(startStation, arriveStation, tCode, startTime);
 		
 		for(TrainSeatTrainTime tstt : tsttList) {
 			logger.info(tstt.toString());
@@ -141,9 +120,9 @@ public class ReservationController {
 		
 		int people = Integer.parseInt(peoA) + Integer.parseInt(peoC) + Integer.parseInt(peoO);
 		
-		TrainInfo ti = tiService.selectTrainInfo(tTiNo);
-		CityTrain ctS = ctService.selectCityTrain(tStart);
-		CityTrain ctA = ctService.selectCityTrain(tArrive);
+		TrainInfo ti = rService.selectTrainInfo(tTiNo);
+		CityTrain ctS = rService.selectCityTrain(tStart);
+		CityTrain ctA = rService.selectCityTrain(tArrive);
 		
 		Date dateS = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tStartTime);
 		Date dateA = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(tArriveTime);

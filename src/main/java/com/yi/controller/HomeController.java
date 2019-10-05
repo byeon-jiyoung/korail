@@ -1,7 +1,5 @@
 package com.yi.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,8 +17,7 @@ import com.yi.domain.Train;
 import com.yi.domain.TrainTime;
 import com.yi.service.EventService;
 import com.yi.service.NoticeService;
-import com.yi.service.TrainService;
-import com.yi.service.TrainTimeService;
+import com.yi.service.ReservationService;
 
 /**
  * Handles requests for the application home page.
@@ -35,9 +32,7 @@ public class HomeController {
 	@Autowired
 	private EventService eService;
 	@Autowired
-	TrainService tService;
-	@Autowired
-	TrainTimeService ttService;
+	ReservationService rService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws Exception {
@@ -45,8 +40,8 @@ public class HomeController {
 		
 		List<Notice> noticeList = noService.top6Notice();
 		List<Event> eventList = eService.top2Event();
-		List<Train> tList = tService.listTrainNodeName();
-		List<TrainTime> ttList = ttService.listTrainTimeNodeName();
+		List<Train> tList = rService.listTrainNodeName();
+		List<TrainTime> ttList = rService.listTrainTimeNodeName();
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("eventList", eventList);

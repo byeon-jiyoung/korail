@@ -92,22 +92,22 @@
 	#loginWrap li {
 		float: left;
 		font-size: 0.8em;
-		margin-right: 17px;
+		width: 50%;
 	}
 	#loginForm p {
 		float: left;
 	}
 	#loginForm label {
-		width: 177px;
+		width: 130px;
 		float: left;
 		font-weight: bold;
 		font-size: 0.8em;
 		padding-top: 5px;
 	}
-	input[type="text"], input[type="password"] {
+	#loginForm input[type="text"], input[type="password"] {
 		padding: 3px 0;
 		border: 1px solid #ddd;
-		width: 180px;
+		width: 227px;
 		margin-bottom: 2px;
 	}
 	#btnWrap {
@@ -148,6 +148,7 @@
 	}
 	#goRes {
 		margin-top: 30px !important;
+		cursor: pointer;
 	}
 	.redColor {
 		color: red;
@@ -165,7 +166,11 @@
 <script>
 	$(function() {
 		$("#goJoin").click(function() {
-			location.href = "${pageContext.request.contextPath}/join/join";
+			location.href = "${pageContext.request.contextPath}/join/joinStipulation";
+		})
+		
+		$("#goRes").click(function() {
+			location.href = "${pageContext.request.contextPath}/res/reservation";
 		})
 	})
 </script>
@@ -195,13 +200,12 @@
 				</div>
 				<div id="loginWrap">
 					<ul>
-						<li><input type="radio" name="classLogin" id="a"><label for="a"> 멤버십번호 로그인</label></li>
-						<li><input type="radio" name="classLogin" id="b"><label for="b"> 이메일 아이디 로그인</label></li>
+						<li><input type="radio" name="classLogin" id="a" checked="checked"><label for="a"> 아이디 로그인</label></li>
 						<li><input type="radio" name="classLogin" id="c"><label for="c"> 휴대전화번호 로그인</label></li>
 					</ul>
 					<form id="loginForm" action="loginPost" method="post">
 						<p>
-							<label>코레일멤버십번호</label>
+							<label>아이디</label>
 							<input type="text" name="memId"> <br>
 							<label>비밀번호</label>
 							<input type="password" name="memPw">
@@ -211,7 +215,7 @@
 						</p>
 					</form>
 					<div id="btnWrap">
-						<button>멤버십(회원)번호 찾기</button>
+						<button>아이디 찾기</button>
 						<button>비밀번호 찾기</button>
 						<button id="goJoin">멤버십 가입</button>
 					</div>

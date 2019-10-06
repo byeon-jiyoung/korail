@@ -37,6 +37,12 @@ public class ReservationController {
 		logger.info("------------------- reserveGet --------------------");
 		logger.info(start + "," + arrive + "," + people);
 		
+		if(start == null || arrive == null || people == null) {
+			start = "서울";
+			arrive = "김천";
+			people = "1";
+		}
+		
 		List<Train> tList = rService.listTrainNodeName();
 		List<TrainInfo> tiList = rService.listTrainInfo();
 		List<TrainTime> ttList = rService.listTrainTimeNodeName();
@@ -151,6 +157,6 @@ public class ReservationController {
 			logger.info("r => " + r);
 		}
 		
-		//return "redirect:/res/finishRes";
+//		return "redirect:/res/finishRes";
 	}
 }

@@ -32,12 +32,18 @@ insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arriv
 values ('K002',1,'2019-09-30 14:30:00.000','2019-09-30 16:30:00.000','NAT010000','NAT013271');
 
 select * from train_time;
-insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 11:30:00.000','K001',20000,'NAT011668');
+/*insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 11:30:00.000','K001',20000,'NAT011668');
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 12:30:00.000','K001',30000,'NAT012546');
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 13:00:00.000','K001',40000,'NAT013271');
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 14:00:00.000','K001',50000,'NAT014445');
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 11:30:00.000','S001',15000,'NAT011668');
-insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 13:00:00.000','S001',30000,'NAT013271');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-09-30 13:00:00.000','S001',30000,'NAT013271');*/
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 12:00:00.000','K001',20000,'NAT011668');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 12:30:00.000','K001',30000,'NAT012546');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 13:00:00.000','K001',40000,'NAT013271');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 14:00:00.000','K001',50000,'NAT014445');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 12:10:00.000','S001',15000,'NAT011668');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-7 13:00:00.000','S001',30000,'NAT013271');
 
 select * from city_train where citycode = (select citycode from city where cityname like '%대구%');
 
@@ -61,8 +67,7 @@ select nodeid from city_train where nodename like '%대전%';
 
 
 select * from member;
-insert into member values ('test','test','변지영','1993-01-29','01020544177','대구','아파트',0,now(),false);
+insert into member values ('test','test',1234,'변지영','1993-01-29','01020544177','test@test.com','대구','아파트',0,now(),false);
 
 select * from reservation;
-insert into reservation(mem_id, res_date, tt_no, ts_car, ts_no, res_people) values ('test',now(),1,1,4,3);
-
+insert into reservation(res_no, mem_id, res_date, tt_no, ts_car, ts_no, res_people) values (1,'test',now(),1,1,4,3);

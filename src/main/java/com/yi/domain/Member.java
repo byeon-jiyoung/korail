@@ -6,11 +6,13 @@ import java.util.List;
 public class Member {
 	private String memId;
 	private String memPw;
+	private int memTpw;
 	private String memName;
 	private Date memBirth;
 	private String memPhone;
+	private String memEmail;
 	private String memAddress;
-	private String memdetailaddr;
+	private String memDetailaddr;
 	private int memMileage;
 	private Date memJoin;
 	private boolean memWithdrawal;
@@ -27,6 +29,12 @@ public class Member {
 	}
 	public void setMemPw(String memPw) {
 		this.memPw = memPw;
+	}
+	public int getMemTpw() {
+		return memTpw;
+	}
+	public void setMemTpw(int memTpw) {
+		this.memTpw = memTpw;
 	}
 	public String getMemName() {
 		return memName;
@@ -46,17 +54,23 @@ public class Member {
 	public void setMemPhone(String memPhone) {
 		this.memPhone = memPhone;
 	}
+	public String getMemEmail() {
+		return memEmail;
+	}
+	public void setMemEmail(String memEmail) {
+		this.memEmail = memEmail;
+	}
 	public String getMemAddress() {
 		return memAddress;
 	}
 	public void setMemAddress(String memAddress) {
 		this.memAddress = memAddress;
 	}
-	public String getMemdetailaddr() {
-		return memdetailaddr;
+	public String getMemDetailaddr() {
+		return memDetailaddr;
 	}
-	public void setMemdetailaddr(String memdetailaddr) {
-		this.memdetailaddr = memdetailaddr;
+	public void setMemDetailaddr(String memDetailaddr) {
+		this.memDetailaddr = memDetailaddr;
 	}
 	public int getMemMileage() {
 		return memMileage;
@@ -85,9 +99,9 @@ public class Member {
 	
 	@Override
 	public String toString() {
-		return "Member [memId=" + memId + ", memPw=" + memPw + ", memName=" + memName + ", memBirth=" + memBirth
-				+ ", memPhone=" + memPhone + ", memAddress=" + memAddress + ", memdetailaddr=" + memdetailaddr
-				+ ", memMileage=" + memMileage + ", memJoin=" + memJoin + ", memWithdrawal=" + memWithdrawal
-				+ ", discount=" + discount + "]";
+		return "Member [memId=" + memId + ", memPw=" + memPw + ", memTpw=" + memTpw + ", memName=" + memName
+				+ ", memBirth=" + memBirth + ", memPhone=" + memPhone + ", memEmail=" + memEmail + ", memAddress="
+				+ memAddress + ", memDetailaddr=" + memDetailaddr + ", memMileage=" + memMileage + ", memJoin="
+				+ memJoin + ", memWithdrawal=" + memWithdrawal + ", discount=" + discount + "]";
 	}
 }

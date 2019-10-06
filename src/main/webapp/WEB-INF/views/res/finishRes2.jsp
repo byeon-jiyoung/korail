@@ -114,16 +114,6 @@
 	.red {
 		color: red;
 	}
-	#table2 th:nth-child(1) {
-		width: 140px;
-	}
-	#table2 th:nth-child(2),#table2 th:nth-child(3),#table2 th:nth-child(4),#table2 th:nth-child(5) {
-		width: 100px;
-	}
-	
-	#table2 select {
-		width: 200px;
-	}
 	#rightDiv {
 		float: right;
 		border: 1px solid #9e9e9e;
@@ -172,8 +162,8 @@
 </style>
 
 <script>
+	/* 
 	$(function() {
-		/* 
 		alert("20분 내에 결제하셔야 예약이 완료됩니다.");
 		
 		alert("1. 승차권 환불 위약금은 다음과 같습니다. \n <출발 전>\n - 월~목요일 : 출발 3시간 전까지 무료 \n - 월~목요일 : 출발 3시간 전 ~ 출발시간 전까지 5%" + 
@@ -182,13 +172,9 @@
 				"\n - 출발시간 20분 경과 후 ~ 60분까지 40% \n - 출발시각 60분 경과 후 ~ 도착역 도착시간 전까지 70% \n * 열차 출발 시각 이후에는 역창구에서 환불 신청하셔야 합니다." + 
 				"\n * 도착역 도착 후에는 환불되지 않습니다. \n * 승차권을 구매한 당일에 환불 청구하실 경우 위약금을 감면받으실 수 있습니다.(열차 출발 3시간 전까지, 할인 승차권 제외)" + 
 				"\n\n2. 레츠코레일에서 구입한 승차권을 역 창구에서 변경 시 할인이 취소될 수 있습니다. \n\n3. 할인 승차권의 할인율은 별도 공지없이 변경될 수 있습니다." + 
-				"\n\n4. 열차정보, 구입기간, 매수 금액, 주의사항 등을 최종 확인하였습니다."); 
-		*/
-		
-		$("#cancelBtn").click(function() {
-			location.href = "${pageContext.request.contextPath}/";
-		})
+				"\n\n4. 열차정보, 구입기간, 매수 금액, 주의사항 등을 최종 확인하였습니다.");
 	}) 
+	*/
 	
 	/* 
 	// 뒤로가기 방지
@@ -274,51 +260,45 @@
 						<td><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
 						<c:forEach var="res" items="${resList}" begin="0" end="0">
 							<td>${res.resPeople}</td>
-							<td class="red">
-								<fmt:formatNumber pattern="###,###" value="${(a*res.ttNo.price)+(c*res.ttNo.price*0.9)+(o*res.ttNo.price*0.85)}"/>원
-							</td>
+							<td class="red"><fmt:formatNumber pattern="###,###" value="${res.resPeople * res.ttNo.price}"/></td>
 						</c:forEach>
 					</tr>
 				</table>
-				<table id="table2">
+				<table>
 					<tr>
-						<th>좌석정보</th>
+						<th colspan="2">좌석정보</th>
 						<th>승객유형</th>
 						<th>운임요금</th>
 						<th>할인금액</th>
 						<th>영수금액</th>
-						<th>운임추가할인선택</th>
+						<th colspan="2">운임추가할인선택</th>
 					</tr>
 					<tr>
 						<c:forEach var="res" items="${resList}">
 							<tr>
-								<td>
+								<td colspan="2">
 									${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}
 								</td>
-								<c:if test="${a > 0}">
-									<td>성인</td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
-									<td>0</td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
-								</c:if>
-								<c:if test="${c > 0 && a <= 0}">
-									<td>어린이</td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price * 0.1}"/></td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price - (res.ttNo.price * 0.1)}"/></td>
-								</c:if>
-								<c:if test="${o > 0 && c <= 0 && a <= 0}">
-									<td>경로</td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price * 0.15}"/></td>
-									<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price - (res.ttNo.price * 0.15)}"/></td>
-									<c:set var="o" value="${o-1}" />
-								</c:if>
-								<c:set var="a" value="${a-1}" />
-								<c:if test="${a < 0}">
-									<c:set var="c" value="${c-1}" />
-								</c:if>
-								<td>
+								<td class="pp">
+									<c:if test="${a > 0}">
+										성인
+									</c:if>
+									<c:if test="${c > 0 && a <= 0}">
+										어린이
+									</c:if>
+									<c:if test="${o > 0 && c <= 0 && a <= 0}">
+										경로
+										<c:set var="o" value="${o-1}" />	
+									</c:if>
+									<c:set var="a" value="${a-1}" />
+									<c:if test="${a < 0}">
+										<c:set var="c" value="${c-1}" />
+									</c:if>
+								</td>
+								<td><fmt:formatNumber pattern="###,###" value="${res.ttNo.price}"/></td>
+								<td></td>
+								<td></td>
+								<td colspan="2">
 									<c:if test="${Auth != null}">
 										<select>
 											<option>선택안함</option>

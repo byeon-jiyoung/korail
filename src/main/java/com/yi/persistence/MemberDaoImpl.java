@@ -31,4 +31,19 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlsession.selectOne(namespace + ".selectMemberByIdPw", map);
 	}
 
+	@Override
+	public void insertMember(Member member) throws Exception {
+		sqlsession.insert(namespace + ".insertMember", member);
+	}
+
+	@Override
+	public Member selectMemberById(String id) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectMemberById", id);
+	}
+
+	@Override
+	public Member selectMemberByPhone(String phone) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectMemberByPhone", phone);
+	}
+
 }

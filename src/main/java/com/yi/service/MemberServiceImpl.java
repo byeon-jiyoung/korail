@@ -24,4 +24,19 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectMemberByIdPw(id, pw);
 	}
 
+	@Override
+	public void insertMember(Member member) throws Exception {
+		dao.insertMember(member);
+	}
+
+	@Override
+	public Member selectMemberById(String id) throws Exception {
+		return dao.selectMemberById(id);
+	}
+
+	@Override
+	public Member selectMemberByPhone(String phone) throws Exception {
+		return dao.selectMemberByPhone(phone);
+	}
+
 }

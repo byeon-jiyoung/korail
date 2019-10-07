@@ -16,5 +16,5 @@ public interface ReservationDao {
 	public void updateResCancel(String resClaNum) throws Exception;
 	public List<Reservation> selectResByClassNum(String resClaNum) throws Exception;
 	public void updateSalNo(int salNo, int resClaNum) throws Exception;
-	
+	public List<Reservation> selecResBySalNo(int salNo) throws Exception;
 }

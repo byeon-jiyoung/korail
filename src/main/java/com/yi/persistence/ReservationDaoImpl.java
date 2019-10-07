@@ -106,4 +106,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		sqlsession.update(namespace + ".updateSalNo", map);
 	}
 
+	@Override
+	public List<Reservation> selecResBySalNo(int salNo) throws Exception {
+		return sqlsession.selectList(namespace + ".selecResBySalNo", salNo);
+	}
+
 }

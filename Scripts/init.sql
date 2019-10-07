@@ -440,3 +440,7 @@ join
 	(select * from train t join city_train ct on t.t_arrive = ct.nodeid) arriveStation
 on 
 	startStation.t_code = arriveStation.t_code;
+	
+	
+create view SaleReservation as
+select r.*, s.sal_price, s.sal_classify, s.sal_discount from reservation r join sale s on s.sal_no = r.sal_no join train_time tt on tt.tt_no = r.tt_no join train t on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid;

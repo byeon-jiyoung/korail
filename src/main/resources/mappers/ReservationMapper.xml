@@ -70,4 +70,8 @@
 	<update id="updateSalNo">
 		update reservation set sal_no = #{salNo} where res_cla_num = #{resClaNum}
 	</update>
+	
+	<select id="selecResBySalNo" resultMap="resultReservation">
+		select * from reservation r join sale s on s.sal_no = r.sal_no where s.sal_no = #{salNo.salNo}
+	</select>
 </mapper>

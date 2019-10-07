@@ -17,7 +17,12 @@
 		insert into sale(sal_price,sal_discount,sal_classify) values (#{salPrice},#{salDiscount},#{salClassify})
 	</insert>
 	
-	<select id="selectSalelately" resultMap="resultSale">
+	<select id="selectSalelately" resultType="int">
 		select sal_no from sale order by sal_no desc limit 1
+	</select>
+	
+	<select id="resultSale" resultMap="resultSale">
+		select * from sale s join reservation r on s.sal_no = r.sal_no join train t on t.t_code = r.t_code 
+		join city_train ct on ct.nodeid = t.t_arrive where s.sal_no = #{salNo}
 	</select>
 </mapper>

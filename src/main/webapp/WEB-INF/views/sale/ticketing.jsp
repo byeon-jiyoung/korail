@@ -82,6 +82,15 @@
 		padding: 0 30px;
 	}
 	
+	#resSucces {
+		border-top: 3px dotted #0097d0;
+		border-bottom: 3px dotted #0097d0;
+		padding: 20px 0;
+		text-align: center;
+		font-size: 1.2em;
+		margin: 10px 0;
+		font-weight: bold;
+	}
 </style>
 
 	<section>
@@ -110,7 +119,49 @@
 				<div class="clear"></div>
 			</div>
 			<div id="res_list">
-				<div>예매가 완료되었습니다.</div>
+				<div id="resSucces">예매가 완료되었습니다.</div>
+				<table>
+					<tr>
+						<th>결제금액</th>
+						<td><fmt:formatNumber pattern="###,###" value="${sale.salPrice}"/>원</td>
+					</tr>
+					<tr>
+						<th>할인금액</th>
+						<td><fmt:formatNumber pattern="###,###" value="${sale.salDiscount}"/>원</td>
+					</tr>
+					<tr>
+						<th>결제방법</th>
+						<c:if test="${sale.salClassify == true}">
+							<td>계좌이체</td>
+						</c:if>
+						<c:if test="${sale.salClassify == false}">
+							<td>카드</td>
+						</c:if>
+					</tr>
+					<c:forEach var="res" items="${resList}">
+						<tr>
+							<th>예매시간</th>
+							<td><fmt:formatDate pattern="MM월 dd일  HH시mm분" value="${res.resDate}"/></td>
+						</tr>
+						<tr>
+							<th>예매인원수</th>
+							<td>${res.resPeople}명</td>
+						</tr>
+						<tr>
+							<th>예매좌석</th>
+							<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}석</td>
+						</tr>
+					</c:forEach>
+					<%-- <tr>
+						<th>출발역</th>
+						<td>${sale.salDiscount}</td>
+					</tr>
+					<tr>
+						<th>도착역</th>
+						<td>${sale.salDiscount}</td>
+					</tr> --%>
+				</table>
+				
 			</div>	
 		</div>
 		

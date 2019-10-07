@@ -1,5 +1,6 @@
 package com.yi.controller;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,20 +34,41 @@ public class ReservationController {
 	ReservationService rService;
 	
 	@RequestMapping(value="reservation", method=RequestMethod.GET)
-	public void reserveGet(String start, String arrive, String people, Model model) throws Exception {
+	public void reserveGet(String start, String arrive, String people, String date, String time, Model model) throws Exception {
 		logger.info("------------------- reserveGet --------------------");
 		logger.info(start + "," + arrive + "," + people);
+		logger.info(date + "," + time);
 		
-		if(start == null || arrive == null || people == null) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date today = new Date();
+		String strToday = df.format(today);
+		
+		if(start == null || arrive == null || people == null || date == null || time == null) {
 			start = "서울";
-			arrive = "김천";
+			arrive = "동대구";
 			people = "1";
+			date = strToday;
+			time = "00:00";
+		}
+		
+		String searchTime = date.concat(" ").concat(time);
+		String endTime = date.concat(" ").concat("23:59:59");
+		logger.info("==========>"+searchTime+" & "+endTime);
+		
+		Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(searchTime);
+		
+		if(date2.getTime() < today.getTime()) {
+			logger.info("--------------------------------" + date2.getTime() + "&" + date2);
+			logger.info("--------------------------------" + today.getTime() + "&" + today);
+			date = strToday;
+			searchTime = date;
+			logger.info("=====2=====>"+searchTime+" & "+endTime);
 		}
 		
 		List<Train> tList = rService.listTrainNodeName();
 		List<TrainInfo> tiList = rService.listTrainInfo();
 		List<TrainTime> ttList = rService.listTrainTimeNodeName();
-		List<TrainTrainTime> tttList = rService.listTrainByStartArrive(start, arrive);
+		List<TrainTrainTime> tttList = rService.listTrainByStartArrive(start, arrive, searchTime, endTime);
 		
 		for(Train t : tList) {
 			logger.info(t.toString());
@@ -71,21 +93,38 @@ public class ReservationController {
 	
 	@ResponseBody
 	@RequestMapping(value="reservation", method=RequestMethod.POST)
-	public List<TrainTrainTime> reservePost(int tTiNo, String startStation, String arriveStation, Model model) throws Exception {
+	public List<TrainTrainTime> reservePost(int tTiNo, String startStation, String arriveStation, String date, String time, Model model) throws Exception {
 		logger.info("------------------- reservePost --------------------");
 		logger.info("startStation : " + startStation);
 		logger.info("arriveStation : " + arriveStation);
 		logger.info("tTiNo : " + tTiNo);
 		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date today = new Date();
+		String strToday = df.format(today);
+		
 		List<TrainTrainTime> tttList = new ArrayList<TrainTrainTime>();
 		
+		String searchTime = date.concat(" ").concat(time);
+		String endTime = date.concat(" ").concat("23:59:59");
+		
+		Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(searchTime);
+		
+		if(date2.getTime() < today.getTime()) {
+			logger.info("--------------------------------" + date2.getTime() + "&" + date2);
+			logger.info("--------------------------------" + today.getTime() + "&" + today);
+			date = strToday;
+			searchTime = date;
+			logger.info("=====2=====>"+searchTime+" & "+endTime);
+		}
+		
 		if(tTiNo == 0) {
-			tttList = rService.listTrainByStartArrive(startStation, arriveStation);
+			tttList = rService.listTrainByStartArrive(startStation, arriveStation, searchTime, endTime);
 			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
 		}else {
-			tttList = rService.listTrainByStartArriveByTiNo(startStation, arriveStation, tTiNo);
+			tttList = rService.listTrainByStartArriveByTiNo(startStation, arriveStation, tTiNo, searchTime, endTime);
 			for(TrainTrainTime t : tttList) {
 				logger.info(t.toString());
 			}
@@ -115,13 +154,14 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value="finishRes", method=RequestMethod.POST)
-	public void finishResPost(String tCode, int tTiNo, String tStart, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
+	public void finishResPost(String tCode, int tTiNo, String tStart, String memId, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
 		logger.info("------------------- finishResPost --------------------");
 		logger.info("tCode : " + tCode + ", tTiNo : " + tTiNo);
 		logger.info("tStart : " + tStart + ", tArrive : " + tArrive);
 		logger.info("tStartTime : " + tStartTime + ", tArriveTime : " + tArriveTime);
 		logger.info("price : " + price);
 		logger.info("tsCar : " + tsCar + ", tsNo : " + tsNo);
+		logger.info("memId : " + memId);
 		logger.info("peoA : " + peoA + ", peoC : " + peoC + ", peoO : " + peoO);
 		
 		int people = Integer.parseInt(peoA) + Integer.parseInt(peoC) + Integer.parseInt(peoO);
@@ -144,19 +184,35 @@ public class ReservationController {
 		
 		String[] c = tsNo.split("석");
 		for(String s : c) {
-			rService.insertReservation(++resNo, resClaNum, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+			if(memId == "") {
+				rService.insertReservation(++resNo, resClaNum, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+			}else {
+				rService.insertReservationMember(++resNo, resClaNum, memId, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+			}
 		}
+		logger.info(resClaNum + "---------------------------------------------");
 		
 		List<Reservation> resList = rService.listReservationByResClaNum(resClaNum);
 		model.addAttribute("resList", resList);
 		model.addAttribute("a", peoA);
 		model.addAttribute("c", peoC);
 		model.addAttribute("o", peoO);
+		model.addAttribute("resClaNum", resClaNum);
 
 		for(Reservation r : resList) {
 			logger.info("r => " + r);
 		}
 		
 //		return "redirect:/res/finishRes";
+//이미 예약테이블에 insert가 된 상태라서 get으로 리다이렉트시킨다음에 예약테이블에서 값을 불러오는 방식으로 하면 계속 insert되는 문제를 해결할 수 있다
+	}
+	
+	
+	@RequestMapping(value="resCancel", method=RequestMethod.GET)
+	public void resCancelGet(String resClaNum) throws Exception {
+		logger.info("------------------- resCancelGet --------------------");
+		logger.info("resClaNum : " + resClaNum);
+		
+		rService.updateResCancel(resClaNum);
 	}
 }

@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -203,27 +204,38 @@
 						<label>출발역</label>
 						<select name="start">
 							<c:forEach var="train" items="${tList}">
-								<option>${train.tStart.nodename}</option>
+								<c:if test="${train.tStart.nodename == '서울'}">
+									<option selected="selected">${train.tStart.nodename}</option>
+								</c:if>
+								<c:if test="${train.tStart.nodename != '서울'}">
+									<option>${train.tStart.nodename}</option>
+								</c:if>
 							</c:forEach>
 						</select> <br>
 						<label>도착역</label>
 						<select name="arrive">
 							<c:forEach var="traintime" items="${ttList}">
-								<option>${traintime.nodeid.nodename}</option>
+								<c:if test="${traintime.nodeid.nodename == '동대구'}">
+									<option selected="selected">${traintime.nodeid.nodename}</option>
+								</c:if>
+								<c:if test="${traintime.nodeid.nodename != '동대구'}">
+									<option>${traintime.nodeid.nodename}</option>
+								</c:if>
 							</c:forEach>
 						</select>
 					</div>
 					<div id="resInfo">
 						<label>출발일</label>
-						<input type="date"> <br>
+						<fmt:formatDate value="<%=new Date() %>" pattern="yyyy-MM-dd" var="today"/>
+						<input type="date" value="${today}" name="date"> <br>
 						<label>시간</label>
 						<select name="time">
 							<c:forEach var="t" begin="0" end="23">
 								<c:if test="${t <= 11}">
-									<option>${t} (오전 ${t}) 시</option>
+									<option value="0${t}:00">${t} (오전 ${t}) 시</option>
 								</c:if>
 								<c:if test="${t > 11}">
-									<option>${t} (오후 ${t-12}) 시</option>
+									<option value="${t}:00">${t} (오후 ${t-12}) 시</option>
 								</c:if>
 							</c:forEach>
 						</select> <br>
@@ -323,8 +335,10 @@
 				var start = $("select[name=start]").val();
 				var arrive = $("select[name=arrive]").val();
 				var people = $("select[name=people]").val();
-				
-				location.href = "${pageContext.request.contextPath}/res/reservation?start="+start+"&arrive="+arrive+"&people="+people;
+				var date = $("input[name='date']").val();
+				var time = $("select[name=time]").val();
+
+				location.href = "${pageContext.request.contextPath}/res/reservation?start="+start+"&arrive="+arrive+"&people="+people+"&date="+date+"&time="+time;
 			})
 			
 			$("#noticeMore").click(function() {

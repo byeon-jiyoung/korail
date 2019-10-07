@@ -63,4 +63,47 @@ public class ReservationDaoImpl implements ReservationDao {
 		}
 	}
 
+	@Override
+	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("resNo", resNo);
+		map.put("resClaNum", resClaNum);
+		map.put("memId", memId);
+		map.put("people", people);
+		map.put("start", start);
+		map.put("arrive", arrive);
+		map.put("startTime", startTime);
+		map.put("tCode", tCode);
+		map.put("tsCar", tsCar);
+		map.put("tsNo", tsNo);
+		
+		System.out.println("----------------------------------------------------------------------------------------------------" + map);
+		
+		sqlsession.insert(namespace + ".insertReservation", map);
+	}
+
+	@Override
+	public List<Reservation> listReservationForGet() throws Exception {
+		return sqlsession.selectList(namespace + ".listReservationForGet");
+	}
+
+	@Override
+	public void updateResCancel(String resClaNum) throws Exception {
+		sqlsession.update(namespace + ".updateResCancel", resClaNum);
+	}
+
+	@Override
+	public List<Reservation> selectResByClassNum(String resClaNum) throws Exception {
+		return sqlsession.selectList(namespace + ".selectResByClassNum", resClaNum);
+	}
+
+	@Override
+	public void updateSalNo(int salNo, int resClaNum) throws Exception {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("salNo", salNo);
+		map.put("resClaNum", resClaNum);
+		
+		sqlsession.update(namespace + ".updateSalNo", map);
+	}
+
 }

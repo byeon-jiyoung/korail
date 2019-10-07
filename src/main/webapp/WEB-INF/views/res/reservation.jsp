@@ -68,11 +68,16 @@
 		text-decoration: none;
 	}
 	#res_back2 h1 {
-		padding-bottom: 40px;
 		padding-top: 10px;
+		font-size: 30px;
 	}
-	
-	
+	#orderWrap {
+		float: right;
+		margin: 40px 30px 10px 0;
+	}
+	.clear { 
+		clear: both;
+	}
 	
 	table {
 		border-collapse: collapse;
@@ -80,6 +85,7 @@
 	td, th {
 		border: 1px solid #aaa;
 		padding: 10px 20px;
+		text-align: center;
 	}
 	table tr:first-child {
 		background-color: #f8f8f8;
@@ -386,6 +392,35 @@
 	#goResForm {
 		margin-bottom: 30px;
 	}
+	
+	/* ---------------------- 조회한 기차가 없을 경우 -------------------------- */
+	#none {
+		display: none;
+		border-top: 3px dotted #0097d0;
+		border-bottom: 3px dotted #0097d0;
+		padding: 50px 0;
+		text-align: center;
+		font-size: 0.8em;
+	}
+	#none > b {
+		display: block;
+	}
+	.orange {
+		color: #FF9600;
+		margin: 10px;
+	}
+	.blue {
+		color: #3590d2;
+		margin: 10px;
+	}
+	#none > button {
+		padding: 5px 10px;
+		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_blue.png") repeat-x;
+		border: none;
+		color: white;
+		background-size: auto 100%;
+		margin-top: 10px;
+	}
 </style>
 
 <script>
@@ -394,20 +429,28 @@
 			selPeople = 0;
 			$(".selSeat").empty();
 			
+			var strDate = $("select[name=year]").val()+"-"+$("select[name=month]").val()+"-"+$("select[name=date]").val();
+			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/reservation",
 				type: "post",
-				data: {"startStation":$("select[name='startStation']").val(),"arriveStation":$("select[name='arriveStation']").val(),"tTiNo":$("input[name='tTiNo']:checked").val()},
+				data: {"startStation":$("select[name='startStation']").val(),"arriveStation":$("select[name='arriveStation']").val(),"tTiNo":$("input[name='tTiNo']:checked").val(),
+						"date":strDate,"time":$("select[name=time]").val()},
 				dataType:"json",
 				success: function(res) {
 					console.log(res);
 					
 					if(res.length == 0) {
-						alert("기차없음");
+						$("#orderWrap").empty();
+						$("#ultext").empty();
+						$("article").empty();
+						$("#resForm").empty();
+						$("#none").css("display", "block");
+						$("#res_back2 h1").text("안내메세지");
 					}
 					
 					$("table").empty();
-					$("table").append("<tr><th>열차번호</th><th>출발</th><th>도착</th><th>좌석</th><th>가격</th></tr>");
+					$("table").append("<tr><th>열차분류</th><th>열차번호</th><th>출발</th><th>도착</th><th>좌석</th><th>가격</th></tr>");
 					
 					$(res).each(function(i, obj) {
 						var start_time = new Date(obj.tStartTime);
@@ -420,9 +463,10 @@
 
 					 	var $tr = $("<tr>");
 						var $tiName = $("<td>").attr("data-code", obj.tCode).text(obj.tTiNo.tiName);
-						var $span1 = $("<span>").addClass("st").html(start_time.getHours()+":"+("00" + start_time.getMinutes()).slice(-2));
+						var $tiCode = $("<td>").text(obj.tCode);
+						var $span1 = $("<span>").addClass("st").html(("00" + start_time.getHours()).slice(-2)+":"+("00" + start_time.getMinutes()).slice(-2));
 						var $tStart = $("<td>").html(obj.tStart.nodename+"<br>").append($span1);
-						var $tArrive = $("<td>").html(obj.nodeid.nodename+"<br>"+arrive_time.getHours()+":"+("00" + arrive_time.getMinutes()).slice(-2));
+						var $tArrive = $("<td>").html(obj.nodeid.nodename+"<br>"+("00" + arrive_time.getHours()).slice(-2)+":"+("00" + arrive_time.getMinutes()).slice(-2));
 						var $imgRan = $("<img>").attr("src", "${pageContext.request.contextPath}/resources/images/res/icon3.png").attr("data-time", arriveTime).addClass("searchSeatRan");
 						var $img = $("<img>").attr("src", "${pageContext.request.contextPath}/resources/images/res/icon4.png").attr("data-time", arriveTime).addClass("searchSeat");
 						var $td = $("<td>").append($imgRan).append($img);
@@ -434,13 +478,20 @@
 						var at = $("<span>").addClass("at").html(arriveTime);
 						var atTd = $("<td>").addClass("none").append(at);
 						
-						$tr.append($tiName).append($tStart).append($tArrive).append($td).append($price).append(stTd).append(atTd);
+						$tr.append($tiName).append($tiCode).append($tStart).append($tArrive).append($td).append($price).append(stTd).append(atTd);
 						$("table").append($tr);
 					})
 				}
 			})
 		})
 		
+		//예매버튼 클릭
+		$(document).on("click", ".searchSeatRan", function(){
+			
+		})
+		
+		//좌석선택버튼 클릭
+		var rownum = 0; //행에 따른 도착시간 받아오기 위해
 		var compareCar = 0;
 		$(document).on("click", ".searchSeat", function(){
 			selPeople = 0;
@@ -449,7 +500,7 @@
 			var startTime = $(this).attr("data-time");
 			var tCode = $(this).parents("tr").find("td").attr("data-code");
 			
-			alert(tCode);
+			rownum = $(this).closest("tr").index();
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/seat",
@@ -606,11 +657,11 @@
 			
 			/* var st = $(".st2").eq(0).text();
 			st = new Date(st.substring(0, 4), st.substring(5, 7), st.substring(5, 7), st.substring(8, 10), st.substring(11, 13), st.substring(14, 16)); */
-			$("input[name='tStartTime']").attr("value", $(".st2").eq(0).text());
+			$("input[name='tStartTime']").attr("value", $(".st2").eq(rownum-1).text());
 			
 			/* var at = $(".at").eq(0).text();
 			at = new Date(at.substring(0, 4), at.substring(5, 7), at.substring(5, 7), at.substring(8, 10), at.substring(11, 13), at.substring(14, 16)); */
-			$("input[name='tArriveTime']").attr("value", $(".at").eq(0).text());
+			$("input[name='tArriveTime']").attr("value", $(".at").eq(rownum-1).text());
 			$("input[name='tsCar']").attr("value", Number($(".decCar").text()));
 			$("input[name='tsNo']").attr("value", $(".selSeat").text());
 		})
@@ -622,6 +673,11 @@
 			$("#myModal").hide();
 			$(".selSeat").text("");
 			/* alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\n\n(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)"); */
+		})
+		
+		//기차가 없는경우
+		$("#noneBtn").click(function() {
+			location.href = "${pageContext.request.contextPath}/";
 		})
 		
 	})
@@ -645,6 +701,13 @@
 					<a href="${pageContext.request.contextPath}/">승차권예약</a> >
 					<a href="${pageContext.request.contextPath}/">일반승차권</a></p>
 				<h1>일반승차권</h1>
+				<div id="orderWrap">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck01_on.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck02.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck03.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck04.png">
+				</div>
+				<div class="clear"></div>
 			</div>
 			<div id="res_list">
 				<div id="resForm">
@@ -738,10 +801,10 @@
 							<select name="time">
 								<c:forEach var="t" begin="0" end="23">
 									<c:if test="${t <= 11}">
-										<option value="${t}">${t}(오전 ${t})</option>
+										<option value="0${t}:00">${t}(오전 ${t})</option>
 									</c:if>
 									<c:if test="${t > 11}">
-										<option value="${t}">${t}(오후 ${t-12})</option>
+										<option value="${t}:00">${t}(오후 ${t-12})</option>
 									</c:if>
 								</c:forEach>
 							</select><span>시</span>
@@ -763,6 +826,7 @@
 				<article>
 					<table>
 						<tr>
+							<th>열차분류</th>
 							<th>열차번호</th>
 							<th>출발</th>
 							<th>도착</th>
@@ -773,6 +837,7 @@
 						<c:forEach var="ttt" items="${tttList}">
 							<tr>
 								<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
+								<td>${ttt.tCode}</td>
 								<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
 								<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
 								<td>
@@ -790,6 +855,15 @@
 						</c:forEach>
 					</table>			
 				</article>
+				
+				<!-- 기차가 없는 경우 -->
+				<div id="none">
+					<img src="${pageContext.request.contextPath}/resources/images/res/guide.png">
+					<b class="orange">조회 결과가 없습니다.</b>
+					<b class="blue">자세한 문의는 1544-7788(철도고객센터)로 문의하십시오.</b>
+					<button id="noneBtn">확인</button>
+				</div>
+				
 				
 				<!-- Modal Start -->
 				<div id="myModal" class="modal">
@@ -840,8 +914,36 @@
 								<input type="hidden" name="peoO">
 								<input type="hidden" name="tsCar">
 								<input type="hidden" name="tsNo">
+								<c:if test="${Auth != null}">
+									<input type="hidden" name="memId" value="${Auth.memId}">
+								</c:if>
+								<c:if test="${Auth == null}">
+									<input type="hidden" name="memId" value="">
+								</c:if>
 								<input type="submit" class="btnWrap" id="goRes" value="선택좌석예약하기">
+							</form>
+							<%-- 
+							<form action="finishRes" method="post" id="randomForm">
+								<input type="hidden" name="tCode">
+								<input type="hidden" name="tTiNo">
+								<input type="hidden" name="tStart">
+								<input type="hidden" name="tArrive">
+								<input type="hidden" name="tStartTime">
+								<input type="hidden" name="price">
+								<input type="hidden" name="tArriveTime">
+								<input type="hidden" name="peoA">
+								<input type="hidden" name="peoC">
+								<input type="hidden" name="peoO">
+								<input type="hidden" name="tsCar">
+								<input type="hidden" name="tsNo">
+								<c:if test="${Auth != null}">
+									<input type="hidden" name="memId" value="${Auth.memId}">
+								</c:if>
+								<c:if test="${Auth == null}">
+									<input type="hidden" name="memId" value="">
+								</c:if>
 							</form> 
+							--%>
 						</div>
 					</div>
 				</div>
@@ -849,6 +951,16 @@
 			</div>
 		</div>
 		
+		<c:if test="${tttList == '[]'}">
+			<script>
+				$("#orderWrap").empty();
+				$("#ultext").empty();
+				$("article").empty();
+				$("#resForm").empty();
+				$("#none").css("display", "block");
+				$("#res_back2 h1").text("안내메세지");
+			</script>
+		</c:if>
 	</section>
 	
 <%@ include file="../include/footer.jsp" %>

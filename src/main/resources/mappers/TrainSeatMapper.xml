@@ -21,4 +21,8 @@
 	<update id="updateTrainSeatByNow">
 		update train_seat ts join train_time tt on ts.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid set ts.ts_choice = 0 where tt.tt_start_time <![CDATA[<=]]> now() and ts.t_code = #{tCode} and ct.nodename = #{arrive}
 	</update>
+	
+	<update id="updateTsChoiceCancel" parameterType="TrainSeat">
+		update train_seat set ts_choice = false where t_code = #{tCode.tCode} and ts_no = #{tsNo} and ts_car = #{tsCar}
+	</update>
 </mapper>

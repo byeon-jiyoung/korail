@@ -54,7 +54,6 @@
 	}
 	
 	
-	
 	#res_back2 {
 		background: url("${pageContext.request.contextPath}/resources/images/res/tra_visual01.jpg") no-repeat right top;
 		padding-left: 30px;
@@ -68,8 +67,15 @@
 		text-decoration: none;
 	}
 	#res_back2 h1 {
-		padding-bottom: 40px;
 		padding-top: 10px;
+		font-size: 30px;
+	}
+	#orderWrap {
+		float: right;
+		margin: 40px 30px 10px 0;
+	}
+	.clear { 
+		clear: both;
 	}
 	
 	
@@ -145,7 +151,7 @@
 		float: right;
 		clear: both;
 		margin-right: 30px;
-		margin-top: 15px;
+		margin-top: 20px;
 	}
 	#discountBtn {
 		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_pink.png");
@@ -159,15 +165,15 @@
 		padding: 5px 14px;
 		color: white;
 	}
-	#btnWrap2 {
-		float: right;
-		margin-right: 30px;
-		margin-top: 20px;
-	}
 	#cancelBtn {
 		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_gray.png") repeat-x;
 		padding: 5px 14px;
 		border: 1px solid #9e9e9e;
+	}
+	
+	/*--------------------------예약취소할때값넘기려고------------------------------------*/
+	.classNum {
+		display: none;
 	}
 </style>
 
@@ -186,12 +192,17 @@
 		*/
 		
 		$("#cancelBtn").click(function() {
-			location.href = "${pageContext.request.contextPath}/";
+			var resClaNum = $(".classNum").text();
+			location.href = "${pageContext.request.contextPath}/res/resCancel?resClaNum="+resClaNum;
+		})
+		
+		$("#saleBtn").click(function() {
+			var totalPrice = $(".totalPrice").attr("data-totalPrice");
+			location.href = "${pageContext.request.contextPath}/sale/sale?totalPrice="+totalPrice;
 		})
 	}) 
 	
-	/* 
-	// 뒤로가기 방지
+	/* // 뒤로가기 방지
 	window.history.forward(1);
 
 	// 우클릭방지
@@ -224,8 +235,7 @@
 			event.keyCode = 0;
 			event.returnValue = false;
 		}
-	} 
-	*/
+	}  */
 	
 </script>
 
@@ -246,12 +256,20 @@
 					<a href="${pageContext.request.contextPath}/">승차권</a> > 
 					<a href="${pageContext.request.contextPath}/">승차권 예약</a></p>
 				<h1>예약</h1>
+				<div id="orderWrap">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck01.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck02_on.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck03.png">
+					<img src="${pageContext.request.contextPath}/resources/images/res/step_tck04.png">
+				</div>
+				<div class="clear"></div>
 			</div>
 			<div id="res_list">
 				<div id="resimg_top">
 					<img src="${pageContext.request.contextPath}/resources/images/res/tit_tick02.png">
 					<img src="${pageContext.request.contextPath}/resources/images/res/tit_tick02_img.png">
 				</div>
+				<span class="classNum">${resClaNum}</span>
 				<table>
 					<tr>
 						<th>승차일자</th>
@@ -274,7 +292,7 @@
 						<td><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
 						<c:forEach var="res" items="${resList}" begin="0" end="0">
 							<td>${res.resPeople}</td>
-							<td class="red">
+							<td class="red totalPrice" data-totalPrice="${(a*res.ttNo.price)+(c*res.ttNo.price*0.9)+(o*res.ttNo.price*0.85)}">
 								<fmt:formatNumber pattern="###,###" value="${(a*res.ttNo.price)+(c*res.ttNo.price*0.9)+(o*res.ttNo.price*0.85)}"/>원
 							</td>
 						</c:forEach>
@@ -336,11 +354,10 @@
 				</div>
 				<div id="clear"></div>
 				<div id="btnWrap">
-					<button id="discountBtn">할인적용</button>
+					<c:if test="${Auth != null}">
+						<button id="discountBtn">할인적용</button>
+					</c:if>
 					<button id="saleBtn">결제하기</button>
-				</div>
-				<div id="clear"></div>
-				<div id="btnWrap2">
 					<button id="cancelBtn">예약취소</button>
 				</div>
 			</div>

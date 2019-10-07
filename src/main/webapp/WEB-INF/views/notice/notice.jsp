@@ -71,6 +71,7 @@
 	#notice_back2 h1 {
 		padding-bottom: 40px;
 		padding-top: 10px;
+		font-size: 30px;
 	}
 	#notice_list h4 {
 		margin: 30px;

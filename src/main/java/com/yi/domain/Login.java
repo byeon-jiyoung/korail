@@ -4,13 +4,15 @@ public class Login {
 	private String memId;
 	private String memPw;
 	private String memName;
+	private int memMileage;
 	
 	public Login() {}
 	
-	public Login(String memId, String memPw, String memName) {
+	public Login(String memId, String memPw, String memName, int memMileage) {
 		this.memId = memId;
 		this.memPw = memPw;
 		this.memName = memName;
+		this.memMileage = memMileage;
 	}
 
 	public String getMemId() {
@@ -31,9 +33,16 @@ public class Login {
 	public void setMemName(String memName) {
 		this.memName = memName;
 	}
+	public int getMemMileage() {
+		return memMileage;
+	}
+	public void setMemMileage(int memMileage) {
+		this.memMileage = memMileage;
+	}
 
 	@Override
 	public String toString() {
-		return "Login [memId=" + memId + ", memPw=" + memPw + ", memName=" + memName + "]";
+		return "Login [memId=" + memId + ", memPw=" + memPw + ", memName=" + memName + ", memMileage=" + memMileage
+				+ "]";
 	}
 }

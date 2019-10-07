@@ -172,6 +172,17 @@
 		$("#goRes").click(function() {
 			location.href = "${pageContext.request.contextPath}/res/reservation";
 		})
+		
+		/* $("input[type='radio']").change(function() {
+			$(".formwrap").empty();
+			
+			var $labelPhone = $("<label>").text("휴대전화");
+			var $inputPhone = $("<input>").attr("type", "text").attr("name", "memPhone");
+			var $labelPw = $("<label>").text("비밀번호");
+			var $inputPw = $("<input>").attr("type", "password").attr("name", "memPw");
+			
+			$(".formwrap").append($labelPhone).append($inputPhone).append($labelPw).append($inputPw);
+		}) */
 	})
 </script>
 	<section>
@@ -204,7 +215,7 @@
 						<li><input type="radio" name="classLogin" id="c"><label for="c"> 휴대전화번호 로그인</label></li>
 					</ul>
 					<form id="loginForm" action="loginPost" method="post">
-						<p>
+						<p class="formwrap">
 							<label>아이디</label>
 							<input type="text" name="memId"> <br>
 							<label>비밀번호</label>

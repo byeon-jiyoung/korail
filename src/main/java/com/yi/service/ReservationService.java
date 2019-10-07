@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yi.domain.CityTrain;
 import com.yi.domain.Reservation;
+import com.yi.domain.Sale;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
 import com.yi.domain.TrainSeatTrainTime;
@@ -14,9 +15,12 @@ public interface ReservationService {
 	//reservation
 	public List<Reservation> listReservation() throws Exception;
 	public void insertReservation(int resNo, int resClaNum, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception;
+	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception;
 	public List<Reservation> listReservationByResClaNum(int resClaNum) throws Exception;
 	public int selectResNo() throws Exception;
 	public int selectResClaNum() throws Exception;
+	public List<Reservation> listReservationForGet() throws Exception;
+	public void updateResCancel(String resClaNum) throws Exception;
 	
 	//train
 	public List<Train> listTrain() throws Exception;
@@ -42,8 +46,8 @@ public interface ReservationService {
 	public CityTrain selectCityTrain(String nodename) throws Exception;
 	
 	//train + trainTime
-	public List<TrainTrainTime> listTrainByStartArrive(String start, String arrive) throws Exception;
-	public List<TrainTrainTime> listTrainByStartArriveByTiNo(String start, String arrive, int tiNo) throws Exception;
+	public List<TrainTrainTime> listTrainByStartArrive(String start, String arrive, String searchTime, String endTime) throws Exception;
+	public List<TrainTrainTime> listTrainByStartArriveByTiNo(String start, String arrive, int tiNo, String searchTime, String endTime) throws Exception;
 	
 	//trainSeat + trainTime
 	public List<TrainSeatTrainTime> listTrainSeat(String start, String arrive, String tCode, String startTime) throws Exception;

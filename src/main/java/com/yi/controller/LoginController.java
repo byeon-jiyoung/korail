@@ -39,7 +39,7 @@ public class LoginController {
 			return;
 		}
 		
-		Login login = new Login(dbMember.getMemId(), dbMember.getMemPw(), dbMember.getMemName());
+		Login login = new Login(dbMember.getMemId(), dbMember.getMemPw(), dbMember.getMemName(), dbMember.getMemMileage());
 		model.addAttribute("login", login);
 	}
 	

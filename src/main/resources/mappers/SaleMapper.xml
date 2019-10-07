@@ -4,12 +4,20 @@
 	
 	<resultMap type="Sale" id="resultSale">
 		<id column="sal_no" property="salNo"/>
-		<result column="sal_price" property="salNo"/>
+		<result column="sal_price" property="salPrice"/>
 		<result column="sal_discount" property="salDiscount"/>
 		<result column="sal_classify" property="salClassify"/>
 	</resultMap>
 	
 	<select id="listSale" resultMap="resultSale">
 		select * from sale
+	</select>
+	
+	<insert id="insertSale" parameterType="Sale">
+		insert into sale(sal_price,sal_discount,sal_classify) values (#{salPrice},#{salDiscount},#{salClassify})
+	</insert>
+	
+	<select id="selectSalelately" resultMap="resultSale">
+		select sal_no from sale order by sal_no desc limit 1
 	</select>
 </mapper>

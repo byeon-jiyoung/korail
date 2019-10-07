@@ -138,6 +138,7 @@
 	}
 	form > div {
 		float: right;
+		margin-bottom: 100px;
 	}
 	#clean, #cancel, #joinPost {
 		padding: 5px 10px;

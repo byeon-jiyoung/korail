@@ -59,6 +59,18 @@ public class ReservationServiceImpl implements ReservationService {
 		TrainSeat ts = new TrainSeat(tsCar, tsNo, t);
 		tsDao.updateTsChoice(ts);
 	}
+	
+	@Override
+	@Transactional
+	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
+		rDao.insertReservationMember(resNo, resClaNum, memId, people, start, arrive, startTime, tCode, tsCar, tsNo);
+		
+		Train t = new Train(tCode);
+		t.gettCode();
+		
+		TrainSeat ts = new TrainSeat(tsCar, tsNo, t);
+		tsDao.updateTsChoice(ts);
+	}
 
 	@Override
 	public List<Reservation> listReservationByResClaNum(int resClaNum) throws Exception {
@@ -121,13 +133,13 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<TrainTrainTime> listTrainByStartArrive(String start, String arrive) throws Exception {
-		return tttDao.listTrainByStartArrive(start, arrive);
+	public List<TrainTrainTime> listTrainByStartArrive(String start, String arrive, String searchTime, String endTime) throws Exception {
+		return tttDao.listTrainByStartArrive(start, arrive, searchTime, endTime);
 	}
 
 	@Override
-	public List<TrainTrainTime> listTrainByStartArriveByTiNo(String start, String arrive, int tiNo) throws Exception {
-		return tttDao.listTrainByStartArriveByTiNo(start, arrive, tiNo);
+	public List<TrainTrainTime> listTrainByStartArriveByTiNo(String start, String arrive, int tiNo, String searchTime, String endTime) throws Exception {
+		return tttDao.listTrainByStartArriveByTiNo(start, arrive, tiNo, searchTime, endTime);
 	}
 
 	@Override
@@ -137,4 +149,24 @@ public class ReservationServiceImpl implements ReservationService {
 		return tsttDao.listTrainSeat(start, arrive, tCode, startTime);
 	}
 
+	@Override
+	public List<Reservation> listReservationForGet() throws Exception {
+		return rDao.listReservationForGet();
+	}
+
+	@Override
+	@Transactional
+	public void updateResCancel(String resClaNum) throws Exception {
+		rDao.updateResCancel(resClaNum);
+		
+		List<Reservation> rList = rDao.selectResByClassNum(resClaNum);
+		
+		for(Reservation r : rList) {
+			System.out.println(r.getTsCar().getTsCar());
+			System.out.println(r.getTsCar().getTsNo());
+			System.out.println(r.getTsCar().gettCode());
+			TrainSeat ts = new TrainSeat(r.getTsCar().getTsCar(), r.getTsCar().getTsNo(), r.getTsCar().gettCode());
+			tsDao.updateTsChoiceCancel(ts);
+		}
+	}
 }

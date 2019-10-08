@@ -440,9 +440,9 @@ join
 	(select * from train t join city_train ct on t.t_arrive = ct.nodeid) arriveStation
 on 
 	startStation.t_code = arriveStation.t_code;
-	
-	
+
 create view SaleReservation as
-select r.*, s.sal_price, s.sal_classify, s.sal_discount from reservation r join sale s on s.sal_no = r.sal_no join train_time tt on tt.tt_no = r.tt_no join train t on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid;
+select tct.*, r.res_cla_num, r.mem_id, r.res_date, r.res_people, r.ts_car, r.ts_no, s.*, ti.ti_name, tt.tt_no from traincitytrain tct 
+join reservation r join sale s join train_info ti join train_time tt;
 
 -- 마지막값 뽑는거 => select max(no) from table명. 마지막값+1뽑는거 => select max(no)+1 from table명

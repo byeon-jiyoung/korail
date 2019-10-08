@@ -78,8 +78,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		map.put("tsNo", tsNo);
 		
 		System.out.println("----------------------------------------------------------------------------------------------------" + map);
+		System.out.println("///////////////////////////////////"+memId+"///////////////////////////////////");
 		
-		sqlsession.insert(namespace + ".insertReservation", map);
+		sqlsession.insert(namespace + ".insertReservationMember", map);
 	}
 
 	@Override
@@ -107,8 +108,15 @@ public class ReservationDaoImpl implements ReservationDao {
 	}
 
 	@Override
-	public List<Reservation> selecResBySalNo(int salNo) throws Exception {
-		return sqlsession.selectList(namespace + ".selecResBySalNo", salNo);
+	public List<Reservation> selecResBySalNo(int salNo, String tName, int ttNo, String tCode, int resClaNum) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("salNo", salNo);
+		map.put("tName", tName);
+		map.put("ttNo", ttNo);
+		map.put("tCode", tCode);
+		map.put("resClaNum", resClaNum);
+		
+		return sqlsession.selectList(namespace + ".selecResBySalNo", map);
 	}
 
 }

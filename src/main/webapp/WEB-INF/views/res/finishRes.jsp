@@ -175,6 +175,11 @@
 	.classNum {
 		display: none;
 	}
+	
+	/*---------------------*/
+	.none {
+		display: none;
+	}
 </style>
 
 <script>
@@ -198,7 +203,11 @@
 		
 		$("#saleBtn").click(function() {
 			var totalPrice = $(".totalPrice").attr("data-totalPrice");
-			location.href = "${pageContext.request.contextPath}/sale/sale?totalPrice="+totalPrice;
+			var tName = "${ttt.tTiNo.tiName}";
+			var tCode = "${ttt.tCode}";
+			var ttNo = $(".none").text();
+
+			location.href = "${pageContext.request.contextPath}/sale/sale?totalPrice="+totalPrice+"&tName="+tName+"&tCode="+tCode+"&ttNo="+ttNo;
 		})
 	}) 
 	
@@ -295,6 +304,7 @@
 							<td class="red totalPrice" data-totalPrice="${(a*res.ttNo.price)+(c*res.ttNo.price*0.9)+(o*res.ttNo.price*0.85)}">
 								<fmt:formatNumber pattern="###,###" value="${(a*res.ttNo.price)+(c*res.ttNo.price*0.9)+(o*res.ttNo.price*0.85)}"/>원
 							</td>
+							<td class="none">${res.ttNo.ttNo}</td>
 						</c:forEach>
 					</tr>
 				</table>

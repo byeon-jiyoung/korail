@@ -46,4 +46,20 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlsession.selectOne(namespace + ".selectMemberByPhone", phone);
 	}
 
+	@Override
+	public void updateMileage(int mileage, String id) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mileage", mileage);
+		map.put("id", id);
+		
+		System.out.println(mileage + ", " + id);
+		
+		sqlsession.update(namespace + ".updateMileage", map);
+	}
+
+	@Override
+	public int selectMileage(String memId) throws Exception {
+		return sqlsession.selectOne(namespace+".selectMileage",memId);
+	}
+
 }

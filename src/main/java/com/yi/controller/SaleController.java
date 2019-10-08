@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yi.domain.Member;
 import com.yi.domain.Reservation;
 import com.yi.domain.Sale;
 import com.yi.service.SaleService;
@@ -25,48 +26,65 @@ public class SaleController {
 	SaleService sService;
 	
 	@RequestMapping(value="sale", method=RequestMethod.GET)
-	public void saleGet(String totalPrice, Model model) {
+	public void saleGet(String totalPrice, String tName, String tCode, String ttNo, Model model) {
 		logger.info("---------- saleGet ----------");
 		logger.info("totalPrice : " + totalPrice);
+		logger.info("tName : " + tName);
+		logger.info("tCode : " + tCode);
+		logger.info("ttNo : " + ttNo);
 		
 		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("tName", tName);
+		model.addAttribute("tCode", tCode);
+		model.addAttribute("ttNo", ttNo);
 	}
 	
 	@RequestMapping(value="ticketing", method=RequestMethod.POST)
-	public String ticketingPost(Sale sale, RedirectAttributes rattr) throws Exception {
+	public String ticketingPost(Sale sale, String tName, Member member, String tCode, String ttNo, RedirectAttributes rattr) throws Exception {
 		logger.info("---------- ticketingPost ----------");
 		logger.info("sale => " + sale.toString());
+		logger.info("tName : " + tName);
+		logger.info("tCode : " + tCode);
+		logger.info("ttNo : " + ttNo);
+		logger.info("member => " + member.toString());
 		
-		sService.insertSale(sale);
+		int updatemileage = (int) ((sale.getSalPrice() - sale.getSalDiscount())*0.1);
+		
+		sService.insertSale(sale, updatemileage, member.getMemId());
 		
 		int s = sService.selectSalelately();
+		int resClaNum = sService.selectResClaNum();
+		
 		rattr.addAttribute("salNo", s);
+		rattr.addAttribute("tName", tName);
+		rattr.addAttribute("tCode", tCode);
+		rattr.addAttribute("ttNo", ttNo);
+		rattr.addAttribute("resClaNum", resClaNum);
 		
 		return "redirect:/sale/ticketing";
 	}
 	
 	@RequestMapping(value="ticketing", method=RequestMethod.GET)
-	public void ticketingGet(String salNo, Model model) throws Exception {
+	public void ticketingGet(String salNo, String tName, String tCode, String ttNo, String resClaNum, Model model) throws Exception {
 		logger.info("---------- ticketingGet ----------");
 		logger.info("salNo : " + salNo);
+		logger.info("tName : " + tName);
+		logger.info("ttNo : " + ttNo);
+		logger.info("tCode : " + tCode);
 		
-		Sale sale = sService.resultSale(Integer.parseInt(salNo));
-		List<Reservation> resList = sService.selecResBySalNo(Integer.parseInt(salNo));
+		List<Sale> saleList = sService.resultSale(Integer.parseInt(salNo));
+		List<Reservation> resList = sService.selecResBySalNo(Integer.parseInt(salNo),tName,Integer.parseInt(ttNo),tCode,Integer.parseInt(resClaNum));
 		
-		logger.info("----------------------" + sale.toString());
+		logger.info("saleList ===> " + saleList);
+		for(Sale s : saleList) {
+			logger.info(s.toString());
+		}
+		logger.info("resList ===> " + resList);
 		for(Reservation r : resList) {
 			logger.info(r.toString());
 		}
 		
 		model.addAttribute("resList", resList);
-		model.addAttribute("sale", sale);
-		
-		/*
-		 select * from TrainCityTrain tct join SaleReservation sr where sal_no = 1;
-
-
-select * from SaleReservation where sal_no = 1;
-		 * 
-		 * */
+		model.addAttribute("saleList", saleList);
 	}
 }

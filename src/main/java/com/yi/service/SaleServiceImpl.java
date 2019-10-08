@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yi.domain.Reservation;
 import com.yi.domain.Sale;
+import com.yi.persistence.MemberDao;
 import com.yi.persistence.ReservationDao;
 import com.yi.persistence.SaleDao;
 
@@ -18,20 +19,23 @@ public class SaleServiceImpl implements SaleService {
 	SaleDao sDao;
 	@Autowired
 	ReservationDao rDao;
+	@Autowired
+	MemberDao mDao;
 	
 	@Override
 	@Transactional
-	public void insertSale(Sale sale) throws Exception {
+	public void insertSale(Sale sale, int mileage, String id) throws Exception {
 		sDao.insertSale(sale);
 		
 		int s = sDao.selectSalelately();
 		int r = rDao.selectResClaNum();
 		
 		rDao.updateSalNo(s,r);
+		mDao.updateMileage(mileage, id);
 	}
 
 	@Override
-	public Sale resultSale(int salNo) throws Exception {
+	public List<Sale> resultSale(int salNo) throws Exception {
 		return sDao.resultSale(salNo);
 	}
 
@@ -41,8 +45,13 @@ public class SaleServiceImpl implements SaleService {
 	}
 
 	@Override
-	public List<Reservation> selecResBySalNo(int salNo) throws Exception {
-		return rDao.selecResBySalNo(salNo);
+	public List<Reservation> selecResBySalNo(int salNo, String tName, int ttNo, String tCode, int resClaNum) throws Exception {
+		return rDao.selecResBySalNo(salNo, tName, ttNo, tCode, resClaNum);
+	}
+
+	@Override
+	public int selectResClaNum() throws Exception {
+		return rDao.selectResClaNum();
 	}
 
 }

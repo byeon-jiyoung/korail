@@ -39,4 +39,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectMemberByPhone(phone);
 	}
 
+	@Override
+	public int selectMileage(String memId) throws Exception {
+		return dao.selectMileage(memId);
+	}
+
 }

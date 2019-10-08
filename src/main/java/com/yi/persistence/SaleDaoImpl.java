@@ -31,8 +31,8 @@ public class SaleDaoImpl implements SaleDao {
 	}
 
 	@Override
-	public Sale resultSale(int salNo) throws Exception {
-		return sqlsession.selectOne(namespace + ".resultSale", salNo);
+	public List<Sale> resultSale(int salNo) throws Exception {
+		return sqlsession.selectList(namespace + ".resultSale", salNo);
 	}
 
 }

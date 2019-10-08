@@ -31,7 +31,7 @@
 		where t_start_time = #{startTime} and ts.t_code = #{tCode} and ts_car = #{tsCar} and ts_no = #{tsNo}
 	</insert>
 	
-	<insert id="insertReservationMember">
+	<insert id="insertReservationMember" parameterType="map">
 		insert into reservation(res_no, res_cla_num, mem_id, res_people, tt_no, ts_car, ts_no, t_code) 
 		select #{resNo}, #{resClaNum}, #{memId}, #{people}, ttm.tt_no, ts.ts_car, ts.ts_no, ts.t_code from train_seat ts join (
 		select tr.t_code, tr.t_ti_no as ti_no, tr.ti_name, tr.t_start_time, trti.tt_start_time, tr.t_start as start_nodeid, tr.nodename as start_nodename, trti.nodeid as arrive_nodeid, trti.nodename as arrive_nodename, trti.price, trti.tt_no from 
@@ -72,6 +72,7 @@
 	</update>
 	
 	<select id="selecResBySalNo" resultMap="resultReservation">
-		select * from reservation r join sale s on s.sal_no = r.sal_no where s.sal_no = #{salNo.salNo}
+		<!-- select * from reservation r join sale s on s.sal_no = r.sal_no where s.sal_no = #{salNo.salNo} -->
+		select * from SaleReservation where sal_no = #{salNo} and ti_name = #{tName} and tt_no = #{ttNo} and t_code = #{tCode} and res_cla_num = #{resClaNum}
 	</select>
 </mapper>

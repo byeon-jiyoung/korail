@@ -11,5 +11,7 @@ public interface MemberDao {
 	public void insertMember(Member member) throws Exception;
 	public Member selectMemberById(String id) throws Exception;
 	public Member selectMemberByPhone(String phone) throws Exception;
+	public void updateMileage(int mileage, String id) throws Exception;
+	public int selectMileage(String memId) throws Exception;
 	
 }

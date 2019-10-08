@@ -186,8 +186,10 @@ public class ReservationController {
 		for(String s : c) {
 			if(memId == "") {
 				rService.insertReservation(++resNo, resClaNum, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+				logger.info("비회원");
 			}else {
 				rService.insertReservationMember(++resNo, resClaNum, memId, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+				logger.info("회원"+memId);
 			}
 		}
 		logger.info(resClaNum + "---------------------------------------------");

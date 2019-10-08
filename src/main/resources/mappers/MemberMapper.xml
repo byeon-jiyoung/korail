@@ -40,4 +40,12 @@
 	<select id="selectMemberByPhone" resultMap="resultMember">
 		select * from member where mem_phone = #{memPhone}
 	</select>
+	
+	<update id="updateMileage">
+		update member set mem_mileage = #{mileage} where mem_id = #{id}
+	</update>
+	
+	<select id="selectMileage" resultType="int">
+		select mem_mileage from member where mem_id = #{memId}
+	</select>
 </mapper>

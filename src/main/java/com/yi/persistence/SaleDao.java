@@ -8,5 +8,5 @@ public interface SaleDao {
 	public List<Sale> listSale() throws Exception;
 	public void insertSale(Sale sale) throws Exception;
 	public int selectSalelately() throws Exception;
-	public Sale resultSale(int salNo) throws Exception;
+	public List<Sale> resultSale(int salNo) throws Exception;
 }

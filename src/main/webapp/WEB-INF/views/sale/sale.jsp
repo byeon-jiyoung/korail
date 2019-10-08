@@ -173,7 +173,7 @@
 			}else {
 				return false;				
 			}
-		})		
+		})	
 	})
 </script>
 
@@ -246,6 +246,10 @@
 							<td><b class="red"><fmt:formatNumber pattern="###,###" value="${totalPrice-Auth.memMileage}"/>원</b></td>
 						</tr>
 					</table>
+					<input type="hidden" name="memId" value="${Auth.memId}">
+					<input type="hidden" name="tName" value="${tName}">
+					<input type="hidden" name="tCode" value="${tCode}">
+					<input type="hidden" name="ttNo" value="${ttNo}">
 					<input type="hidden" name="salClassify">
 					<input type="hidden" name="salPrice" value="${totalPrice-Auth.memMileage}">
 					<input type="hidden" name="salDiscount">

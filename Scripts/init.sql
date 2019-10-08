@@ -444,3 +444,5 @@ on
 	
 create view SaleReservation as
 select r.*, s.sal_price, s.sal_classify, s.sal_discount from reservation r join sale s on s.sal_no = r.sal_no join train_time tt on tt.tt_no = r.tt_no join train t on t.t_code = tt.t_code join city_train ct on ct.nodeid = tt.nodeid;
+
+-- 마지막값 뽑는거 => select max(no) from table명. 마지막값+1뽑는거 => select max(no)+1 from table명

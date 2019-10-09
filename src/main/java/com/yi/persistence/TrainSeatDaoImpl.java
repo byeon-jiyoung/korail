@@ -41,4 +41,9 @@ public class TrainSeatDaoImpl implements TrainSeatDao {
 		sqlsession.update(namespace + ".updateTsChoiceCancel", ts);
 	}
 
+	@Override
+	public void updateTsChoiceFalse(TrainSeat ts) throws Exception {
+		sqlsession.update(namespace + ".updateTsChoiceFalse", ts);
+	}
+
 }

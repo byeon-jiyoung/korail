@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.yi.domain.Login;
 import com.yi.service.MemberService;
+import com.yi.service.ReservationService;
 
 public class RefreshInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(RefreshInterceptor.class);
@@ -24,7 +25,7 @@ public class RefreshInterceptor extends HandlerInterceptorAdapter {
 	}
 	
 	@Autowired
-	MemberService mService; 
+	MemberService mService;
 	
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
@@ -36,7 +37,6 @@ public class RefreshInterceptor extends HandlerInterceptorAdapter {
 		if(login != null) {
 			login.setMemMileage(mService.selectMileage(login.getMemId()));
 		}
-		
 	}
 
 }

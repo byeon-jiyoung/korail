@@ -183,8 +183,7 @@
 </style>
 
 <script>
-	$(function() {
-		/* 
+	window.onload = function () {
 		alert("20분 내에 결제하셔야 예약이 완료됩니다.");
 		
 		alert("1. 승차권 환불 위약금은 다음과 같습니다. \n <출발 전>\n - 월~목요일 : 출발 3시간 전까지 무료 \n - 월~목요일 : 출발 3시간 전 ~ 출발시간 전까지 5%" + 
@@ -194,8 +193,9 @@
 				"\n * 도착역 도착 후에는 환불되지 않습니다. \n * 승차권을 구매한 당일에 환불 청구하실 경우 위약금을 감면받으실 수 있습니다.(열차 출발 3시간 전까지, 할인 승차권 제외)" + 
 				"\n\n2. 레츠코레일에서 구입한 승차권을 역 창구에서 변경 시 할인이 취소될 수 있습니다. \n\n3. 할인 승차권의 할인율은 별도 공지없이 변경될 수 있습니다." + 
 				"\n\n4. 열차정보, 구입기간, 매수 금액, 주의사항 등을 최종 확인하였습니다."); 
-		*/
-		
+	}
+	
+	$(function() {
 		$("#cancelBtn").click(function() {
 			var resClaNum = $(".classNum").text();
 			location.href = "${pageContext.request.contextPath}/res/resCancel?resClaNum="+resClaNum;
@@ -211,7 +211,8 @@
 		})
 	}) 
 	
-	/* // 뒤로가기 방지
+	/* 
+	// 뒤로가기 방지
 	window.history.forward(1);
 
 	// 우클릭방지
@@ -222,6 +223,7 @@
 
 	// 선택복사 방지
 	onselectstart='return false'
+	*/
 	
 	//새로고침, 뒤로가기 막기
 	document.onkeydown = function(e) {
@@ -235,7 +237,8 @@
 			}
 		}
 	}
-
+	
+	/*
 	//오른쪽마우스 막기
 	document.oncontextmenu = function(e){
 		if(e){
@@ -244,7 +247,8 @@
 			event.keyCode = 0;
 			event.returnValue = false;
 		}
-	}  */
+	}
+	*/
 	
 </script>
 
@@ -256,6 +260,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">

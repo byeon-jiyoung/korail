@@ -75,4 +75,12 @@
 		<!-- select * from reservation r join sale s on s.sal_no = r.sal_no where s.sal_no = #{salNo.salNo} -->
 		select * from SaleReservation where sal_no = #{salNo} and ti_name = #{tName} and tt_no = #{ttNo} and t_code = #{tCode} and res_cla_num = #{resClaNum}
 	</select>
+	
+	<update id="minute20ResCancel">
+		update reservation set res_cancel = true where sal_no is null and timestampdiff(minute, res_date, now()) > 20;
+	</update>
+	
+	<select id="selectTsCarTsNoTCode" resultMap="resultReservation">
+		select ts_car, ts_no, t_code from reservation where sal_no is null and res_cancel = true
+	</select>
 </mapper>

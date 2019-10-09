@@ -24,14 +24,14 @@ public class SaleServiceImpl implements SaleService {
 	
 	@Override
 	@Transactional
-	public void insertSale(Sale sale, int mileage, String id) throws Exception {
+	public void insertSale(Sale sale, int mileage, int discount, String id) throws Exception {
 		sDao.insertSale(sale);
 		
 		int s = sDao.selectSalelately();
 		int r = rDao.selectResClaNum();
 		
 		rDao.updateSalNo(s,r);
-		mDao.updateMileage(mileage, id);
+		mDao.updateMileage(mileage, discount, id);
 	}
 
 	@Override

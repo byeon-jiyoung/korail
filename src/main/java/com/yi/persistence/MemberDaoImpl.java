@@ -47,9 +47,10 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public void updateMileage(int mileage, String id) throws Exception {
+	public void updateMileage(int mileage, int discount, String id) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mileage", mileage);
+		map.put("discount", discount);
 		map.put("id", id);
 		
 		System.out.println(mileage + ", " + id);
@@ -60,6 +61,39 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int selectMileage(String memId) throws Exception {
 		return sqlsession.selectOne(namespace+".selectMileage",memId);
+	}
+
+	@Override
+	public void updateMember(Member member) throws Exception {
+		sqlsession.update(namespace + ".updateMember", member);
+	}
+
+	@Override
+	public void updatePw(Member member, String newmemPw) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("member", member);
+		map.put("newmemPw", newmemPw);
+		
+		sqlsession.update(namespace + ".updatePw", map);
+	}
+
+	@Override
+	public void updateTpw(Member member, String newmemTpw) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("member", member);
+		map.put("newmemPw", newmemTpw);
+		
+		sqlsession.update(namespace + ".updateTpw", map);
+	}
+
+	@Override
+	public String selectPwById(String id) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectPwById", id);
+	}
+
+	@Override
+	public String selectTpwById(String id) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectTpwById", id);
 	}
 
 }

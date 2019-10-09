@@ -48,9 +48,10 @@ public class SaleController {
 		logger.info("ttNo : " + ttNo);
 		logger.info("member => " + member.toString());
 		
-		int updatemileage = (int) ((sale.getSalPrice() - sale.getSalDiscount())*0.1);
+		int updatemileage = (int) (sale.getSalPrice()*0.1);
+		logger.info("////////"+updatemileage+"/////////"+sale.getSalPrice()+"///////////"+sale.getSalDiscount());
 		
-		sService.insertSale(sale, updatemileage, member.getMemId());
+		sService.insertSale(sale, updatemileage, sale.getSalDiscount(), member.getMemId());
 		
 		int s = sService.selectSalelately();
 		int resClaNum = sService.selectResClaNum();

@@ -119,4 +119,14 @@ public class ReservationDaoImpl implements ReservationDao {
 		return sqlsession.selectList(namespace + ".selecResBySalNo", map);
 	}
 
+	@Override
+	public void minute20ResCancel() throws Exception {
+		sqlsession.update(namespace + ".minute20ResCancel");
+	}
+
+	@Override
+	public List<Reservation> selectTsCarTsNoTCode() throws Exception {
+		return sqlsession.selectList(namespace + ".selectTsCarTsNoTCode");
+	}
+
 }

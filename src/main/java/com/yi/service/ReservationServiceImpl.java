@@ -169,4 +169,16 @@ public class ReservationServiceImpl implements ReservationService {
 			tsDao.updateTsChoiceCancel(ts);
 		}
 	}
+
+	@Override
+	public void minute20ResCancel(TrainSeat ts) throws Exception {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~ " + ts + " ~~~~~~~~~~~~~~~~~~~~");
+		rDao.minute20ResCancel();
+		tsDao.updateTsChoiceFalse(ts);
+	}
+
+	@Override
+	public List<Reservation> selectTsCarTsNoTCode() throws Exception {
+		return rDao.selectTsCarTsNoTCode();
+	}
 }

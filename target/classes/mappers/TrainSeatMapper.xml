@@ -25,4 +25,8 @@
 	<update id="updateTsChoiceCancel" parameterType="TrainSeat">
 		update train_seat set ts_choice = false where t_code = #{tCode.tCode} and ts_no = #{tsNo} and ts_car = #{tsCar}
 	</update>
+	
+	<update id="updateTsChoiceFalse" parameterType="TrainSeat">
+		update train_seat set ts_choice = false where t_code = #{tCode.tCode} and ts_no = #{tsNo} and ts_car = #{tsCar}
+	</update>
 </mapper>

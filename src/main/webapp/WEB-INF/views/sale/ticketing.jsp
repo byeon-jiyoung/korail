@@ -108,8 +108,11 @@
 	button {
 		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_blue.png") repeat-x;
 		border: 1px solid #16539f;
-		padding: 5px 15px;
+		padding: 8px 30px;
 		color: white;
+		background-size: auto 100%;
+		font-weight: bold;
+		font-size: 16px;
 	}
 </style>
 <script>
@@ -127,6 +130,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">
@@ -152,26 +156,11 @@
 					예매가 완료되었습니다.
 				</div>
 				<table>
-					<c:forEach var="sale" items="${saleList}" begin="0" end="0">
-						<tr>
-							<th>결제금액</th>
-							<td><fmt:formatNumber pattern="###,###" value="${sale.salPrice}"/>원</td>
-						</tr>
-						<tr>
-							<th>할인금액</th>
-							<td><fmt:formatNumber pattern="###,###" value="${sale.salDiscount}"/>원</td>
-						</tr>
-						<tr>
-							<th>결제방법</th>
-							<c:if test="${sale.salClassify == true}">
-								<td>계좌이체</td>
-							</c:if>
-							<c:if test="${sale.salClassify == false}">
-								<td>카드</td>
-							</c:if>
-						</tr>
-					</c:forEach>
 					<c:forEach var="res" items="${resList}" begin="0" end="0">
+						<tr>
+							<th>열차정보</th>
+							<td>${res.ttNo.tCode.tTiNo.tiName} ( ${res.ttNo.tCode.tCode} )</td>
+						</tr>
 						<tr>
 							<th>예매시간</th>
 							<td><fmt:formatDate pattern="MM월 dd일  HH시mm분" value="${res.resDate}"/></td>
@@ -179,10 +168,6 @@
 						<tr>
 							<th>예매인원수</th>
 							<td>${res.resPeople}명</td>
-						</tr>
-						<tr>
-							<th>기차정보</th>
-							<td>${res.ttNo.tCode.tTiNo.tiName} / ${res.ttNo.tCode.tCode}</td>
 						</tr>
 						<tr>
 							<th>출발역</th>
@@ -201,10 +186,31 @@
 							<td><fmt:formatDate pattern="MM월 dd일  HH시mm분" value="${res.ttNo.tCode.tArriveTime}"/></td>
 						</tr>
 					</c:forEach>
-					<c:forEach var="res" items="${resList}">
+					<tr>
+						<th>예매좌석</th>
+						<td>
+							<c:forEach var="res" items="${resList}">
+								${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}석 <br>
+							</c:forEach>
+						</td>
+					</tr>
+					<c:forEach var="sale" items="${saleList}" begin="0" end="0">
 						<tr>
-							<th>예매좌석</th>
-							<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}석</td>
+							<th>결제금액</th>
+							<td><fmt:formatNumber pattern="###,###" value="${sale.salPrice}"/>원</td>
+						</tr>
+						<tr>
+							<th>할인금액</th>
+							<td><fmt:formatNumber pattern="###,###" value="${sale.salDiscount}"/>원</td>
+						</tr>
+						<tr>
+							<th>결제방법</th>
+							<c:if test="${sale.salClassify == true}">
+								<td>계좌이체</td>
+							</c:if>
+							<c:if test="${sale.salClassify == false}">
+								<td>카드</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</table>

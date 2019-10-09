@@ -81,6 +81,7 @@
 	
 	table {
 		border-collapse: collapse;
+		width: 100%;
 	}
 	td, th {
 		border: 1px solid #aaa;
@@ -96,15 +97,18 @@
 	table th:last-child, .price {
 		border-right: none;
 	}
+	tabld td img {
+		width: 100%;
+	}
 	#resForm {
 		overflow: hidden;
 	}
-	.searchSeat, .searchSeatRan {
+	/* .searchSeat, .searchSeatRan {
 		display: block;
 	}
 	.searchSeatRan {
 		margin-bottom: 5px;
-	}
+	} */
 	#personnelInfo {
 		border: 1px solid #c1c1c1;
 		box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
@@ -194,7 +198,7 @@
 		list-style: square;
 		color: #333;
 		font-size: 14px;
-		margin: 30px 0 15px 20px;
+		margin: 50px 0 15px 20px;
 	}
 	
 	
@@ -272,7 +276,8 @@
 	    margin: 3% auto;
 	    padding: 10px 0;
 	    width: 80%;
-	    color: #727272;                       
+	    color: #727272;
+	    overflow: hidden;                       
 	}
 	.modal-content h3 {
 		color: white;
@@ -430,6 +435,13 @@
 			$(".selSeat").empty();
 			
 			var strDate = $("select[name=year]").val()+"-"+$("select[name=month]").val()+"-"+$("select[name=date]").val();
+			var date = new Date();
+			var date2 = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+			
+			if(strDate < date2) {
+				alert("현재 일자 보다 이전 일자를 선택하셨습니다. 일정을 다시 한번 선택하여 주십시오");
+				return false;
+			}
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/res/reservation",
@@ -666,13 +678,12 @@
 			$("input[name='tsNo']").attr("value", $(".selSeat").text());
 		})
 		
-		
 		$("#closeImg").click(function() {
 			selPeople = 0;
 			$(".selSeat").empty();
 			$("#myModal").hide();
 			$(".selSeat").text("");
-			/* alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\n\n(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)"); */
+			/* alert("선택좌석 예약하기 버튼을 정상적으로 선택하지 않았습니다..\n\r\n\r(선택좌석 예약하기 버튼을 클릭하셔야 정상적으로 예약이 됩니다.)"); */
 		})
 		
 		//기차가 없는경우
@@ -690,7 +701,8 @@
 				<h3>승차권</h3>
 			</div>
 			<div>
-				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p class="res_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">
@@ -779,11 +791,21 @@
 							<select name="month">
 								<fmt:formatDate value="${today}" pattern="MM" var="month"/> 
 								<c:forEach var="m" begin="1" end="12">
-									<c:if test="${month ==  m}">
-										<option selected="selected">${m}</option>
+									<c:if test="${month == m}">
+										<c:if test="${m >= 10}">
+											<option selected="selected" value="${m}">${m}</option>
+										</c:if>
+										<c:if test="${m < 10}">
+											<option selected="selected" value="0${m}">${m}</option>
+										</c:if>
 									</c:if>
 									<c:if test="${month != m}">
-										<option>${m}</option>
+										<c:if test="${m >= 10}">
+											<option value="${m}">${m}</option>
+										</c:if>
+										<c:if test="${m < 10}">
+											<option value="0${m}">${m}</option>
+										</c:if>
 									</c:if>
 								</c:forEach>
 							</select><span>월</span>

@@ -58,6 +58,7 @@
 	#head2 {
 		background-color: #083b82;
 		clear: both;
+		border-top: 2px solid #0397d6;
 	}
 	#head2_in {
 		width: 1070px;
@@ -154,9 +155,7 @@
 					<li><span><span class="color">${Auth.memName}</span>님 환영합니다.</span></li>
 					<li><img src="${pageContext.request.contextPath}/resources/images/include/gnb_logout.png" id="logout_img"></li>
 				</c:if>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_mems.png"></a></li>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_sh_basket.png"></a></li>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_my.png"></a></li>
+				<li><a href="${pageContext.request.contextPath}/login/mypage?memId=${Auth.memId}"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_my.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_customer.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_enjoy.png"></a></li>
 			</ul>

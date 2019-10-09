@@ -42,10 +42,30 @@
 	</select>
 	
 	<update id="updateMileage">
-		update member set mem_mileage = #{mileage} where mem_id = #{id}
+		update member set mem_mileage = mem_mileage + #{mileage} - #{discount} where mem_id = #{id}
 	</update>
 	
 	<select id="selectMileage" resultType="int">
 		select mem_mileage from member where mem_id = #{memId}
+	</select>
+	
+	<update id="updateMember">
+		update member set mem_phone = #{memPhone}, mem_address = #{memAddress}, mem_detailaddr = #{memDetailaddr} where mem_id = #{memId}
+	</update>
+	
+	<update id="updatePw">
+		update member set mem_pw = #{newmemPw} where mem_id = #{memId} 
+	</update>
+	
+	<update id="updateTpw">
+		update member set mem_tpw = #{newmemTpw} where mem_id = #{memId} 
+	</update>
+	
+	<select id="selectPwById" resultType="String">
+		select mem_pw from member where mem_id = #{memId}
+	</select>
+	
+	<select id="selectTpwById" resultType="String">
+		select mem_tpw from member where mem_id = #{memId}
 	</select>
 </mapper>

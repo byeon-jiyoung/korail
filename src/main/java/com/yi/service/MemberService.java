@@ -12,5 +12,10 @@ public interface MemberService {
 	public Member selectMemberById(String id) throws Exception;
 	public Member selectMemberByPhone(String phone) throws Exception;
 	public int selectMileage(String memId) throws Exception;
+	public void updateMember(Member member) throws Exception;
+	public void updatePw(Member member, String newmemPw) throws Exception;
+	public void updateTpw(Member member, String newmemTpw) throws Exception;
+	public String selectPwById(String id) throws Exception;
+	public String selectTpwById(String id) throws Exception;
 	
 }

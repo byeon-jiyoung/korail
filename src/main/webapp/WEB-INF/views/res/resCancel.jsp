@@ -118,6 +118,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">

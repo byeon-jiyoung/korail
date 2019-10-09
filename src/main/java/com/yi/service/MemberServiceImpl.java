@@ -44,4 +44,29 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectMileage(memId);
 	}
 
+	@Override
+	public void updateMember(Member member) throws Exception {
+		dao.updateMember(member);
+	}
+
+	@Override
+	public void updatePw(Member member, String newmemPw) throws Exception {
+		dao.updatePw(member, newmemPw);
+	}
+
+	@Override
+	public void updateTpw(Member member, String newmemTpw) throws Exception {
+		dao.updateTpw(member, newmemTpw);
+	}
+
+	@Override
+	public String selectPwById(String id) throws Exception {
+		return dao.selectPwById(id);
+	}
+
+	@Override
+	public String selectTpwById(String id) throws Exception {
+		return dao.selectTpwById(id);
+	}
+
 }

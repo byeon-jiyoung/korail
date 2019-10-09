@@ -10,5 +10,5 @@ public interface TrainSeatDao {
 	public void updateTsChoice(TrainSeat ts) throws Exception;
 	public void updateTrainSeatByNow(String tCode, String arrive) throws Exception;
 	public void updateTsChoiceCancel(TrainSeat ts) throws Exception;
-	
+	public void updateTsChoiceFalse(TrainSeat ts) throws Exception;
 }

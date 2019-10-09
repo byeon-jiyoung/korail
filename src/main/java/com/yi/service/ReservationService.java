@@ -7,6 +7,7 @@ import com.yi.domain.Reservation;
 import com.yi.domain.Sale;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
+import com.yi.domain.TrainSeat;
 import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
@@ -21,6 +22,8 @@ public interface ReservationService {
 	public int selectResClaNum() throws Exception;
 	public List<Reservation> listReservationForGet() throws Exception;
 	public void updateResCancel(String resClaNum) throws Exception;
+	public void minute20ResCancel(TrainSeat ts) throws Exception;
+	public List<Reservation> selectTsCarTsNoTCode() throws Exception;
 	
 	//train
 	public List<Train> listTrain() throws Exception;

@@ -7,7 +7,7 @@ import com.yi.domain.Sale;
 
 public interface SaleService {
 	//sale
-	public void insertSale(Sale sale, int mileage, String id) throws Exception;
+	public void insertSale(Sale sale, int mileage, int discount, String id) throws Exception;
 	public List<Sale> resultSale(int salNo) throws Exception;
 	public int selectSalelately() throws Exception;
 	

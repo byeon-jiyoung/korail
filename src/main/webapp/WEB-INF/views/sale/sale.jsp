@@ -158,22 +158,68 @@
 	.none {
 		display: none;
 	}
+	.reg {
+		display: none;
+		color: red;
+		display: none;
+		font-size: 0.9em;
+		margin-top: 5px;
+	}
 </style>
 
 <script>
+	function addComma(num) {
+	  var regexp = /\B(?=(\d{3})+(?!\d))/g;
+	  return num.toString().replace(regexp, ',');
+	}
+
+	function captureReturnKey(e) { 
+	    if(e.keyCode==13 && e.srcElement.type != 'textarea') 
+	    return false; 
+	} //submit 엔터키 막는방법 2 -> form태그에 onkeydown추가해줘야됨
+	
 	$(function() {
+		/* $('input[type="text"]').keydown(function() {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+			};
+		}); //submit 엔터키 막는방법 1  */
+		
+		/* $("input[type='text']").keypress(function(e) { 
+		    if (e.keyCode == 13){
+		        action();
+		    }    
+		}); //input type text에 enter키 이벤트 지정 */
+		
 		$("#salBtn").click(function() {
 			var res = confirm("결제하시겠습니까?");
 			var m = $("input[name='mileage']").val();
 
 			if(res == true) {
 				$("input[name='salClassify']").attr("value", $("input[type='radio']:checked").val());
-				$("input[name='salPrice']").attr("value", ${totalPrice-Auth.memMileage});
+				$("input[name='salPrice']").attr("value", ${totalPrice}-Number(m));
 				$("input[name='salDiscount']").attr("value", Number(m));
 			}else {
 				return false;				
 			}
-		})	
+		})
+		
+		var p = $(".totalPrice").text();
+		$("input[name='mileage']").change(function() {
+			$(".reg").css("display", "none");
+			
+			var price = $(".totalPrice").attr("date-price");
+			var to_price = price - $("input[name='mileage']").val();
+			
+			if($("input[name='mileage']").val() > $("#mil").text()) {
+				$(".reg").css("display", "block");
+				$("input[name='mileage']").val("");
+				$(".totalPrice").text(p);
+				return false;
+			}else {
+				$(".totalPrice").text(addComma(to_price)+"원");
+			}
+		})
 	})
 </script>
 
@@ -185,6 +231,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="sale_color">승차권예약</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
 			</div>
 		</div>
 		<div class="sale_sec_right">
@@ -215,7 +262,7 @@
 				<div id="pricewrap">
 					총 결제 금액은 <b class="red"><fmt:formatNumber pattern="###,###" value="${totalPrice}"/></b>원 입니다.				
 				</div>
-				<form action="ticketing" method="post">
+				<form action="ticketing" method="post" onkeydown="return captureReturnKey(event)">
 					<table>
 						<tr>
 							<th>결제수단</th>
@@ -232,7 +279,9 @@
 										<input type="text" name="mileage" class="none"><b>(${Auth.memMileage}원 사용가능)</b>
 									</c:if>
 									<c:if test="${Auth.memMileage != 0}">
-										<input type="text" name="mileage"><b>(${Auth.memMileage}원 사용가능)</b>
+										<input type="text" name="mileage"><b>(<fmt:formatNumber pattern="###,###" value="${Auth.memMileage}"/>원 사용가능)</b>
+										<div class="none" id="mil">${Auth.memMileage}</div>
+										<span class="reg">보유하신 마일리지만큼 사용가능합니다.</span>
 									</c:if>
 								</c:if>
 								<c:if test="${Auth == null}">
@@ -243,7 +292,7 @@
 						</tr>
 						<tr>
 							<th>총결제금액</th>
-							<td><b class="red"><fmt:formatNumber pattern="###,###" value="${totalPrice-Auth.memMileage}"/>원</b></td>
+							<td><b class="red totalPrice" date-price="${totalPrice}"><fmt:formatNumber pattern="###,###" value="${totalPrice}"/>원</b></td>
 						</tr>
 					</table>
 					<input type="hidden" name="memId" value="${Auth.memId}">
@@ -251,7 +300,7 @@
 					<input type="hidden" name="tCode" value="${tCode}">
 					<input type="hidden" name="ttNo" value="${ttNo}">
 					<input type="hidden" name="salClassify">
-					<input type="hidden" name="salPrice" value="${totalPrice-Auth.memMileage}">
+					<input type="hidden" name="salPrice" value="${totalPrice}">
 					<input type="hidden" name="salDiscount">
 					<div id="btn">
 						<button id="salBtn">결제하기</button>

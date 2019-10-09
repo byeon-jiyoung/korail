@@ -39,13 +39,13 @@ public class ReservationController {
 		logger.info(start + "," + arrive + "," + people);
 		logger.info(date + "," + time);
 		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = new Date();
 		String strToday = df.format(today);
 		
 		if(start == null || arrive == null || people == null || date == null || time == null) {
-			start = "서울";
-			arrive = "동대구";
+			start = "동대구";
+			arrive = "부산";
 			people = "1";
 			date = strToday;
 			time = "00:00";
@@ -98,6 +98,7 @@ public class ReservationController {
 		logger.info("startStation : " + startStation);
 		logger.info("arriveStation : " + arriveStation);
 		logger.info("tTiNo : " + tTiNo);
+		logger.info(date);
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date today = new Date();
@@ -143,6 +144,13 @@ public class ReservationController {
 		logger.info("tCode : " + tCode);
 		
 //		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
+		
+		List<Reservation> rList = rService.selectTsCarTsNoTCode();
+		logger.info("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr =>" + rList.toString());
+		for(Reservation r : rList) {
+			logger.info(r.getTsCar() + " & " + r.getTsNo() + " & " + r.gettCode());
+			rService.minute20ResCancel(r.getTsCar());
+		}
 		
 		List<TrainSeatTrainTime> tsttList = rService.listTrainSeat(startStation, arriveStation, tCode, startTime);
 		

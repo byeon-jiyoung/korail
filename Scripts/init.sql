@@ -441,6 +441,7 @@ join
 on 
 	startStation.t_code = arriveStation.t_code;
 
+	
 create view SaleReservation as
 select tct.*, r.res_cla_num, r.mem_id, r.res_date, r.res_people, r.ts_car, r.ts_no, s.*, ti.ti_name, tt.tt_no from traincitytrain tct 
 join reservation r join sale s join train_info ti join train_time tt;

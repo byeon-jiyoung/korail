@@ -193,7 +193,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="join_color">로그인</p></a>
-				<a href="${pageContext.request.contextPath}/"><p>회원번호찾기</p></a>
+				<a href="${pageContext.request.contextPath}/"><p>아이디찾기</p></a>
 				<a href="${pageContext.request.contextPath}/"><p>비밀번호찾기</p></a>
 			</div>
 		</div>

@@ -68,4 +68,12 @@
 	<select id="selectTpwById" resultType="String">
 		select mem_tpw from member where mem_id = #{memId}
 	</select>
+	
+	<insert id="insertnoMember">
+		insert into member(mem_id, mem_phone) values (#{memId}, #{memPhone})
+	</insert>
+	
+	<select id="selectNoMemberId" resultType="int">
+		select * from member where mem_pw is null order by mem_id desc limit 1
+	</select>
 </mapper>

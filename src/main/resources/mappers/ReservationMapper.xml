@@ -8,6 +8,7 @@
 		<result column="res_people" property="resPeople"/>
 		<result column="res_cancel" property="resCancel"/>
 		<result column="res_cla_num" property="resClaNum"/>
+		<result column="nomem_phone" property="nomemPhone"/>
 		<association property="memId" resultMap="com.yi.mapper.MemberMapper.resultMember" />
 		<association property="salNo" resultMap="com.yi.mapper.SaleMapper.resultSale" />
 		<association property="tsCar" resultMap="com.yi.mapper.TrainSeatMapper.resultTrainSeat" />
@@ -21,8 +22,8 @@
 	</select>
 	
 	<insert id="insertReservation">
-		insert into reservation(res_no, res_cla_num, res_people, tt_no, ts_car, ts_no, t_code) 
-		select #{resNo}, #{resClaNum}, #{people}, ttm.tt_no, ts.ts_car, ts.ts_no, ts.t_code from train_seat ts join (
+		insert into reservation(res_no, res_cla_num, res_people, nomem_phone, tt_no, ts_car, ts_no, t_code) 
+		select #{resNo}, #{resClaNum}, #{people}, #{nomemPhone}, ttm.tt_no, ts.ts_car, ts.ts_no, ts.t_code from train_seat ts join (
 		select tr.t_code, tr.t_ti_no as ti_no, tr.ti_name, tr.t_start_time, trti.tt_start_time, tr.t_start as start_nodeid, tr.nodename as start_nodename, trti.nodeid as arrive_nodeid, trti.nodename as arrive_nodename, trti.price, trti.tt_no from 
 		(select t.t_code, t.t_ti_no, t.t_start_time, t.t_arrive_time, t.t_start, ct.nodename, ti.ti_name from train t join city_train ct on t.t_start = ct.nodeid join train_info ti on ti.ti_no = t.t_ti_no where ct.nodename = #{start}) tr join 
 		(select tt.t_code, tt.tt_no, tt.tt_start_time, tt.price, ct.nodename, tt.nodeid from train_time tt join city_train ct on tt.nodeid = ct.nodeid where ct.nodename = #{arrive}) trti
@@ -77,10 +78,18 @@
 	</select>
 	
 	<update id="minute20ResCancel">
-		update reservation set res_cancel = true where sal_no is null and timestampdiff(minute, res_date, now()) > 20;
+		update reservation set res_cancel = true, res_date = null where sal_no is null and timestampdiff(minute, res_date, now()) > 20
 	</update>
 	
 	<select id="selectTsCarTsNoTCode" resultMap="resultReservation">
 		select ts_car, ts_no, t_code from reservation where sal_no is null and res_cancel = true
 	</select>
+	
+	<select id="selectTicket" resultMap="resultReservation">
+		select * from reservation r join train_time tt on r.tt_no = tt.tt_no join train t on r.t_code = t.t_code join TrainCityTrain tct on tct.start_nodeid = t.t_start join city_train ct on ct.nodeid = tt.nodeid group by res_no having mem_id = #{id};
+	</select>
+	
+	<update id="updateNoMember">
+		update reservation set nomem_phone = #{nomemPhone} where nomem_phone = "sale"
+	</update>
 </mapper>

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yi.domain.CityTrain;
+import com.yi.domain.Login;
+import com.yi.domain.Member;
 import com.yi.domain.Reservation;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
+import com.yi.domain.TrainSeat;
 import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
@@ -162,7 +168,7 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value="finishRes", method=RequestMethod.POST)
-	public void finishResPost(String tCode, int tTiNo, String tStart, String memId, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
+	public void finishResPost(HttpSession session, String tCode, int tTiNo, String tStart, String memId, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
 		logger.info("------------------- finishResPost --------------------");
 		logger.info("tCode : " + tCode + ", tTiNo : " + tTiNo);
 		logger.info("tStart : " + tStart + ", tArrive : " + tArrive);
@@ -190,16 +196,29 @@ public class ReservationController {
 		int resClaNum = rService.selectResClaNum();
 		resClaNum++;
 		
+		
+		//session으로 받는방법
+		Login member = (Login) session.getAttribute("login");
+		logger.info(member+"000000000000000000000000000000000000");
+		String memPhone = "sale";
+		
+		if(member != null) {
+			memPhone = member.getMemPhone();
+		}
+		
+		logger.info(memPhone);
+		
 		String[] c = tsNo.split("석");
 		for(String s : c) {
 			if(memId == "") {
-				rService.insertReservation(++resNo, resClaNum, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+				rService.insertReservation(++resNo, resClaNum, people, memPhone, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 				logger.info("비회원");
 			}else {
 				rService.insertReservationMember(++resNo, resClaNum, memId, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 				logger.info("회원"+memId);
 			}
 		}
+		
 		logger.info(resClaNum + "---------------------------------------------");
 		
 		List<Reservation> resList = rService.listReservationByResClaNum(resClaNum);
@@ -211,18 +230,32 @@ public class ReservationController {
 
 		for(Reservation r : resList) {
 			logger.info("r => " + r);
+			model.addAttribute("nomemPhone", r.getNomemPhone());
 		}
 		
-//		return "redirect:/res/finishRes";
-//이미 예약테이블에 insert가 된 상태라서 get으로 리다이렉트시킨다음에 예약테이블에서 값을 불러오는 방식으로 하면 계속 insert되는 문제를 해결할 수 있다
+		//return "redirect:/res/finishRes";
+		//이미 예약테이블에 insert가 된 상태라서 get으로 리다이렉트시킨다음에 예약테이블에서 값을 불러오는 방식으로 하면 계속 insert되는 문제를 해결할 수 있다
 	}
-	
-	
+
 	@RequestMapping(value="resCancel", method=RequestMethod.GET)
 	public void resCancelGet(String resClaNum) throws Exception {
 		logger.info("------------------- resCancelGet --------------------");
 		logger.info("resClaNum : " + resClaNum);
 		
 		rService.updateResCancel(resClaNum);
+	}
+	
+	@RequestMapping(value="resticket", method=RequestMethod.GET)
+	public void resticketGet(String id, Model model) throws Exception {
+		logger.info("------------------- resticketGet --------------------");
+		logger.info("id : " + id);
+		
+		List<Reservation> rList = rService.selectTicket(id);
+		
+		for(Reservation r : rList) {
+			logger.info(r.toString());
+		}
+		
+		model.addAttribute("rList", rList);
 	}
 }

@@ -26,7 +26,7 @@ public class SaleController {
 	SaleService sService;
 	
 	@RequestMapping(value="sale", method=RequestMethod.GET)
-	public void saleGet(String totalPrice, String tName, String tCode, String ttNo, Model model) {
+	public void saleGet(String totalPrice, String tName, String tCode, String ttNo, String nomemPhone, Model model) {
 		logger.info("---------- saleGet ----------");
 		logger.info("totalPrice : " + totalPrice);
 		logger.info("tName : " + tName);
@@ -37,10 +37,12 @@ public class SaleController {
 		model.addAttribute("tName", tName);
 		model.addAttribute("tCode", tCode);
 		model.addAttribute("ttNo", ttNo);
+		model.addAttribute("nomemPhone", nomemPhone);
 	}
 	
+	
 	@RequestMapping(value="ticketing", method=RequestMethod.POST)
-	public String ticketingPost(Sale sale, String tName, Member member, String tCode, String ttNo, RedirectAttributes rattr) throws Exception {
+	public String ticketingPost(Sale sale, String tName, Member member, String tCode, String ttNo, String nomemPhone, RedirectAttributes rattr) throws Exception {
 		logger.info("---------- ticketingPost ----------");
 		logger.info("sale => " + sale.toString());
 		logger.info("tName : " + tName);
@@ -51,7 +53,18 @@ public class SaleController {
 		int updatemileage = (int) (sale.getSalPrice()*0.1);
 		logger.info("////////"+updatemileage+"/////////"+sale.getSalPrice()+"///////////"+sale.getSalDiscount());
 		
-		sService.insertSale(sale, updatemileage, sale.getSalDiscount(), member.getMemId());
+		if(nomemPhone == "sale") {
+			sService.updateNoMember(member.getMemPhone());
+			logger.info(member.getMemPhone()+"9999999999999999999999999999999999");
+		}else {
+			nomemPhone = "m";
+		}
+		
+		if(member.getMemId() == "") {
+			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), "noMem", member.getMemPhone());
+		}else {
+			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), member.getMemId(), member.getMemPhone());
+		}
 		
 		int s = sService.selectSalelately();
 		int resClaNum = sService.selectResClaNum();

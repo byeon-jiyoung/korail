@@ -14,9 +14,11 @@ public interface MemberDao {
 	public void updateMileage(int mileage, int discount, String id) throws Exception;
 	public int selectMileage(String memId) throws Exception;
 	public void updateMember(Member member) throws Exception;
-	public void updatePw(Member member, String newmemPw) throws Exception;
-	public void updateTpw(Member member, String newmemTpw) throws Exception;
+	public void updatePw(String memId, String newmemPw) throws Exception;
+	public void updateTpw(String memId, String newmemTpw) throws Exception;
 	public String selectPwById(String id) throws Exception;
 	public String selectTpwById(String id) throws Exception;
+	public void insertnoMember(int memId, String memPhone) throws Exception;
+	public int selectNoMemberId() throws Exception;
 	
 }

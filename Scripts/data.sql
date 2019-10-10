@@ -38,6 +38,8 @@ insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arriv
 values ('K005',1,'2019-10-7 18:00:00.000','2019-10-7 22:00:00.000','NAT013271','NAT014445');
 insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arrive) 
 values ('K006',1,'2019-10-9 18:00:00.000','2019-10-7 22:00:00.000','NAT013271','NAT014445');
+insert into train(t_code, t_ti_no, t_start_time, t_arrive_time, t_start, t_arrive) 
+values ('K007',1,'2019-10-10 18:00:00.000','2019-10-10 22:00:00.000','NAT013271','NAT014445');
 
 select * from train_time;
 /*insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-05 11:30:00.000','K001',20000,'NAT011668');
@@ -63,6 +65,10 @@ insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-9 
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-9 20:30:00.000','K006',60000,'NAT011668');
 insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-9 21:00:00.000','K006',60000,'NAT014445');
 
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-10 19:30:00.000','K007',30000,'NAT013271');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-10 20:30:00.000','K007',40000,'NAT011668');
+insert into train_time(tt_start_time, t_code, price, nodeid) values ('2019-10-10 21:00:00.000','K007',50000,'NAT014445');
+
 select * from city_train where citycode = (select citycode from city where cityname like '%대구%');
 
 select * from train_seat;
@@ -84,21 +90,16 @@ insert into train_seat(ts_car, ts_no, t_code) values (2,1,'K003'),(2,2,'K003'),(
 insert into train_seat(ts_car, ts_no, t_code) values (3,1,'K003'),(3,2,'K003'),(3,3,'K003'),(3,4,'K003');
 insert into train_seat(ts_car, ts_no, t_code) values (4,1,'K003'),(4,2,'K003'),(4,3,'K003'),(4,4,'K003');
 
-insert into train_seat(ts_car, ts_no, t_code) values (1,1,'K006'),(1,2,'K006'),(1,3,'K006'),(1,4,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (1,5,'K006'),(1,6,'K006'),(1,7,'K006'),(1,8,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (2,1,'K006'),(2,2,'K006'),(2,3,'K006'),(2,4,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (2,5,'K006'),(2,6,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (3,1,'K006'),(3,2,'K006'),(3,3,'K006'),(3,4,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (3,5,'K006');
-insert into train_seat(ts_car, ts_no, t_code) values (4,1,'K006'),(4,2,'K006'),(4,3,'K006'),(4,4,'K006');
+insert into train_seat(ts_car, ts_no, t_code) values (1,1,'K007'),(1,2,'K007'),(1,3,'K007'),(1,4,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (1,5,'K007'),(1,6,'K007'),(1,7,'K007'),(1,8,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (2,1,'K007'),(2,2,'K007'),(2,3,'K007'),(2,4,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (2,5,'K007'),(2,6,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (3,1,'K007'),(3,2,'K007'),(3,3,'K007'),(3,4,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (3,5,'K007');
+insert into train_seat(ts_car, ts_no, t_code) values (4,1,'K007'),(4,2,'K007'),(4,3,'K007'),(4,4,'K007');
 
-
-select * from city_train where nodeid = 'NAT013271';
+select * from city_train where nodeid = 'NAT011668';
 select nodeid from city_train where nodename like '%대전%';
 
-
 select * from member;
-insert into member values ('test','test',1234,'변지영','1993-01-29','01020544177','test@test.com','대구','아파트',0,now(),false);
-
-select * from reservation;
-insert into reservation(res_no, mem_id, res_date, tt_no, ts_car, ts_no, res_people) values (1,'test',now(),1,1,4,3);
+insert into member values ('test','test',1234,'변지영','1993-01-29','010-2054-4177','test@test.com','대구','아파트',0,now(),false);

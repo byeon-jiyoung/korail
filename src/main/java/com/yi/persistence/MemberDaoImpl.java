@@ -69,19 +69,19 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public void updatePw(Member member, String newmemPw) throws Exception {
+	public void updatePw(String memId, String newmemPw) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map.put("member", member);
+		map.put("memId", memId);
 		map.put("newmemPw", newmemPw);
 		
 		sqlsession.update(namespace + ".updatePw", map);
 	}
 
 	@Override
-	public void updateTpw(Member member, String newmemTpw) throws Exception {
+	public void updateTpw(String memId, String newmemTpw) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map.put("member", member);
-		map.put("newmemPw", newmemTpw);
+		map.put("memId", memId);
+		map.put("newmemTpw", newmemTpw);
 		
 		sqlsession.update(namespace + ".updateTpw", map);
 	}
@@ -94,6 +94,24 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public String selectTpwById(String id) throws Exception {
 		return sqlsession.selectOne(namespace + ".selectTpwById", id);
+	}
+
+	@Override
+	public void insertnoMember(int memId, String memPhone) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memId", memId);
+		map.put("memPhone", memPhone);
+		
+		sqlsession.insert(namespace + ".insertnoMember", map);
+	}
+
+	@Override
+	public int selectNoMemberId() throws Exception {
+		try {
+			return sqlsession.selectOne(namespace + ".selectNoMemberId");
+		} catch (NullPointerException e) {
+			return 0;
+		}
 	}
 
 }

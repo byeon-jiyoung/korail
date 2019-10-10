@@ -1,5 +1,8 @@
 package com.yi.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -42,8 +45,11 @@ public class LoginController {
 			return;
 		}
 		
-		Login login = new Login(dbMember.getMemId(), dbMember.getMemPw(), dbMember.getMemName(), dbMember.getMemMileage());
+		Login login = new Login(dbMember.getMemId(), dbMember.getMemPw(), dbMember.getMemName(), dbMember.getMemMileage(), dbMember.getMemPhone());
 		model.addAttribute("login", login);
+		model.addAttribute("memId", dbMember.getMemId());
+		
+		System.out.println(dbMember.getMemId());
 	}
 	
 	@RequestMapping(value="logout", method=RequestMethod.GET)
@@ -55,11 +61,13 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="mypage", method=RequestMethod.GET)
-	public void mypageGet(String memId, Model model) throws Exception {
+	public void mypageGet(HttpSession session, Model model) throws Exception {
 		logger.info("---------- mypageGet ----------");
-		logger.info("memId : " + memId);
 		
-		Member member = service.selectMemberById(memId);
+		Login login = (Login)session.getAttribute("Auth");
+		logger.info("memId : " + login.getMemId());
+		
+		Member member = service.selectMemberById(login.getMemId());
 		model.addAttribute("member", member);
 	}
 	
@@ -84,30 +92,65 @@ public class LoginController {
 		return "redirect:/login/mypage";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="confirmPw", method=RequestMethod.POST)
-	public String confirmPwPost(String id, String pw) throws Exception {
+	public String confirmPwPost(@RequestBody HashMap<String, Object> map) throws Exception { //String id, String pw
 		logger.info("---------- confirmPwPost ----------");
+		
+		String id = (String)map.get("id");
+		String pw = (String)map.get("pw");
 		logger.info("id => " + id + " & pw => " + pw);
 		
-		/*if(member.getMemPw().equals(newmemPw) == true) {
-			rattr.addAttribute("change", "fail");
-			return "redirect:/login/mypage";
-		}*/
+		String password = service.selectPwById(id);
+		logger.info("password => " + password);
 		
-		return "redirect:/login/mypage";
+		if(password.equals(pw)) {
+			return "success";
+		}else {
+			return "fail";
+		}
 	}
 	
 	@RequestMapping(value="changePw", method=RequestMethod.POST)
-	public String changePwPost(Member member, String newmemPw, RedirectAttributes rattr) {
+	public String changePwPost(Member member, String newmemPw, RedirectAttributes rattr) throws Exception {
 		logger.info("---------- changePwPost ----------");
 		logger.info(member.toString());
 		logger.info("newmemPw : " + newmemPw);
 		
-		if(member.getMemPw().equals(newmemPw) == true) {
-			rattr.addAttribute("change", "fail");
-			return "redirect:/login/mypage";
-		}
+		service.updatePw(member.getMemId(), newmemPw);
 		
+		rattr.addAttribute("memId", member.getMemId());
+		return "redirect:/login/mypage";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="confirmTpw", method=RequestMethod.POST)
+	public String confirmTpwPost(@RequestBody HashMap<String, Object> map) throws Exception { //String id, String pw
+		logger.info("---------- confirmTpwPost ----------");
+		
+		String id = (String)map.get("id");
+		String tpw = (String)map.get("tpw");
+		logger.info("id => " + id + " & tpw => " + tpw);
+		
+		String password = service.selectTpwById(id);
+		logger.info("password => " + password);
+		
+		if(password.equals(tpw)) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	
+	@RequestMapping(value="changeTpw", method=RequestMethod.POST)
+	public String changeTpwPost(Member member, String newmemTpw, RedirectAttributes rattr) throws Exception {
+		logger.info("---------- changeTpwPost ----------");
+		logger.info(member.toString());
+		logger.info("newmemTpw : " + newmemTpw);
+		
+		service.updateTpw(member.getMemId(), newmemTpw);
+		
+		rattr.addAttribute("memId", member.getMemId());
 		return "redirect:/login/mypage";
 	}
 }

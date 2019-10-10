@@ -130,13 +130,19 @@
 	th:last-child, td:last-child {
 		border-right: none;
 	}
+	th {
+		width: 20%;
+	}
 	td {
 		padding-left: 20px;
+	}
+	td span {
+		font-size: 0.9em;
 	}
 	#btn {
 		text-align: center;
 	}
-	button {
+	#salBtn {
 		padding: 8px 15px;
 		background: url("${pageContext.request.contextPath}/resources/images/res/btn_bg_blue.png") repeat-x;
 		border: none;
@@ -144,7 +150,7 @@
 		background-size: auto 100%;
 	}
 	table a {
-		font-size: 0.8em;
+		font-size: 0.9em;
 		color: #266fcb;
 	}
 	table b {
@@ -154,16 +160,31 @@
 		width: 100px;
 		margin-right: 10px;
 	}
-	
+	input[name="memPhone"] {
+		width: 150px;
+	}
 	.none {
 		display: none;
 	}
-	.reg {
+	
+	/*--------------------------- 비회원 ---------------------------*/
+	.phonecheckS, .phonecheckF {
+		color: blue;
 		display: none;
+		font-size: 0.9em;
+		margin-top: 5px;
+	}
+	.reg {
 		color: red;
 		display: none;
 		font-size: 0.9em;
 		margin-top: 5px;
+	}
+	#phonecheck {
+		background-color: #F8F8F8;
+		border: 1px solid #D5D5D5;
+		margin-top: 5px;
+		padding: 2px 5px;
 	}
 </style>
 
@@ -194,7 +215,7 @@
 		$("#salBtn").click(function() {
 			var res = confirm("결제하시겠습니까?");
 			var m = $("input[name='mileage']").val();
-
+			
 			if(res == true) {
 				$("input[name='salClassify']").attr("value", $("input[type='radio']:checked").val());
 				$("input[name='salPrice']").attr("value", ${totalPrice}-Number(m));
@@ -219,6 +240,37 @@
 			}else {
 				$(".totalPrice").text(addComma(to_price)+"원");
 			}
+		})
+		
+		$("#phonecheck").click(function(e) {
+			e.preventDefault();
+			
+			$(".reg").css("display", "none");
+			
+			var reg_tel = /^(010|011|016|017|018)[-]{1}[0-9]{3,4}[-]{1}[0-9]{4}$/;
+			
+			if($("input[name='memPhone']").val() == "" || reg_tel.test($("input[name='memPhone']").val()) == false) {
+				$("input[name='memPhone']").nextAll(".reg").css("display", "inline");
+				return false;
+			}
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/join/phonecheck",
+				type : "post",
+				data : {"memPhone":$("input[name='memPhone']").val()},
+				dataType: "text",
+				success : function(res) {
+					console.log(res);
+					
+					if(res == "yes") {
+						$(".phonecheckS").css("display", "none");
+						$(".phonecheckF").css("display", "inline");
+					}else {
+						$(".phonecheckF").css("display", "none");
+						$(".phonecheckS").css("display", "inline");
+					}
+				}
+			})
 		})
 	})
 </script>
@@ -272,10 +324,11 @@
 							</td>
 						</tr>
 						<tr>
-							<th>마일리지</th>
-							<td>
-								<c:if test="${Auth != null}">
+							<c:if test="${Auth != null}">
+								<th>마일리지</th>
+								<td>
 									<c:if test="${Auth.memMileage == 0}">
+										<input type="hidden" name="memPhone" value="${Auth.memPhone}">
 										<input type="text" name="mileage" class="none"><b>(${Auth.memMileage}원 사용가능)</b>
 									</c:if>
 									<c:if test="${Auth.memMileage != 0}">
@@ -283,12 +336,21 @@
 										<div class="none" id="mil">${Auth.memMileage}</div>
 										<span class="reg">보유하신 마일리지만큼 사용가능합니다.</span>
 									</c:if>
-								</c:if>
-								<c:if test="${Auth == null}">
+								</td>
+							</c:if>
+							<c:if test="${Auth == null}">
+								<th>휴대폰번호</th>
+								<td>
 									<input type="text" name="mileage" class="none">
-									<a href="${pageContext.request.contextPath}/login/login">(※ 회원전용입니다. 로그인하시겠습니까?)</a>
-								</c:if>
-							</td>
+									<%-- <a href="${pageContext.request.contextPath}/login/login">(※ 회원전용입니다. 로그인하시겠습니까?)</a> --%>
+									<input type="text" name="memPhone"><span>-를 포함한 휴대폰번호</span><br>
+									<button type="button" id="phonecheck">휴대폰번호 중복체크</button>
+									<span class="reg">-를 포함한 휴대폰번호를 다시 입력해주세요</span>
+									<span class="phonecheckF"><br>이미 가입되어 있는 휴대폰번호입니다. 비회원으로 예매하시겠습니까?
+									<a href="${pageContext.request.contextPath}/login/login">(※ 로그인하시겠습니까?)</a></span>
+									<span class="phonecheckS">비회원으로 예매가능합니다.</span>
+								</td>
+							</c:if>
 						</tr>
 						<tr>
 							<th>총결제금액</th>
@@ -302,6 +364,7 @@
 					<input type="hidden" name="salClassify">
 					<input type="hidden" name="salPrice" value="${totalPrice}">
 					<input type="hidden" name="salDiscount">
+					<input type="hidden" name="nomemPhone" val>
 					<div id="btn">
 						<button id="salBtn">결제하기</button>
 					</div>

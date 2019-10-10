@@ -24,10 +24,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		//super.postHandle(request, response, handler, modelAndView);
 		
 		logger.info("LoginInterceptor postHandler");
-		
+
 		HttpSession session = request.getSession();
 		
 		Object login = modelAndView.getModel().get("login");
+		
+		System.out.println(login);
 		
 		if(login != null) {
 			session.setAttribute("Auth", login);

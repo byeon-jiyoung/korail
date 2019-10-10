@@ -14,6 +14,7 @@ public class Reservation {
 	private TrainSeat tsNo;
 	private TrainSeat tCode;
 	private int resClaNum;
+	private String nomemPhone;
 
 	public int getResNo() {
 		return resNo;
@@ -81,11 +82,17 @@ public class Reservation {
 	public void setResClaNum(int resClaNum) {
 		this.resClaNum = resClaNum;
 	}
+	public String getNomemPhone() {
+		return nomemPhone;
+	}
+	public void setNomemPhone(String nomemPhone) {
+		this.nomemPhone = nomemPhone;
+	}
 	
 	@Override
 	public String toString() {
 		return "Reservation [resNo=" + resNo + ", memId=" + memId + ", resDate=" + resDate + ", resPeople=" + resPeople
 				+ ", resCancel=" + resCancel + ", salNo=" + salNo + ", ttNo=" + ttNo + ", tsCar=" + tsCar + ", tsNo="
-				+ tsNo + ", tCode=" + tCode + ", resClaNum=" + resClaNum + "]";
+				+ tsNo + ", tCode=" + tCode + ", resClaNum=" + resClaNum + ", nomemPhone=" + nomemPhone + "]";
 	}
 }

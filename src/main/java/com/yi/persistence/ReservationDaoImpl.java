@@ -23,11 +23,12 @@ public class ReservationDaoImpl implements ReservationDao {
 	}
 
 	@Override
-	public void insertReservation(int resNo, int resClaNum, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
+	public void insertReservation(int resNo, int resClaNum, int people, String memPhone, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("resNo", resNo);
 		map.put("resClaNum", resClaNum);
 		map.put("people", people);
+		map.put("nomemPhone", memPhone);
 		map.put("start", start);
 		map.put("arrive", arrive);
 		map.put("startTime", startTime);
@@ -127,6 +128,16 @@ public class ReservationDaoImpl implements ReservationDao {
 	@Override
 	public List<Reservation> selectTsCarTsNoTCode() throws Exception {
 		return sqlsession.selectList(namespace + ".selectTsCarTsNoTCode");
+	}
+
+	@Override
+	public List<Reservation> selectTicket(String id) throws Exception {
+		return sqlsession.selectList(namespace + ".selectTicket", id);
+	}
+
+	@Override
+	public void updateNoMember(String nomemPhone) throws Exception {
+		sqlsession.update(namespace + ".updateNoMember", nomemPhone);
 	}
 
 }

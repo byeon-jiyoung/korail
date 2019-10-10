@@ -50,13 +50,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void updatePw(Member member, String newmemPw) throws Exception {
-		dao.updatePw(member, newmemPw);
+	public void updatePw(String memId, String newmemPw) throws Exception {
+		dao.updatePw(memId, newmemPw);
 	}
 
 	@Override
-	public void updateTpw(Member member, String newmemTpw) throws Exception {
-		dao.updateTpw(member, newmemTpw);
+	public void updateTpw(String memId, String newmemTpw) throws Exception {
+		dao.updateTpw(memId, newmemTpw);
 	}
 
 	@Override
@@ -67,6 +67,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String selectTpwById(String id) throws Exception {
 		return dao.selectTpwById(id);
+	}
+
+	@Override
+	public int selectNoMemberId() throws Exception {
+		return dao.selectNoMemberId();
 	}
 
 }

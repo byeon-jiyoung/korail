@@ -99,9 +99,9 @@ public class Member {
 	
 	@Override
 	public String toString() {
-		return "Member [memId=" + memId + ", memPw=" + memPw + ", memTpw=" + memTpw + ", memName=" + memName
-				+ ", memBirth=" + memBirth + ", memPhone=" + memPhone + ", memEmail=" + memEmail + ", memAddress="
-				+ memAddress + ", memDetailaddr=" + memDetailaddr + ", memMileage=" + memMileage + ", memJoin="
-				+ memJoin + ", memWithdrawal=" + memWithdrawal + ", discount=" + discount + "]";
+		return String.format(
+				"Member [memId=%s, memPw=%s, memTpw=%s, memName=%s, memBirth=%s, memPhone=%s, memEmail=%s, memAddress=%s, memDetailaddr=%s, memMileage=%s, memJoin=%s, memWithdrawal=%s, discount=%s]",
+				memId, memPw, memTpw, memName, memBirth, memPhone, memEmail, memAddress, memDetailaddr, memMileage,
+				memJoin, memWithdrawal, discount);
 	}
 }

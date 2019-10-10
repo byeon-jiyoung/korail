@@ -206,8 +206,8 @@
 			var tName = "${ttt.tTiNo.tiName}";
 			var tCode = "${ttt.tCode}";
 			var ttNo = $(".none").text();
-
-			location.href = "${pageContext.request.contextPath}/sale/sale?totalPrice="+totalPrice+"&tName="+tName+"&tCode="+tCode+"&ttNo="+ttNo;
+			var nomemPhone = "${nomemPhone}";
+			location.href = "${pageContext.request.contextPath}/sale/sale?totalPrice="+totalPrice+"&tName="+tName+"&tCode="+tCode+"&ttNo="+ttNo+"&nomemPhone="+nomemPhone;
 		})
 	}) 
 	

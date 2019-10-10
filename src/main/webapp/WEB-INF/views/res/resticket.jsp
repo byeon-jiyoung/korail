@@ -55,7 +55,7 @@
 		font-weight: bold;
 	}
 	#join_back2 {
-		background: url("${pageContext.request.contextPath}/resources/images/login/tra_visual11.jpg") no-repeat right top;
+		background: url("${pageContext.request.contextPath}/resources/images/login/tra_visual10.jpg") no-repeat right top;
 		padding-left: 30px;
 	}
 	#join_back2 p {
@@ -67,8 +67,26 @@
 		text-decoration: none;
 	}
 	#join_back2 h1 {
-		padding-bottom: 40px;
+		padding-bottom: 60px;
 		padding-top: 10px;
+	}
+	
+	#my {
+		background-color: #f3f5f7;
+		border-bottom: 1px solid #dfe1e4;
+		border-top: 1px solid #dfe1e4;
+		padding: 20px 10px;
+		overflow: hidden;
+	}
+	#my > img, #my > div {
+		float: left;
+	}
+	#my > div b {
+		border-bottom: 2px solid #246dc6;
+		display: block;
+		margin: 30px 0 0 10px;
+		width: 130%;
+		padding-bottom: 5px;
 	}
 	
 	#join_list {
@@ -78,7 +96,23 @@
 		clear: both;
 	}
 	
-	
+	table {
+		border-collapse: collapse;
+		border-top: 2px solid black;
+		width: 100%;
+		margin: 20px 0 10px 0;
+		font-size: 0.9em;
+	}
+	th, td {
+		border-top: 1px solid #d6d3d3;
+		border-bottom: 1px solid #d6d3d3;
+		padding: 10px 0;
+		text-align: center;
+	}
+	th {
+		background-color: #F8F8F8;
+		border-bottom: 2px solid #d6d3d3;
+	}
 </style>
 
 <script>
@@ -98,8 +132,8 @@
 						<b>${Auth.memName} 님</b>
 					</div> 
 				</div>
-				<a href="${pageContext.request.contextPath}/login/mypage?memId=${Auth.memId}"><p id="memberMgn" class="join_color">회원정보관리</p></a>
-				<a href=""><p id="ticketList">승차권이용내역</p></a>
+				<a href="${pageContext.request.contextPath}/login/mypage?memId=${Auth.memId}"><p id="memberMgn">회원정보관리</p></a>
+				<a href="${pageContext.request.contextPath}/res/resticketGet?id=${Auth.memId}"><p class="join_color">승차권이용내역</p></a>
 			</div>
 		</div>
 		<div class="join_sec_right">
@@ -110,7 +144,35 @@
 				<h1>마이페이지</h1>
 			</div>
 			<div id="join_list">
-				
+				<table>
+					<tr>
+						<th>예매날짜</th>
+						<th>선택좌석</th>
+						<th>출발정보</th>
+						<th>도착정보</th>
+						<th>결제여부</th>
+					</tr>
+					<c:forEach var="res" items="${rList}">
+						<tr>
+							<td><fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.resDate}"/></td>
+							<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}석</td>
+							<td>
+								${res.ttNo.tCode.tStart.nodename} <br>
+								<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>
+							</td>
+							<td>
+								${res.ttNo.tCode.tArrive.nodename} <br>
+								<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tArriveTime}"/>
+							</td>
+							<c:if test="${res.salNo != null}">
+								<td>완료</td>
+							</c:if>
+							<c:if test="${res.salNo == null}">
+								<td></td>
+							</c:if>
+						</tr>
+					</c:forEach>
+				</table>
 			</div>
 		</div>
 		

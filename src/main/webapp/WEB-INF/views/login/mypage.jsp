@@ -211,7 +211,7 @@
 		color: blue;
 		display: none;
 	}
-	.reg, .phonecheckF, .error, .reg2 {
+	.reg, .phonecheckF, .error, .reg2, .reg3 {
 		color: red;
 		display: none;
 	}
@@ -257,7 +257,7 @@
 		border: 1px solid #dfdfdf;
 		background-color: #f4f6f8;
 		padding: 15px 20px;
-		font-size: 0.9em !important;
+		font-size: 0.8em !important;
 	}
 	#chpw ul {
 		color: #0078a5;
@@ -271,6 +271,8 @@
 	}
 	#chpw2 b {
 		font-size: 1.2em;
+		padding-bottom: 5px;
+		display: inline-block;
 	}
 	#pwLeft {
 		float: left;
@@ -301,6 +303,17 @@
 	}
 	td {
 		padding-left: 10px;
+	}
+	.backcolor {
+		background-color: #e0eaf7;
+	}
+	#confirmPw, #confirmTpw {
+		background-color: #8C8C8C;
+		color: white;
+		padding: 3px 5px;
+		border: none;
+		border-radius: 5px;
+		margin-top: 5px;
 	}
 </style>
 
@@ -539,20 +552,41 @@
 			}
 		})
 		
-		//기존비밀번호가 일치하는지 확인
+		//기존 홈페이지 비밀번호가 일치하는지 확인
 		$(document).on("click", "#confirmPw", function() {
-			var pw = "${member.memPw}";
-			var id = "${member.memId}"; 
+			$(".reg").css("display", "none");
+			$(".reg3").css("display", "none");
 			
+			var pw = $("input[name='memPw']").val();
+			var id = "${member.memId}";
+			
+			if(pw == "") {
+				$("input[name='memPw']").nextAll(".reg3").css("display", "block");
+				return false;
+			}
+			
+			var json = {pw:pw, id:id};
+			var data = JSON.stringify(json); //post로 보내려면 이렇게 해야.. 
 			$.ajax({
 				url: "${pageContext.request.contextPath}/login/confirmPw",
-				date: {"pw":pw, "id":id},
+				data: data,
 				type: "post",
+				headers: {
+					"Content-Type":"application/json"
+				},
 				dataType: "text",
 				success: function(res) {
 					console.log(res);
 					
-					
+					if(res == "fail") {
+						$("input[name='memPw']").val("");
+						alert("비밀번호가 일치하지 않습니다.");
+					} else if(res == "success") {
+						alert("변경할 비밀번호를 입력해주세요.");
+						$("input[name='memPw']").attr("readonly","readonly").addClass("backcolor");
+						$("input[name='newmemPw']").removeAttr("readonly").removeClass("backcolor");
+						$("input[name='newmemPwCheck']").removeAttr("readonly").removeClass("backcolor");
+					}
 				}
 			})
 		})
@@ -584,6 +618,73 @@
 				return false;
 			}
 		})
+		
+		//기존 현장발권 비밀번호가 일치하는지 확인
+		$(document).on("click", "#confirmTpw", function() {
+			$(".reg").css("display", "none");
+			$(".reg3").css("display", "none");
+			
+			var tpw = $("input[name='memTpw']").val();
+			var id = "${member.memId}";
+			
+			if(tpw == "") {
+				$("input[name='memTpw']").nextAll(".reg3").css("display", "block");
+				return false;
+			}
+			
+			var json = {tpw:tpw, id:id};
+			var data = JSON.stringify(json); //post로 보내려면 이렇게 해야.. 
+			$.ajax({
+				url: "${pageContext.request.contextPath}/login/confirmTpw",
+				data: data,
+				type: "post",
+				headers: {
+					"Content-Type":"application/json"
+				},
+				dataType: "text",
+				success: function(res) {
+					console.log(res);
+					
+					if(res == "fail") {
+						$("input[name='memTpw']").val("");
+						alert("비밀번호가 일치하지 않습니다.");
+					} else if(res == "success") {
+						alert("변경할 비밀번호를 입력해주세요.");
+						$("input[name='memTpw']").attr("readonly","readonly").addClass("backcolor");
+						$("input[name='newmemTpw']").removeAttr("readonly").removeClass("backcolor");
+						$("input[name='newmemTpwCheck']").removeAttr("readonly").removeClass("backcolor");
+					}
+				}
+			})
+		})
+		
+		$("#tpwForm").submit(function() {
+			$(".reg").css("display", "none");
+			$(".reg2").css("display", "none");
+			$(".error").css("display", "none");
+			
+			var reg_tpw =  /^[0-9]{4}$/;
+			
+			if($("input[name='memTpw']").val() == "") {
+				$("input[name='memTpw']").nextAll(".reg").css("display", "block");
+				return false;
+			}
+			
+			if($("input[name='newmemTpw']").val() == "" || reg_tpw.test($("input[name='newmemTpw']").val()) == false) {
+				$("input[name='newmemTpw']").nextAll(".reg2").css("display", "block");
+				return false;
+			}
+			
+			if($("input[name='newmemTpwCheck']").val() == "") {
+				$("input[name='newmemTpwCheck']").nextAll(".reg").css("display", "block");
+				return false;
+			}
+			
+			if($("input[name='newmemTpw']").val() != $("input[name='newmemTpwCheck']").val()) {
+				$("input[name='newmemTpwCheck']").nextAll(".error").css("display", "block");
+				return false;
+			}
+		})
 	})
 </script>
 
@@ -601,7 +702,7 @@
 					</div> 
 				</div>
 				<a href="${pageContext.request.contextPath}/login/mypage?memId=${Auth.memId}"><p id="memberMgn" class="join_color">회원정보관리</p></a>
-				<a href=""><p id="ticketList">승차권이용내역</p></a>
+				<a href="${pageContext.request.contextPath}/res/resticket?id=${Auth.memId}"><p>승차권이용내역</p></a>
 			</div>
 		</div>
 		<div class="join_sec_right">
@@ -685,20 +786,21 @@
 										<td>
 											<input type="password" name="memPw">
 											<button type="button" id="confirmPw">비밀번호확인</button>
-											<span class="reg">비밀번호를 입력해주세요</span>
+											<span class="reg">기존 비밀번호 확인을 해주세요</span>
+											<span class="reg3">비밀번호를 입력해주세요.</span>
 										</td>
 									</tr>
 									<tr>
 										<th><span class="red">*</span> 신규 비밀번호 입력</th>
 										<td>
-											<input type="password" name="newmemPw">
+											<input type="password" name="newmemPw" readonly="readonly" class="backcolor">
 											<span class="reg2">영문자,숫자,특수문자 8자리이상 입력하세요</span>
 										</td>
 									</tr>
 									<tr>
 										<th><span class="red">*</span> 비밀번호 확인 입력</th>
 										<td>
-											<input type="password" name="newmemPwCheck">
+											<input type="password" name="newmemPwCheck" readonly="readonly" class="backcolor">
 											<span class="reg">비밀번호를 입력해주세요</span>
 											<span class="error">비밀번호가 일치하지 않습니다</span>
 										</td>
@@ -718,22 +820,26 @@
 								<input type="hidden" name="memId" value="${member.memId}">
 								<table>
 									<tr>
-										<th><span class="red">*</span> 기존 비밀번호 입력</th>
+										<th><span class="red">*</span> 기존 비밀번호  입력</th>
 										<td>
 											<input type="password" name="memTpw">
-											<button type="button">비밀번호확인</button>
-											<span class="reg">비밀번호 확인란을 입력해주세요</span>
+											<button type="button" id="confirmTpw">비밀번호확인</button>
+											<span class="reg">기존 비밀번호 확인을 해주세요</span>
+											<span class="reg3">비밀번호를 입력해주세요.</span>
 										</td>
 									</tr>
 									<tr>
 										<th><span class="red">*</span> 신규 비밀번호 입력</th>
-										<td><input type="password" name="newmemTpw"></td>
+										<td>
+											<input type="password" name="newmemTpw" readonly="readonly" class="backcolor">
+											<span class="reg2">숫자 4자리를 입력하세요</span>
+										</td>
 									</tr>
 									<tr>
 										<th><span class="red">*</span> 비밀번호 확인 입력</th>
 										<td>
-											<input type="password" name="newmemTpwCheck">
-											<span class="reg">비밀번호 확인란을 입력해주세요</span>
+											<input type="password" name="newmemTpwCheck" readonly="readonly" class="backcolor">
+											<span class="reg">비밀번호를 입력해주세요</span>
 											<span class="error">비밀번호가 일치하지 않습니다</span>
 										</td>
 									</tr>

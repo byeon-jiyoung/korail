@@ -62,7 +62,12 @@ public class SaleServiceImpl implements SaleService {
 	}
 
 	@Override
-	public void updateNoMember(String nomemPhone) throws Exception {
-		rDao.updateNoMember(nomemPhone);
+	public void updateNoMember(String nomemPhone, int salNo) throws Exception {
+		rDao.updateNoMember(nomemPhone, salNo);
+	}
+
+	@Override
+	public int lastSalNo() throws Exception {
+		return rDao.lastSalNo();
 	}
 }

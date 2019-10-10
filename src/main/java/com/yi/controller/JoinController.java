@@ -83,4 +83,20 @@ public class JoinController {
 		
 		return duplication;
 	}
+	
+	@RequestMapping(value="phonecheck2", method=RequestMethod.POST)
+	public @ResponseBody String joinPhonecheck2(String memPhone) throws Exception {
+		logger.info("---------- joinPhonecheck2 ----------");
+		
+		Member member = service.selectMemberByPhone2(memPhone);
+		String duplication = "";
+		
+		if(member != null) {
+			duplication = "yes";
+		}else {
+			duplication = "no";
+		}
+		
+		return duplication;
+	}
 }

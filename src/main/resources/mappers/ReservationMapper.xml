@@ -90,6 +90,10 @@
 	</select>
 	
 	<update id="updateNoMember">
-		update reservation set nomem_phone = #{nomemPhone} where nomem_phone = "sale"
+		update reservation set nomem_phone = #{nomemPhone} where sal_no = #{salNo}
 	</update>
+	
+	<select id="lastSalNo" resultType="int">
+		select max(sal_no)+1 from reservation
+	</select>
 </mapper>

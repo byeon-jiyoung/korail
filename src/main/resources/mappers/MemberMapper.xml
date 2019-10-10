@@ -41,6 +41,10 @@
 		select * from member where mem_phone = #{memPhone}
 	</select>
 	
+	<select id="selectMemberByPhone2" resultMap="resultMember">
+		select * from member where mem_phone = #{memPhone} and mem_pw is not null
+	</select>
+	
 	<update id="updateMileage">
 		update member set mem_mileage = mem_mileage + #{mileage} - #{discount} where mem_id = #{id}
 	</update>
@@ -74,6 +78,7 @@
 	</insert>
 	
 	<select id="selectNoMemberId" resultType="int">
-		select * from member where mem_pw is null order by mem_id desc limit 1
+		select * from member where mem_pw is null order by mem_id*1 desc limit 1
 	</select>
+	
 </mapper>

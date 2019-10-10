@@ -14,6 +14,7 @@ public interface SaleService {
 	//reservation
 	public List<Reservation> selecResBySalNo(int salNo, String tName, int ttNo, String tCode, int resClaNum) throws Exception;
 	public int selectResClaNum() throws Exception;
-	public void updateNoMember(String nomemPhone) throws Exception;
+	public void updateNoMember(String nomemPhone, int salNo) throws Exception;
+	public int lastSalNo() throws Exception;
 	
 }

@@ -223,6 +223,11 @@
 			}else {
 				return false;				
 			}
+			
+			if(pcheck == false) {
+				alert("휴대폰번호 중복체크를 해주세요.");
+				return false;
+			}
 		})
 		
 		var p = $(".totalPrice").text();
@@ -242,10 +247,13 @@
 			}
 		})
 		
+		var pcheck = false;
 		$("#phonecheck").click(function(e) {
 			e.preventDefault();
 			
 			$(".reg").css("display", "none");
+			$(".phonecheckF").css("display", "none");
+			$(".phonecheckS").css("display", "none");
 			
 			var reg_tel = /^(010|011|016|017|018)[-]{1}[0-9]{3,4}[-]{1}[0-9]{4}$/;
 			
@@ -255,7 +263,7 @@
 			}
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/join/phonecheck",
+				url : "${pageContext.request.contextPath}/join/phonecheck2",
 				type : "post",
 				data : {"memPhone":$("input[name='memPhone']").val()},
 				dataType: "text",
@@ -265,9 +273,11 @@
 					if(res == "yes") {
 						$(".phonecheckS").css("display", "none");
 						$(".phonecheckF").css("display", "inline");
+						pcheck = false;
 					}else {
 						$(".phonecheckF").css("display", "none");
 						$(".phonecheckS").css("display", "inline");
+						pcheck = true;
 					}
 				}
 			})
@@ -364,7 +374,7 @@
 					<input type="hidden" name="salClassify">
 					<input type="hidden" name="salPrice" value="${totalPrice}">
 					<input type="hidden" name="salDiscount">
-					<input type="hidden" name="nomemPhone" val>
+					<input type="hidden" name="nomemPhone" value="${nomemPhone}">
 					<div id="btn">
 						<button id="salBtn">결제하기</button>
 					</div>

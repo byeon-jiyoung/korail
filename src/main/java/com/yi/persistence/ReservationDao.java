@@ -20,5 +20,6 @@ public interface ReservationDao {
 	public void minute20ResCancel() throws Exception;
 	public List<Reservation> selectTsCarTsNoTCode() throws Exception;
 	public List<Reservation> selectTicket(String id) throws Exception;
-	public void updateNoMember(String nomemPhone) throws Exception;
+	public void updateNoMember(String nomemPhone, int salNo) throws Exception;
+	public int lastSalNo() throws Exception;
 }

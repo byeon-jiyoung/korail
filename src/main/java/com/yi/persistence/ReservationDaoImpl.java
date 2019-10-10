@@ -136,8 +136,17 @@ public class ReservationDaoImpl implements ReservationDao {
 	}
 
 	@Override
-	public void updateNoMember(String nomemPhone) throws Exception {
-		sqlsession.update(namespace + ".updateNoMember", nomemPhone);
+	public void updateNoMember(String nomemPhone, int salNo) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("nomemPhone", nomemPhone);
+		map.put("salNo", salNo);
+		
+		sqlsession.update(namespace + ".updateNoMember", map);
+	}
+
+	@Override
+	public int lastSalNo() throws Exception {
+		return sqlsession.selectOne(namespace + ".lastSalNo");
 	}
 
 }

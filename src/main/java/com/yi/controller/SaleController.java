@@ -32,6 +32,7 @@ public class SaleController {
 		logger.info("tName : " + tName);
 		logger.info("tCode : " + tCode);
 		logger.info("ttNo : " + ttNo);
+		logger.info("nomemPhone : " + nomemPhone);
 		
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("tName", tName);
@@ -53,9 +54,11 @@ public class SaleController {
 		int updatemileage = (int) (sale.getSalPrice()*0.1);
 		logger.info("////////"+updatemileage+"/////////"+sale.getSalPrice()+"///////////"+sale.getSalDiscount());
 		
-		if(nomemPhone == "sale") {
-			sService.updateNoMember(member.getMemPhone());
-			logger.info(member.getMemPhone()+"9999999999999999999999999999999999");
+		logger.info("nomemPhone : " + nomemPhone);
+		if(nomemPhone.equals("sale")) {
+			int lastsalNo = sService.lastSalNo();
+			logger.info(member.getMemPhone()+"  "+sService.lastSalNo()+"  9999999999999999999999999999999999");
+			sService.updateNoMember(member.getMemPhone(), lastsalNo);
 		}else {
 			nomemPhone = "m";
 		}

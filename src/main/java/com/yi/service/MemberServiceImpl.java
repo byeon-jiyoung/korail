@@ -74,4 +74,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectNoMemberId();
 	}
 
+	@Override
+	public Member selectMemberByPhone2(String phone) throws Exception {
+		return dao.selectMemberByPhone2(phone);
+	}
+
 }

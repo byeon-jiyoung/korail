@@ -114,4 +114,9 @@ public class MemberDaoImpl implements MemberDao {
 		}
 	}
 
+	@Override
+	public Member selectMemberByPhone2(String phone) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectMemberByPhone2", phone);
+	}
+
 }

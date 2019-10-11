@@ -96,6 +96,7 @@
 		clear: both;
 	}
 	
+	
 	table {
 		border-collapse: collapse;
 		border-top: 2px solid black;
@@ -113,10 +114,43 @@
 		background-color: #F8F8F8;
 		border-bottom: 2px solid #d6d3d3;
 	}
+	.norList {
+		padding: 30px 0;
+	}
+	
+	#resCancel {
+		background: url(/korail/resources/images/login/btn_wit.png) repeat-x;
+	    border: 1.5px solid #9e9e9e;
+	    border-radius: 5px;
+	    padding: 3px 5px;
+	}
+	
+	.cancel {
+		color: gray;
+	}
 </style>
 
 <script>
-	
+	$(function() {
+		$(document).on("click", "#resCancel", function() {
+			var res = confirm("취소하시겠습니까?");
+			
+			if(res == true) {
+				var resClaNum = $(this).attr("data-claNum");
+				
+				$.ajax({
+					url : "${pageContext.request.contextPath}/res/resCancel2?resClaNum="+resClaNum,
+					type : "get",
+					dataType: "text",
+					success : function(res) {
+						console.log(res);
+							
+						
+					}
+				})
+			}
+		})
+	})
 </script>
 
 	<section>
@@ -144,35 +178,68 @@
 				<h1>마이페이지</h1>
 			</div>
 			<div id="join_list">
-				<table>
-					<tr>
-						<th>예매날짜</th>
-						<th>선택좌석</th>
-						<th>출발정보</th>
-						<th>도착정보</th>
-						<th>결제여부</th>
-					</tr>
-					<c:forEach var="res" items="${rList}">
+				<div id="table_wrap">
+					<table>
 						<tr>
-							<td><fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.resDate}"/></td>
-							<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}석</td>
-							<td>
-								${res.ttNo.tCode.tStart.nodename} <br>
-								<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>
-							</td>
-							<td>
-								${res.ttNo.tCode.tArrive.nodename} <br>
-								<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tArriveTime}"/>
-							</td>
-							<c:if test="${res.salNo != null}">
-								<td>완료</td>
-							</c:if>
-							<c:if test="${res.salNo == null}">
-								<td></td>
-							</c:if>
+							<th>예매날짜</th>
+							<th>선택좌석</th>
+							<th>출발정보</th>
+							<th>도착정보</th>
+							<th>결제여부</th>
 						</tr>
-					</c:forEach>
-				</table>
+						<c:if test="${empty rList}">
+							<tr>
+								<td colspan="5" class="norList">예매내역이 없습니다</td>
+							</tr>
+						</c:if>
+						<c:forEach var="res" items="${rList}">
+							<c:if test="${res.resCancel == false}">
+								<tr>
+									<td><fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.resDate}"/></td>
+									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}.</td>
+									<td>
+										${res.ttNo.tCode.tStart.nodename} <br>
+										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>
+									</td>
+									<td>
+										${res.ttNo.tCode.tArrive.nodename} <br>
+										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tArriveTime}"/>
+									</td>
+									<c:if test="${res.salNo != null}">
+										<td>완료</td>
+									</c:if>
+									<c:if test="${res.salNo == null}">
+										<td>
+											<button id="resCancel" data-claNum="${res.resClaNum}">예약취소</button>
+										</td>
+									</c:if>
+								</tr>
+							</c:if>
+							<c:if test="${res.resCancel != false}">
+								<tr class="cancel">
+									<td></td>
+									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}.</td>
+									<td>
+										${res.ttNo.tCode.tStart.nodename} <br>
+										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>
+									</td>
+									<td>
+										${res.ttNo.tCode.tArrive.nodename} <br>
+										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tArriveTime}"/>
+									</td>
+									<c:if test="${res.salNo != null}">
+										<td>완료</td>
+									</c:if>
+									<c:if test="${res.salNo == null}">
+										<td>
+											취소완료
+										</td>
+									</c:if>
+								</tr>
+							</c:if>
+						</c:forEach>
+					</table>
+				</div>
 			</div>
 		</div>
 		

@@ -156,7 +156,7 @@
 	table b {
 		color: #266fcb;
 	}
-	input[type="text"] {
+	table input[type="text"] {
 		width: 100px;
 		margin-right: 10px;
 	}
@@ -213,6 +213,10 @@
 		}); //input type text에 enter키 이벤트 지정 */
 		
 		$("#salBtn").click(function() {
+			if(${Auth != null}) {
+				pcheck = true;
+			}
+			
 			var res = confirm("결제하시겠습니까?");
 			var m = $("input[name='mileage']").val();
 			

@@ -316,7 +316,7 @@
 	#seatInfo {
 		color: black;
 		overflow: hidden;
-		margin-top: 20px;
+		margin-top: 30px;
 	}
 	#sNum, #sWrap {
 		display: inline-block;
@@ -611,7 +611,7 @@
 		
 		var selPeople = 0;
 		$(document).on("click", ".seat", function(){
-			var seat = $(this).attr("data-seatnum")+"석";
+			var seat = $(this).attr("data-seatnum")+"번";
 			var selSeat  = $(".selSeat").text();
 			var adult = Number($("select[name='adult']").val());
 			var child = Number($("select[name='child']").val());
@@ -702,7 +702,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/res/reservation"><p class="res_color">승차권예약</p></a>
-				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
+				<a href="${pageContext.request.contextPath}/res/searchRes"><p>승차권조회</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">
@@ -905,7 +905,6 @@
 									<div id="stationText">
 										<p class="circle"></p><span class="redBold"></span><span class="carText"></span>
 									</div>
-									<div class="btnWrap"><button id="moveCar">다른 호차</button></div>
 									<div id="seatInfo">
 										<div id="sWrap">
 											<div id="sNum"><b>좌석번호</b></div>

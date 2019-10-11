@@ -57,9 +57,8 @@ public class ReservationServiceImpl implements ReservationService {
 		t.gettCode();
 		
 		TrainSeat ts = new TrainSeat(tsCar, tsNo, t);
-		System.out.println("~!~!~!~!~!~~!~!~!~!~!~!~!~!~!~!!~ " + ts.toString());
 		tsDao.updateTsChoice(ts);
-		System.out.println("~!~!~!~!~!~~!~!~!~!~!~!~!~!~!~!!~ " + ts.toString());
+		System.out.println("~!~!~!~!~!~~!~!~!~!~!~!~!~!~!~!!~ " + ts.isTsChoice());
 	}
 	
 	@Override
@@ -170,14 +169,13 @@ public class ReservationServiceImpl implements ReservationService {
 			System.out.println(r.getTsCar().getTsNo());
 			System.out.println(r.getTsCar().gettCode());
 			TrainSeat ts = new TrainSeat(r.getTsCar().getTsCar(), r.getTsCar().getTsNo(), r.getTsCar().gettCode());
-			tsDao.updateTsChoiceCancel(ts);
+			tsDao.updateTsChoiceFalse(ts);
 		}
 	}
 
 	@Override
 	@Transactional
 	public void minute20ResCancel(TrainSeat ts) throws Exception {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~ " + ts + " ~~~~~~~~~~~~~~~~~~~~");
 		rDao.minute20ResCancel();
 		tsDao.updateTsChoiceFalse(ts);
 	}
@@ -190,5 +188,20 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<Reservation> selectTicket(String id) throws Exception {
 		return rDao.selectTicket(id);
+	}
+
+	@Override
+	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception {
+		return rDao.selectResByNomemPhone(res);
+	}
+
+	@Override
+	public List<Reservation> selectTsCarTsNoTCode2() throws Exception {
+		return rDao.selectTsCarTsNoTCode2();
+	}
+
+	@Override
+	public void updateTsChoice(TrainSeat ts) throws Exception {
+		tsDao.updateTsChoice(ts);
 	}
 }

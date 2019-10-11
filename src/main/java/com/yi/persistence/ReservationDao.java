@@ -19,7 +19,10 @@ public interface ReservationDao {
 	public List<Reservation> selecResBySalNo(int salNo, String tName, int ttNo, String tCode, int resClaNum) throws Exception;
 	public void minute20ResCancel() throws Exception;
 	public List<Reservation> selectTsCarTsNoTCode() throws Exception;
+	public List<Reservation> selectTsCarTsNoTCode2() throws Exception;
 	public List<Reservation> selectTicket(String id) throws Exception;
 	public void updateNoMember(String nomemPhone, int salNo) throws Exception;
 	public int lastSalNo() throws Exception;
+	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception;
+	
 }

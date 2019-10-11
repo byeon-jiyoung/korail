@@ -24,7 +24,9 @@ public interface ReservationService {
 	public void updateResCancel(String resClaNum) throws Exception;
 	public void minute20ResCancel(TrainSeat ts) throws Exception;
 	public List<Reservation> selectTsCarTsNoTCode() throws Exception;
+	public List<Reservation> selectTsCarTsNoTCode2() throws Exception;
 	public List<Reservation> selectTicket(String id) throws Exception;
+	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception;
 	
 	//train
 	public List<Train> listTrain() throws Exception;
@@ -55,4 +57,7 @@ public interface ReservationService {
 	
 	//trainSeat + trainTime
 	public List<TrainSeatTrainTime> listTrainSeat(String start, String arrive, String tCode, String startTime) throws Exception;
+	
+	//trainSeat
+	public void updateTsChoice(TrainSeat ts) throws Exception;
 }

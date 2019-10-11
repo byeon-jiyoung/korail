@@ -24,7 +24,7 @@ public class SaleServiceImpl implements SaleService {
 	
 	@Override
 	@Transactional
-	public void insertSale(Sale sale, int mileage, int discount, String id, String memPhone) throws Exception {
+	public void insertSale(Sale sale, int mileage, int discount, String id, String memPhone, int lastsalNo) throws Exception {
 		sDao.insertSale(sale);
 		
 		int s = sDao.selectSalelately();
@@ -38,6 +38,10 @@ public class SaleServiceImpl implements SaleService {
 		if(id == "noMem") {
 			int lastNoMemId = mDao.selectNoMemberId();
 			mDao.insertnoMember(++lastNoMemId, memPhone);
+		}
+		
+		if(lastsalNo != 0) {
+			rDao.updateNoMember(memPhone, lastsalNo);
 		}
 	}
 
@@ -59,11 +63,6 @@ public class SaleServiceImpl implements SaleService {
 	@Override
 	public int selectResClaNum() throws Exception {
 		return rDao.selectResClaNum();
-	}
-
-	@Override
-	public void updateNoMember(String nomemPhone, int salNo) throws Exception {
-		rDao.updateNoMember(nomemPhone, salNo);
 	}
 
 	@Override

@@ -188,7 +188,7 @@
 	#article_guide img {
 		width: 50%;
 		float: left;
-		height: 110.5px;
+		height: 110px;
 	}
 </style>
 

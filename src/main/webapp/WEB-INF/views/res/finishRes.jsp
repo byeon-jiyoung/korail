@@ -260,7 +260,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
-				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>승차권조회</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">
@@ -369,9 +369,7 @@
 				</div>
 				<div id="clear"></div>
 				<div id="btnWrap">
-					<c:if test="${Auth != null}">
-						<button id="discountBtn">할인적용</button>
-					</c:if>
+					<!-- <button id="discountBtn">할인적용</button> -->
 					<button id="saleBtn">결제하기</button>
 					<button id="cancelBtn">예약취소</button>
 				</div>

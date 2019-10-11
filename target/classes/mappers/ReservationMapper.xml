@@ -96,4 +96,12 @@
 	<select id="lastSalNo" resultType="int">
 		select max(sal_no)+1 from reservation
 	</select>
+	
+	<select id="selectResByNomemPhone" resultMap="resultReservation">
+		select * from reservation r join train_time tt on r.tt_no = tt.tt_no join train t on r.t_code = t.t_code join TrainCityTrain tct on tct.start_nodeid = t.t_start join city_train ct on ct.nodeid = tt.nodeid group by res_no having nomem_phone = #{nomemPhone}
+	</select>
+	
+	<select id="selectTsCarTsNoTCode2" resultMap="resultReservation">
+		select ts_car, ts_no, t_code from reservation where res_date is not null
+	</select>
 </mapper>

@@ -11,20 +11,18 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yi.domain.CityTrain;
 import com.yi.domain.Login;
-import com.yi.domain.Member;
 import com.yi.domain.Reservation;
 import com.yi.domain.Train;
 import com.yi.domain.TrainInfo;
-import com.yi.domain.TrainSeat;
 import com.yi.domain.TrainSeatTrainTime;
 import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
@@ -55,6 +53,7 @@ public class ReservationController {
 			people = "1";
 			date = strToday;
 			time = "00:00";
+			logger.info("dddddddddddddddddddddddddddddd");
 		}
 		
 		String searchTime = date.concat(" ").concat(time);
@@ -63,13 +62,13 @@ public class ReservationController {
 		
 		Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(searchTime);
 		
-		if(date2.getTime() < today.getTime()) {
-			logger.info("--------------------------------" + date2.getTime() + "&" + date2);
-			logger.info("--------------------------------" + today.getTime() + "&" + today);
-			date = strToday;
-			searchTime = date;
-			logger.info("=====2=====>"+searchTime+" & "+endTime);
-		}
+//		if(date2.getTime() < today.getTime()) {
+//			logger.info("--------------------------------" + date2.getTime() + "&" + date2);
+//			logger.info("--------------------------------" + today.getTime() + "&" + today);
+//			date = strToday;
+//			searchTime = date;
+//			logger.info("=====2=====>"+searchTime+" & "+endTime);
+//		}
 		
 		List<Train> tList = rService.listTrainNodeName();
 		List<TrainInfo> tiList = rService.listTrainInfo();
@@ -158,6 +157,13 @@ public class ReservationController {
 			rService.minute20ResCancel(r.getTsCar());
 		}
 		
+		List<Reservation> rList2 = rService.selectTsCarTsNoTCode2();
+		logger.info("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr =>" + rList.toString());
+		for(Reservation r2 : rList2) {
+			logger.info(r2.getTsCar() + " & " + r2.getTsNo() + " & " + r2.gettCode());
+			rService.updateTsChoice(r2.getTsCar());
+		}
+		
 		List<TrainSeatTrainTime> tsttList = rService.listTrainSeat(startStation, arriveStation, tCode, startTime);
 		
 		for(TrainSeatTrainTime tstt : tsttList) {
@@ -207,9 +213,18 @@ public class ReservationController {
 		}
 		
 		logger.info(memPhone);
+		logger.info(tsNo);
 		
-		String[] c = tsNo.split("석");
+		String[] c = tsNo.split("번");
+		logger.info(c + "");
+		logger.info(c.length + "");
+		
+		if(c.length == 1) {
+			logger.info("ddddddddddddddddddddddddddddd");
+		}
+		
 		for(String s : c) {
+			logger.info(s + "&" + Integer.parseInt(s.trim()));
 			if(memId == "") {
 				rService.insertReservation(++resNo, resClaNum, people, memPhone, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 				logger.info("비회원");
@@ -252,10 +267,48 @@ public class ReservationController {
 		
 		List<Reservation> rList = rService.selectTicket(id);
 		
+		logger.info(rList+"");
 		for(Reservation r : rList) {
 			logger.info(r.toString());
 		}
 		
 		model.addAttribute("rList", rList);
 	}
+	
+	@RequestMapping(value="searchRes", method=RequestMethod.GET)
+	public void searchResGet(HttpSession session) throws Exception {
+		logger.info("------------------- searchResGet --------------------");
+		logger.info(session.getAttribute("Auth")+"");
+	}
+	
+	@RequestMapping(value="searchRes", method=RequestMethod.POST)
+	public @ResponseBody List<Reservation> searchResPost(Reservation res, Model model) throws Exception {
+		logger.info("------------------- searchResPost --------------------");
+		logger.info(res.toString());
+		
+		List<Reservation> rList = rService.selectResByNomemPhone(res);
+		logger.info(rList.toString());
+		return rList;
+	}
+	
+	@RequestMapping(value="resCancel2", method=RequestMethod.GET)
+	public List<Reservation> resCancel2Get(String resClaNum, RedirectAttributes redirect, HttpSession session) throws Exception {
+		logger.info("------------------- resCancel2Get --------------------");
+		logger.info("resClaNum : " + resClaNum);
+		
+		rService.updateResCancel(resClaNum);
+		
+		Login login =  (Login) session.getAttribute("Auth");
+		String id = "";
+		if(login != null) {
+			id = login.getMemId();
+		}
+		redirect.addAttribute("id", id);
+		
+		List<Reservation> rList = rService.selectTicket(id);
+		System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+		System.out.println(rList.toString());
+		return rList;
+	}
+	
 }

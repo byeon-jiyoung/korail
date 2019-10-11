@@ -55,18 +55,19 @@ public class SaleController {
 		logger.info("////////"+updatemileage+"/////////"+sale.getSalPrice()+"///////////"+sale.getSalDiscount());
 		
 		logger.info("nomemPhone : " + nomemPhone);
+		
+		int lastsalNo = 0;
 		if(nomemPhone.equals("sale")) {
-			int lastsalNo = sService.lastSalNo();
+			lastsalNo = sService.lastSalNo();
 			logger.info(member.getMemPhone()+"  "+sService.lastSalNo()+"  9999999999999999999999999999999999");
-			sService.updateNoMember(member.getMemPhone(), lastsalNo);
 		}else {
 			nomemPhone = "m";
 		}
 		
 		if(member.getMemId() == "") {
-			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), "noMem", member.getMemPhone());
+			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), "noMem", member.getMemPhone(),lastsalNo);
 		}else {
-			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), member.getMemId(), member.getMemPhone());
+			sService.insertSale(sale, updatemileage, sale.getSalDiscount(), member.getMemId(), member.getMemPhone(),lastsalNo);
 		}
 		
 		int s = sService.selectSalelately();

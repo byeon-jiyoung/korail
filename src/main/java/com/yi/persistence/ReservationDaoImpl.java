@@ -146,7 +146,22 @@ public class ReservationDaoImpl implements ReservationDao {
 
 	@Override
 	public int lastSalNo() throws Exception {
-		return sqlsession.selectOne(namespace + ".lastSalNo");
+		try {
+			return sqlsession.selectOne(namespace + ".lastSalNo");
+		} catch (NullPointerException e) {
+			return 1;
+		}
+		
+	}
+
+	@Override
+	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception {
+		return sqlsession.selectList(namespace + ".selectResByNomemPhone", res);
+	}
+
+	@Override
+	public List<Reservation> selectTsCarTsNoTCode2() throws Exception {
+		return sqlsession.selectList(namespace + ".selectTsCarTsNoTCode2");
 	}
 
 }

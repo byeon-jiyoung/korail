@@ -43,6 +43,7 @@
 	.res_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
+		font-size: 14px;
 	}
 	.res_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;
@@ -130,7 +131,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="res_color">승차권예약</p></a>
-				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>승차권조회</p></a>
 			</div>
 		</div>
 		<div class="res_sec_right">

@@ -10,4 +10,5 @@ public interface TrainTimeDao {
 	public List<TrainTime> listTrainTime() throws Exception;
 	/*public List<TrainTime> listNodeByTCode(String train) throws Exception;*/
 	public List<TrainTime> listTrainTimeNodeName() throws Exception;
+	public void insertTrainTime(TrainTime tt) throws Exception;
 }

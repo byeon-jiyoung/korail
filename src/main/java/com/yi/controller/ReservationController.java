@@ -44,15 +44,17 @@ public class ReservationController {
 		logger.info(date + "," + time);
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df2 = new SimpleDateFormat("HH:mm");
 		Date today = new Date();
 		String strToday = df.format(today);
+		String strToday2 = df2.format(today);
 		
 		if(start == null || arrive == null || people == null || date == null || time == null) {
 			start = "동대구";
 			arrive = "부산";
 			people = "1";
 			date = strToday;
-			time = "00:00";
+			time = strToday2;
 			logger.info("dddddddddddddddddddddddddddddd");
 		}
 		
@@ -160,8 +162,10 @@ public class ReservationController {
 		List<Reservation> rList2 = rService.selectTsCarTsNoTCode2();
 		logger.info("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr =>" + rList.toString());
 		for(Reservation r2 : rList2) {
-			logger.info(r2.getTsCar() + " & " + r2.getTsNo() + " & " + r2.gettCode());
-			rService.updateTsChoice(r2.getTsCar());
+			if(r2.isResCancel() == false) {
+				logger.info(r2.getTsCar() + " & " + r2.getTsNo() + " & " + r2.gettCode());
+				rService.updateTsChoice(r2.getTsCar());
+			}
 		}
 		
 		List<TrainSeatTrainTime> tsttList = rService.listTrainSeat(startStation, arriveStation, tCode, startTime);
@@ -173,8 +177,14 @@ public class ReservationController {
 		return tsttList;
 	}
 	
+	/*@RequestMapping(value="finishRes", method=RequestMethod.GET)
+	public void finishResGet() {
+		
+	}*/
+	
 	@RequestMapping(value="finishRes", method=RequestMethod.POST)
-	public void finishResPost(HttpSession session, String tCode, int tTiNo, String tStart, String memId, String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
+	public void finishResPost(HttpSession session, String tCode, int tTiNo, String tStart, String memId, 
+			String tArrive, String tStartTime, String price, String tArriveTime, String peoA, String peoC, String peoO, String tsCar, String tsNo, Model model) throws Exception {
 		logger.info("------------------- finishResPost --------------------");
 		logger.info("tCode : " + tCode + ", tTiNo : " + tTiNo);
 		logger.info("tStart : " + tStart + ", tArrive : " + tArrive);
@@ -204,7 +214,7 @@ public class ReservationController {
 		
 		
 		//session으로 받는방법
-		Login member = (Login) session.getAttribute("login");
+		Login member = (Login) session.getAttribute("Auth");
 		logger.info(member+"000000000000000000000000000000000000");
 		String memPhone = "sale";
 		
@@ -229,7 +239,7 @@ public class ReservationController {
 				rService.insertReservation(++resNo, resClaNum, people, memPhone, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 				logger.info("비회원");
 			}else {
-				rService.insertReservationMember(++resNo, resClaNum, memId, people, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
+				rService.insertReservationMember(++resNo, resClaNum, memId, people, memPhone, tStart, tArrive, tStartTime, tCode, Integer.parseInt(tsCar), Integer.parseInt(s.trim()));
 				logger.info("회원"+memId);
 			}
 		}
@@ -282,15 +292,19 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value="searchRes", method=RequestMethod.POST)
-	public @ResponseBody List<Reservation> searchResPost(Reservation res, Model model) throws Exception {
+	public @ResponseBody List<Reservation> searchResPost(Reservation res, Model model, HttpSession session) throws Exception {
 		logger.info("------------------- searchResPost --------------------");
 		logger.info(res.toString());
 		
+		if(session.getAttribute("Auth") == null) {
+			logger.info("비회원입니다");
+		}
 		List<Reservation> rList = rService.selectResByNomemPhone(res);
 		logger.info(rList.toString());
 		return rList;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="resCancel2", method=RequestMethod.GET)
 	public List<Reservation> resCancel2Get(String resClaNum, RedirectAttributes redirect, HttpSession session) throws Exception {
 		logger.info("------------------- resCancel2Get --------------------");

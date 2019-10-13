@@ -47,4 +47,9 @@ public class TrainDaoImpl implements TrainDao {
 		return sqlsession.selectList(namespace + ".listTrainNodeName");
 	}
 
+	@Override
+	public void insertTrain(Train train) throws Exception {
+		sqlsession.insert(namespace + ".insertTrain", train);
+	}
+
 }

@@ -12,5 +12,6 @@ public interface TrainDao {
 	public List<Train> listTrainByTStartAndPNo(String tStart, int tTiNo) throws Exception;
 	public List<Train> listTrainByArriveS(String tArrive) throws Exception;*/
 	public List<Train> listTrainNodeName() throws Exception;
+	public void insertTrain(Train train) throws Exception;
 	
 }

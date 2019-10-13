@@ -18,6 +18,7 @@
 	}
 	body {
 		background-color: #f5f5f5;
+		min-width: 1070px;
 	}
 	ul {
 		list-style: none;
@@ -157,7 +158,7 @@
 				</c:if>
 				<li><a href="${pageContext.request.contextPath}/login/mypage?memId=${Auth.memId}"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_my.png"></a></li>
 				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_customer.png"></a></li>
-				<li><a href=""><img src="${pageContext.request.contextPath}/resources/images/include/gnb_enjoy.png"></a></li>
+				<li><a href="${pageContext.request.contextPath}/manager/korail"><img src="${pageContext.request.contextPath}/resources/images/include/gnb_enjoy.png"></a></li>
 			</ul>
 		</div>
 		<div id="head2">

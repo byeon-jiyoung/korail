@@ -65,12 +65,13 @@ public class ReservationDaoImpl implements ReservationDao {
 	}
 
 	@Override
-	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
+	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String memPhone, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("resNo", resNo);
 		map.put("resClaNum", resClaNum);
 		map.put("memId", memId);
 		map.put("people", people);
+		map.put("memPhone", memPhone);
 		map.put("start", start);
 		map.put("arrive", arrive);
 		map.put("startTime", startTime);

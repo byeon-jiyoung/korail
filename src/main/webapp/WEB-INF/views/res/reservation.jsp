@@ -46,6 +46,7 @@
 	.res_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
+		font-size: 14px;
 	}
 	.res_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;
@@ -83,9 +84,14 @@
 		border-collapse: collapse;
 		width: 100%;
 	}
-	td, th {
+	th {
 		border: 1px solid #aaa;
 		padding: 10px 20px;
+		text-align: center;
+	}
+	td {
+		border: 1px solid #aaa;
+		padding: 5px 20px;
 		text-align: center;
 	}
 	table tr:first-child {
@@ -93,22 +99,21 @@
 	}
 	table th:first-child, table td:first-child {
 		border-left: none;
+		width: 15%;
 	}
-	table th:last-child, .price {
+	table th:last-child, .leadTime {
 		border-right: none;
+		width: 15%;
 	}
-	tabld td img {
-		width: 100%;
+	table th:nth-child(2), table th:nth-child(3) {
+		width: 15%;
+	}
+	table th:nth-child(4) {
+		width: 20%;
 	}
 	#resForm {
 		overflow: hidden;
 	}
-	/* .searchSeat, .searchSeatRan {
-		display: block;
-	}
-	.searchSeatRan {
-		margin-bottom: 5px;
-	} */
 	#personnelInfo {
 		border: 1px solid #c1c1c1;
 		box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
@@ -174,6 +179,7 @@
 		display: block;
 		float: right;
 		margin: 3px 4px 0 0;
+		cursor: pointer;
 	}
 	#startWrap {
 		overflow: hidden;
@@ -426,11 +432,19 @@
 		background-size: auto 100%;
 		margin-top: 10px;
 	}
+	
+	/*-------------------랜덤으로 좌석선택하는건 나중에 하겠습니다-----------------------*/
+	.searchSeatRan {
+		display: none;
+	}
 </style>
 
 <script>
 	$(function() {
 		$("#search").click(function() {
+			$("table").show();
+			$("#ultext").show();
+			
 			selPeople = 0;
 			$(".selSeat").empty();
 			
@@ -462,7 +476,7 @@
 					}
 					
 					$("table").empty();
-					$("table").append("<tr><th>열차분류</th><th>열차번호</th><th>출발</th><th>도착</th><th>좌석</th><th>가격</th></tr>");
+					$("table").append("<tr><th>열차분류</th><th>열차번호</th><th>출발</th><th>도착</th><th>좌석</th><th>가격</th><th>소요시간</th></tr>");
 					
 					$(res).each(function(i, obj) {
 						var start_time = new Date(obj.tStartTime);
@@ -483,6 +497,7 @@
 						var $img = $("<img>").attr("src", "${pageContext.request.contextPath}/resources/images/res/icon4.png").attr("data-time", arriveTime).addClass("searchSeat");
 						var $td = $("<td>").append($imgRan).append($img);
 						var $price = $("<td>").addClass("price").text(price_str).attr("data-price", obj.price);
+						var $leadTime = $("<td>").addClass("leadTime").text(("00" + (arrive_time.getHours()-start_time.getHours())).slice(-2)+":"+("00" + (arrive_time.getMinutes()-start_time.getMinutes())).slice(-2));
 						
 						var st2 = $("<span>").addClass("st2").html(startTime);
 						var stTd = $("<td>").addClass("none").append(st2);
@@ -490,17 +505,18 @@
 						var at = $("<span>").addClass("at").html(arriveTime);
 						var atTd = $("<td>").addClass("none").append(at);
 						
-						$tr.append($tiName).append($tiCode).append($tStart).append($tArrive).append($td).append($price).append(stTd).append(atTd);
+						$tr.append($tiName).append($tiCode).append($tStart).append($tArrive).append($td).append($price).append($leadTime).append(stTd).append(atTd);
 						$("table").append($tr);
 					})
 				}
 			})
 		})
 		
-		//예매버튼 클릭
+		/* //예매버튼 클릭
 		$(document).on("click", ".searchSeatRan", function(){
+			location.href="${pageContext.request.contextPath}/res/finishRes";
 			
-		})
+		}) */
 		
 		//좌석선택버튼 클릭
 		var rownum = 0; //행에 따른 도착시간 받아오기 위해
@@ -588,7 +604,8 @@
 							$(".carText").html("<b><span class='codeNum'>" + obj.tCode.tCode + "</span>열차&nbsp;&nbsp;&nbsp;<span class='decCar'>" + car +"</span>호차</b>에 대한 좌석정보입니다.");
 						})
 						
-						/* 
+						/*
+						다른호차 버튼 클릭 시
 						$("#moveCar").click(function() {
 							if($(".decCar").text() == obj.tsCar) {
 								var car = Number($(".decCar").text()) + 1;
@@ -602,12 +619,6 @@
 				}
 			})
 		})
-		
-		/* 
-		$(document).on("click", ".searchSeatRan", function(){
-			
-		}
-		*/
 		
 		var selPeople = 0;
 		$(document).on("click", ".seat", function(){
@@ -691,6 +702,31 @@
 			location.href = "${pageContext.request.contextPath}/";
 		})
 		
+		$("select[name='date']").change(function() {
+			var week = ['일', '월', '화', '수', '목', '금', '토'];
+			var year = $("select[name='year']").val();
+			var month = $("select[name='month']").val();
+			var date = $("select[name='date']").val();
+			
+			var dayOfWeek = week[new Date(year+"-"+month+"-"+date).getDay()];
+			$("#week").val(dayOfWeek);
+		})
+		
+		//조회할 정보가 변경되면 밑에 테이블이 안보이도록
+		$("#personnelInfo select").change(function() {
+			$("table").hide();
+			$("#ultext").hide();
+		})
+		//조회할 정보가 변경되면 밑에 테이블이 안보이도록
+		$("#trainInfo select").change(function() {
+			$("table").hide();
+			$("#ultext").hide();
+		})
+		//조회할 정보가 변경되면 밑에 테이블이 안보이도록
+		$("#trainInfo input[type='radio']").change(function() {
+			$("table").hide();
+			$("#ultext").hide();
+		})
 	})
 </script>
 
@@ -831,7 +867,7 @@
 								</c:forEach>
 							</select><span>시</span>
 							<fmt:formatDate value="${today}" pattern="E" var="day"/>
-							<input type="text" value="${day}">
+							<input type="text" value="${day}" id="week">
 							<!-- 
 							<fmt:parseDate value="20181101" var="dateFmt" pattern="yyyyMMdd"/>
 							<fmt:formatDate value="${dateFmt}" pattern="E" var="today"/>
@@ -854,11 +890,11 @@
 							<th>도착</th>
 							<th>좌석</th>
 							<th>가격</th>
-							<!-- <th>소요시간</th> -->
+							<th>소요시간</th>
 						</tr>
 						<c:forEach var="ttt" items="${tttList}">
 							<tr>
-								<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}<%-- <br>${ttt.tCode} --%></td>
+								<td data-code="${ttt.tCode}">${ttt.tTiNo.tiName}</td>
 								<td>${ttt.tCode}</td>
 								<td>${ttt.tStart.nodename}<br><span class="st"><fmt:formatDate pattern="HH:mm" value="${ttt.tStartTime}"/></span></td>
 								<td>${ttt.nodeid.nodename}<br><fmt:formatDate pattern="HH:mm" value="${ttt.ttStartTime}"/></td>
@@ -866,13 +902,15 @@
 									<img src="${pageContext.request.contextPath}/resources/images/res/icon3.png" class="searchSeatRan" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">
 									<img src="${pageContext.request.contextPath}/resources/images/res/icon4.png" class="searchSeat" data-time="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/>">
 								</td>
-								<td class="price" data-price="${ttt.price}"><fmt:formatNumber pattern="###,###" value="${ttt.price}"/></td>
+								<td data-price="${ttt.price}" class="price"><fmt:formatNumber pattern="###,###" value="${ttt.price}"/></td>
+								<td class="leadTime">
+									<fmt:formatDate pattern="HHmm" value="${ttt.tStartTime}" var="st"/>
+									<fmt:formatDate pattern="HHmm" value="${ttt.ttStartTime}" var="ar"/>
+									<fmt:parseDate pattern="HHmm" value=" ${ar-st}" var="star"/>
+									<fmt:formatDate value="${star}" pattern="HH:mm"/>
+								</td>
 								<td class="none"><span class="st2"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.tStartTime}"/></span></td>
 								<td class="none"><span class="at"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ttt.ttStartTime}"/></span></td>
-								<%-- <td>
-									<fmt:parseNumber value="${ttt.ttStartTime.time - ttt.tStartTime.time}" var="diffTime"/>
-									<fmt:formatDate value="${diffTime}"/>
-								</td> --%>
 							</tr>					
 						</c:forEach>
 					</table>			

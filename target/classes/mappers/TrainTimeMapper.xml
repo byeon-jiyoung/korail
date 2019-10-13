@@ -21,4 +21,8 @@
 	<!-- <select id="listNodeByTCode" resultMap="resultTrainTime" parameterType="String">
 		select * from train_time where t_code = #{tCode}
 	</select>	 -->
+	
+	<insert id="insertTrainTime">
+		insert into train_time(tt_start_time, t_code, price, nodeid) values (#{ttStartTime},#{tCode.tCode},#{price},#{nodeid.nodeid});
+	</insert>
 </mapper>

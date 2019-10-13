@@ -17,6 +17,16 @@ public class Train {
 		this.tCode = tCode;
 	}
 
+	public Train(String tCode, TrainInfo tTiNo, Date tStartTime, Date tArriveTime, CityTrain tStart,
+			CityTrain tArrive) {
+		this.tCode = tCode;
+		this.tTiNo = tTiNo;
+		this.tStartTime = tStartTime;
+		this.tArriveTime = tArriveTime;
+		this.tStart = tStart;
+		this.tArrive = tArrive;
+	}
+
 	public String gettCode() {
 		return tCode;
 	}

@@ -130,7 +130,53 @@
 	}
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
+<script id="template" type="text/x-handlebars-template">
+	<tr>
+		<th>예매날짜</th>
+		<th>선택좌석</th>
+		<th>출발정보</th>
+		<th>도착정보</th>
+		<th>결제여부</th>
+	</tr>
+	{{#each.}}
+		{{#if resCancel}}
+			<tr class="cancel">
+				<td></td>					
+				<td>{{tsCar.tsCar}}호차 {{tsCar.tsNo}}</td>
+				<td>{{ttNo.tCode.tStart.nodename}} <br> {{tempdate ttNo.tCode.tStartTime}}</td>
+				<td>{{ttNo.nodeid.nodename}} <br> {{tempdate ttNo.tCode.tArriveTime}}</td>
+				<td>취소완료</td>
+			</tr>
+		{{else}}
+			<tr>
+				<td>{{tempdate resDate}}</td>					
+				<td>{{tsCar.tsCar}}호차 {{tsCar.tsNo}}</td>
+				<td>{{ttNo.tCode.tStart.nodename}} <br> {{tempdate ttNo.tCode.tStartTime}}</td>
+				<td>{{ttNo.nodeid.nodename}} <br> {{tempdate ttNo.tCode.tArriveTime}}</td>
+				<td>
+					{{#if salNo}}
+   						완료
+ 					{{else}}
+						<button id="resCancel" data-claNum="{{resClaNum}}">예약취소</button>
+					{{/if}}
+				</td>
+			</tr>
+		{{/if}}
+	{{/each}}
+</script>
+
 <script>
+	Handlebars.registerHelper("tempdate", function(time){ //helper를 만들어서 적용시킬 수 있다.
+		var date = new Date(time);
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		var hour = date.getHours();
+		var minute = ("00"+date.getMinutes()).slice(-2);
+		
+		return month + "월 " + day + "일 " + hour + "시 " + minute + "분";
+	})
+	
 	$(function() {
 		$(document).on("click", "#resCancel", function() {
 			var res = confirm("취소하시겠습니까?");
@@ -138,14 +184,19 @@
 			if(res == true) {
 				var resClaNum = $(this).attr("data-claNum");
 				
+				$("table").empty();
+				
 				$.ajax({
 					url : "${pageContext.request.contextPath}/res/resCancel2?resClaNum="+resClaNum,
 					type : "get",
-					dataType: "text",
+					dataType: "json",
 					success : function(res) {
 						console.log(res);
-							
 						
+						var source = $("#template").html();
+						var func = Handlebars.compile(source);
+						var str = func(res);
+						$("table").append(str); 
 					}
 				})
 			}
@@ -195,15 +246,18 @@
 						<c:forEach var="res" items="${rList}">
 							<c:if test="${res.resCancel == false}">
 								<tr>
-									<td><fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.resDate}"/></td>
-									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}.</td>
+									<c:if test="${res.resDate != rd}">
+										<td rowspan="${res.resPeople}"><fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.resDate}"/></td>
+										<c:set var="rd" value="${res.resDate}"/>										
+									</c:if>
+									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}</td>
 									<td>
 										${res.ttNo.tCode.tStart.nodename} <br>
 										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>
 									</td>
 									<td>
-										${res.ttNo.tCode.tArrive.nodename} <br>
-										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tArriveTime}"/>
+										${res.ttNo.nodeid.nodename} <br>
+										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.ttStartTime}"/>
 									</td>
 									<c:if test="${res.salNo != null}">
 										<td>완료</td>
@@ -218,7 +272,7 @@
 							<c:if test="${res.resCancel != false}">
 								<tr class="cancel">
 									<td></td>
-									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}.</td>
+									<td>${res.tsCar.tsCar}호차 ${res.tsCar.tsNo}</td>
 									<td>
 										${res.ttNo.tCode.tStart.nodename} <br>
 										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.tCode.tStartTime}"/>

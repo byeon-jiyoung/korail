@@ -46,6 +46,7 @@
 	.res_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
+		font-size: 14px;
 	}
 	.res_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;
@@ -204,7 +205,7 @@
 	{{#each.}}
 	<tr>
 		<td>{{tempdate resDate}}</td>					
-		<td>{{tsCar.tsCar}}호차 {{tsCar.tsNo}}.</td>
+		<td>{{tsCar.tsCar}}호차 {{tsCar.tsNo}}</td>
 		<td>{{ttNo.tCode.tStart.nodename}} <br> {{tempdate ttNo.tCode.tStartTime}}</td>
 		<td>{{ttNo.nodeid.nodename}} <br> {{tempdate ttNo.tCode.tArriveTime}}</td>
 	</tr>
@@ -233,8 +234,6 @@
 				return false;
 			}	
 						
-			$("#list").empty();
-			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/res/searchRes",
 				type : "post",
@@ -242,7 +241,9 @@
 				dataType: "json",
 				success : function(res) {
 					console.log(res);
-						
+					
+					$("#list").empty();
+					
 					var source = $("#template").html();
 					var func = Handlebars.compile(source);
 					var str = func(res);
@@ -289,8 +290,8 @@
 				<div class="clear"></div>
 			</div>
 			<div id="res_list">
-				<img src="${pageContext.request.contextPath}/resources/images/login/but.gif"> <span>휴대폰 번호를 입력하시면, 예매내역을 확인하실 수 있습니다.</span> <br>
-				<input type="text" name="nomemPhone"><span class="pt">-를 포함한 휴대폰번호</span>
+				<img src="${pageContext.request.contextPath}/resources/images/login/but.gif"> <span>휴대폰 번호를 입력하시면, 결제하신 예매내역을 확인하실 수 있습니다.</span> <br>
+				<input type="text" name="nomemPhone"><span class="pt"> (-를 포함한 휴대폰번호) </span>
 				<button>조회</button><br>
 				<span class="reg">-를 포함한 휴대폰번호를 다시 입력해주세요</span>
 				

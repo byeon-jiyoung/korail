@@ -35,4 +35,7 @@
 		select * from train t join train_time tt on t.t_code = tt.t_code where tt.nodeid = #{tArrive}
 	</select> -->
 	
+	<insert id="insertTrain">
+		insert into train values (#{tCode},#{tTiNo.tiNo},#{tStartTime},#{tArriveTime},#{tStart.nodeid},#{tArrive.nodeid})
+	</insert>
 </mapper>

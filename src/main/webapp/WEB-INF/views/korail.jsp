@@ -69,6 +69,10 @@
 		background-color: #0397d6;
 		color: #01285f;
 	}
+	#half_res .hover:hover {
+		background-color: #01285f;
+		color: white;
+	}
 	#choiceStation {
 		padding: 7px 20px;
 		border-bottom: 1px dotted;
@@ -198,16 +202,16 @@
 				<div id="article_reserve1">
 					<div id="half_res">
 						<p>승차권간편예매</p>
-						<p>기차여행검색</p>
+						<p class="hover">승차권조회</p>
 					</div>
 					<div id="choiceStation">
 						<label>출발역</label>
 						<select name="start">
 							<c:forEach var="train" items="${tList}">
-								<c:if test="${train.tStart.nodename == '서울'}">
+								<c:if test="${train.tStart.nodename == '동대구'}">
 									<option selected="selected">${train.tStart.nodename}</option>
 								</c:if>
-								<c:if test="${train.tStart.nodename != '서울'}">
+								<c:if test="${train.tStart.nodename != '동대구'}">
 									<option>${train.tStart.nodename}</option>
 								</c:if>
 							</c:forEach>
@@ -215,10 +219,10 @@
 						<label>도착역</label>
 						<select name="arrive">
 							<c:forEach var="traintime" items="${ttList}">
-								<c:if test="${traintime.nodeid.nodename == '동대구'}">
+								<c:if test="${traintime.nodeid.nodename == '부산'}">
 									<option selected="selected">${traintime.nodeid.nodename}</option>
 								</c:if>
-								<c:if test="${traintime.nodeid.nodename != '동대구'}">
+								<c:if test="${traintime.nodeid.nodename != '부산'}">
 									<option>${traintime.nodeid.nodename}</option>
 								</c:if>
 							</c:forEach>
@@ -229,13 +233,24 @@
 						<fmt:formatDate value="<%=new Date() %>" pattern="yyyy-MM-dd" var="today"/>
 						<input type="date" value="${today}" name="date"> <br>
 						<label>시간</label>
+						<fmt:formatDate value="<%=new Date() %>" pattern="H" var="currentTime"/>
 						<select name="time">
 							<c:forEach var="t" begin="0" end="23">
 								<c:if test="${t <= 11}">
-									<option value="0${t}:00">${t} (오전 ${t}) 시</option>
+									<c:if test="${currentTime == t}">
+										<option value="0${t}:00" selected="selected">${t} (오전 ${t}) 시</option>
+									</c:if>
+									<c:if test="${currentTime != t}">
+										<option value="0${t}:00">${t} (오전 ${t}) 시</option>
+									</c:if>
 								</c:if>
 								<c:if test="${t > 11}">
-									<option value="${t}:00">${t} (오후 ${t-12}) 시</option>
+									<c:if test="${currentTime == t}">
+										<option value="${t}:00" selected="selected">${t} (오후 ${t-12}) 시</option>
+									</c:if>
+									<c:if test="${currentTime != t}">
+										<option value="${t}:00">${t} (오후 ${t-12}) 시</option>
+									</c:if>
 								</c:if>
 							</c:forEach>
 						</select> <br>
@@ -343,6 +358,10 @@
 			
 			$("#noticeMore").click(function() {
 				location.href = "${pageContext.request.contextPath}/notice/notice";
+			})
+			
+			$(".hover").click(function() {
+				location.href = "${pageContext.request.contextPath}/res/searchRes";
 			})
 		</script>
 	</section>

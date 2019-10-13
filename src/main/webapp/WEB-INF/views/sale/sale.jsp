@@ -43,6 +43,7 @@
 	.sale_sec_left p {
 		border-top: 1px solid #aaa;
 		padding: 10px 20px;
+		font-size: 14px;
 	}
 	.sale_sec_left p:last-child {
 		border-bottom: 1px solid #aaa;
@@ -241,7 +242,7 @@
 			var price = $(".totalPrice").attr("date-price");
 			var to_price = price - $("input[name='mileage']").val();
 			
-			if($("input[name='mileage']").val() > $("#mil").text()) {
+			if(Number($("input[name='mileage']").val()) > Number($("#mil").text())) {
 				$(".reg").css("display", "block");
 				$("input[name='mileage']").val("");
 				$(".totalPrice").text(p);
@@ -297,7 +298,7 @@
 			</div>
 			<div>
 				<a href="${pageContext.request.contextPath}/"><p class="sale_color">승차권예약</p></a>
-				<a href="${pageContext.request.contextPath}/res/reservation"><p>발권/취소/변경</p></a>
+				<a href="${pageContext.request.contextPath}/res/reservation"><p>승차권조회</p></a>
 			</div>
 		</div>
 		<div class="sale_sec_right">

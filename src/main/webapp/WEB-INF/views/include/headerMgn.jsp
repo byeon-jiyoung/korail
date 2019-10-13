@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/datepicker3.css">
@@ -24,15 +28,29 @@
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 </head>
-<body>
 
+<style>
+	.fa-bell {
+		font-size: 22px;
+	}
+</style>
 <script>
 	$(function() {
 		$("#goLogin").click(function() {
 			location.href = "${pageContext.request.contextPath}/manager/login";
 		})
+		
+		$("#logout_img").click(function() {
+			var result = confirm("로그아웃 하시겠습니까?");
+			
+			if(result == true) {
+				location.href = "${pageContext.request.contextPath}/manager/logout";
+			}
+		})
 	})
 </script>
+
+<body>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -40,8 +58,9 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
-				<a class="navbar-brand" href="#">
-					<img src="${pageContext.request.contextPath}/resources/images/include/lets_logo.png">
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/">
+					<%-- <img src="${pageContext.request.contextPath}/resources/images/include/lets_logo.png"> --%>
+					Let's KORAIL
 				</a>
 				<ul class="nav navbar-top-links navbar-right">
 					<li class="dropdown">
@@ -53,7 +72,12 @@
 								<a href="#" id="goLogin">
 									<div>
 										<em class="fa fa-envelope loginfont"></em>
-										<span class="loginfont"> LOGIN</span>
+										<c:if test="${Mgn == null}">
+											<span class="loginfont"> LOGIN</span>
+										</c:if>
+										<c:if test="${Mgn != null}">
+											<span class="loginfont" id="logout_img"> LOGOUT</span>
+										</c:if>
 									</div>
 								</a>
 							</li>
@@ -64,4 +88,43 @@
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img src="${pageContext.request.contextPath}/resources/images/manager/korail.jpg" class="img-responsive">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">관리자(${Mgn.manId})</div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form>
+		<ul class="nav menu" id="navmenu">
+			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-calendar">&nbsp;</em> Widgets</a></li>
+			<li><a href=""><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
+			<li><a href=""><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
+			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
+				<em class="fa fa-navicon">&nbsp;</em> Multilevel <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li><a class="" href="#">
+						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 1
+					</a></li>
+					<li><a class="" href="#">
+						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 2
+					</a></li>
+					<li><a class="" href="#">
+						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 3
+					</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div><!--/.sidebar-->
 	

@@ -28,6 +28,11 @@ public class TrainTimeDaoImpl implements TrainTimeDao {
 		return sqlsession.selectList(namespace + ".listTrainTimeNodeName");
 	}
 
+	@Override
+	public void insertTrainTime(TrainTime tt) throws Exception {
+		sqlsession.insert(namespace + ".insertTrainTime", tt);
+	}
+
 	/*@Override
 	public List<TrainTime> listNodeByTCode(String train) throws Exception {
 		return sqlsession.selectList(namespace + ".listNodeByTCode", train);

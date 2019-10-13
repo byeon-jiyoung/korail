@@ -3,66 +3,222 @@
     
 <%@ include file="../include/headerMgn.jsp" %>
 
+<style>
+	.w3-black {
+		background-color: #3069E1 !important;
+		padding: 5px 0;
+		overflow: hidden;
+	}
+	.w3-gray {
+		font-weight: bold;
+		background-color: #3069E1 !important;
+	}
+	.right {
+		float: right;
+		margin: 5px 10px 0 0;
+	}
+	#InsertTrain {
+		background-color: #3069E1;
+		border: none;
+		color: white;
+		font-weight: bold;
+		font-size: 1.2em;
+	}
+</style>
+<script>
+	//tap
+	function openCity(evt, cityName) {
+		var i, x, tablinks;
+		x = document.getElementsByClassName("city");
+		for (i = 0; i < x.length; i++) {
+			x[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablink");
+		for (i = 0; i < x.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" w3-gray", "");
+		}
+		document.getElementById(cityName).style.display = "block";
+		evt.currentTarget.className += " w3-gray";
+	}
 	
-	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<div class="profile-sidebar">
-			<div class="profile-userpic">
-				<img src="${pageContext.request.contextPath}/resources/images/manager/korail.jpg" class="img-responsive" alt="">
-			</div>
-			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">Username</div>
-				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="divider"></div>
-		<form role="search">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-		</form>
-		<ul class="nav menu">
-			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
-			<li><a href="widgets.html"><em class="fa fa-calendar">&nbsp;</em> Widgets</a></li>
-			<li><a href="charts.html"><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
-			<li><a href="elements.html"><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
-			<li><a href="panels.html"><em class="fa fa-clone">&nbsp;</em> Alerts &amp; Panels</a></li>
-			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-				<em class="fa fa-navicon">&nbsp;</em> Multilevel <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
-				</a>
-				<ul class="children collapse" id="sub-item-1">
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 1
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 2
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 3
-					</a></li>
-				</ul>
-			</li>
-		</ul>
-	</div><!--/.sidebar-->
+	$(function() {
+		/* $(".traintime").click(function(e) {
+			e.preventDefault();
+			
+			var code = $(this).attr("data-code");
+			location.href = "${pageContext.request.contextPath}/manager/traintime?tCode="+code;
+		}) */
+		
+		$("#InsertTrain").click(function() {
+			location.href = "${pageContext.request.contextPath}/manager/train";
+		})
+	})
+</script>
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
-				<li><a href="#">
+				<li><a href="${pageContext.request.contextPath}/manager/korail">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Dashboard</li>
+				<li class="active">Korail</li>
 			</ol>
-		</div><!--/.row-->
-		
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">Dashboard</h1>
-			</div>
 		</div><!--/.row-->
 		
 		<div class="panel panel-container">
 			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default articles">
+						<div class="panel-heading">
+							Train List<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>
+						</div>
+						<div class="panel-body articles-container">
+							<div class="w3-bar w3-black">
+								<button class="w3-bar-item w3-button tablink w3-gray" onclick="openCity(event,'All')">All</button>
+								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'KTX')">KTX</button>
+								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'새마을호')">새마을호</button>
+								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'무궁화호')">무궁화호</button>
+								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'ITX-청춘')">ITX-청춘</button>
+								<div class="right">
+									<button id="InsertTrain">열차등록</button>
+								</div>
+							</div>
+							<div id="All" class="w3-container w3-border city">
+								<c:forEach var="train" items="${tList}">
+									<p>
+										<div class="article border-bottom">
+											<div class="col-xs-12">
+												<div class="row">
+													<div class="col-xs-2 col-md-2 date">
+														<div class="large">${train.tCode}</div>
+														<c:if test="${train.tTiNo.tiNo == 1}">
+															<div class="text-muted">KTX</div>
+														</c:if>
+														<c:if test="${train.tTiNo.tiNo == 2}">
+															<div class="text-muted">새마을</div>
+														</c:if>
+													</div>
+													<div class="col-xs-10 col-md-10">
+														<h4><a href="#" data-code="${train.tCode}" class="traintime">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
+														<p>	
+															<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
+															<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
+														</p>
+													</div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div><!--End .article-->
+									</p>
+								</c:forEach>
+							</div>
+							<div id="KTX" class="w3-container w3-border city" style="display:none">
+								<c:forEach var="train" items="${tList}">
+									<c:if test="${train.tTiNo.tiNo == 1}">
+										<p>
+											<div class="article border-bottom">
+												<div class="col-xs-12">
+													<div class="row">
+														<div class="col-xs-2 col-md-2 date">
+															<div class="large">${train.tCode}</div>
+															<div class="text-muted">KTX</div>
+														</div>
+														<div class="col-xs-10 col-md-10">
+															<h4><a href="#">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
+															<p>	
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="clear"></div>
+											</div><!--End .article-->
+										</p>
+									</c:if>
+								</c:forEach>
+							</div>
+							<div id="새마을호" class="w3-container w3-border city" style="display:none">
+								<c:forEach var="train" items="${tList}">
+									<c:if test="${train.tTiNo.tiNo == 2}">
+										<p>
+											<div class="article border-bottom">
+												<div class="col-xs-12">
+													<div class="row">
+														<div class="col-xs-2 col-md-2 date">
+															<div class="large">${train.tCode}</div>
+															<div class="text-muted">새마을</div>
+														</div>
+														<div class="col-xs-10 col-md-10">
+															<h4><a href="#">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
+															<p>	
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="clear"></div>
+											</div><!--End .article-->
+										</p>
+									</c:if>
+								</c:forEach>
+							</div>
+							<div id="무궁화호" class="w3-container w3-border city" style="display:none">
+								<c:forEach var="train" items="${tList}">
+									<c:if test="${train.tTiNo.tiNo == 3}">
+										<p>
+											<div class="article border-bottom">
+												<div class="col-xs-12">
+													<div class="row">
+														<div class="col-xs-2 col-md-2 date">
+															<div class="large">${train.tCode}</div>
+															<div class="text-muted">무궁화</div>
+														</div>
+														<div class="col-xs-10 col-md-10">
+															<h4><a href="#">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
+															<p>	
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="clear"></div>
+											</div><!--End .article-->
+										</p>
+									</c:if>
+								</c:forEach>
+							</div>
+							<div id="ITX-청춘" class="w3-container w3-border city" style="display:none">
+								<c:forEach var="train" items="${tList}">
+									<c:if test="${train.tTiNo.tiNo == 4}">
+										<p>
+											<div class="article border-bottom">
+												<div class="col-xs-12">
+													<div class="row">
+														<div class="col-xs-2 col-md-2 date">
+															<div class="large">${train.tCode}</div>
+															<div class="text-muted">ITX</div>
+														</div>
+														<div class="col-xs-10 col-md-10">
+															<h4><a href="#">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
+															<p>	
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
+																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="clear"></div>
+											</div><!--End .article-->
+										</p>
+									</c:if>
+								</c:forEach>
+							</div>
+						</div>
+					</div><!--End .articles-->
+				</div><!--/.col-->
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-teal panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-shopping-cart color-blue"></em>

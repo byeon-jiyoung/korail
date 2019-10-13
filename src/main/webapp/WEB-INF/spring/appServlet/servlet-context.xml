@@ -36,6 +36,8 @@
 	<beans:bean id="loginInterceptor" class="com.yi.interceptor.LoginInterceptor"></beans:bean>
 	<beans:bean id="refreshInterceptor" class="com.yi.interceptor.RefreshInterceptor"></beans:bean>
 	<beans:bean id="authInterceptor" class="com.yi.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="mgnLoginInterceptor" class="com.yi.interceptor.MgnLoginInterceptor"></beans:bean>
+	<beans:bean id="mgnInterceptor" class="com.yi.interceptor.MgnInterceptor"></beans:bean>
 	
 	<interceptors>
 		<interceptor>
@@ -52,6 +54,17 @@
 			<mapping path="/login/mypage"/>
 			<mapping path="/res/resticket"/>
 			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+		
+		<!--관리자-->
+		<interceptor>
+			<mapping path="/manager/loginPost"/> <!-- method를 걸 수 없다. 그래서 command를 다르게 해주는 방법밖에 없다 -->
+			<beans:ref bean="mgnLoginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/manager/korail"/>
+			<mapping path="/manager/train"/>
+			<beans:ref bean="mgnInterceptor"/>
 		</interceptor>
 	</interceptors>
 	

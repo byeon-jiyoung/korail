@@ -4,6 +4,14 @@ public class Manager {
 	private String manId;
 	private String manPw;
 	
+	public Manager() {
+	}
+	
+	public Manager(String manId, String manPw) {
+		this.manId = manId;
+		this.manPw = manPw;
+	}
+
 	public String getManId() {
 		return manId;
 	}

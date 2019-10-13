@@ -11,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yi.domain.CityTrain;
 import com.yi.domain.Event;
 import com.yi.domain.Notice;
 import com.yi.domain.Train;
+import com.yi.domain.TrainInfo;
 import com.yi.domain.TrainTime;
 import com.yi.service.EventService;
 import com.yi.service.NoticeService;
@@ -50,6 +52,20 @@ public class HomeController {
 		
 		return "korail";
 //		return "home";
+	}
+	
+	@RequestMapping(value = "/manager/korail", method = RequestMethod.GET)
+	public String manager(Locale locale, Model model) throws Exception {
+		logger.info("매니저다!!!!!!!!!!!!!!!!");
+		
+		List<Train> tList = rService.listTrain();
+		for(Train t : tList) {
+			logger.info(t.toString());
+		}
+		
+		model.addAttribute("tList", tList);
+		
+		return "manager/korail";
 	}
 	
 }

@@ -63,8 +63,8 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Override
 	@Transactional
-	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
-		rDao.insertReservationMember(resNo, resClaNum, memId, people, start, arrive, startTime, tCode, tsCar, tsNo);
+	public void insertReservationMember(int resNo, int resClaNum, String memId, int people, String memPhone, String start, String arrive, String startTime, String tCode, int tsCar, int tsNo) throws Exception {
+		rDao.insertReservationMember(resNo, resClaNum, memId, people, memPhone, start, arrive, startTime, tCode, tsCar, tsNo);
 		
 		Train t = new Train(tCode);
 		t.gettCode();
@@ -170,6 +170,7 @@ public class ReservationServiceImpl implements ReservationService {
 			System.out.println(r.getTsCar().gettCode());
 			TrainSeat ts = new TrainSeat(r.getTsCar().getTsCar(), r.getTsCar().getTsNo(), r.getTsCar().gettCode());
 			tsDao.updateTsChoiceFalse(ts);
+			System.out.println("========"+ts.toString());
 		}
 	}
 
@@ -203,5 +204,17 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public void updateTsChoice(TrainSeat ts) throws Exception {
 		tsDao.updateTsChoice(ts);
+	}
+
+	@Override
+	public void insertTrain(Train train) throws Exception {
+		System.out.println("=================");
+		System.out.println(train.toString());
+		tDao.insertTrain(train);
+	}
+
+	@Override
+	public void insertTrainTime(TrainTime tt) throws Exception {
+		ttDao.insertTrainTime(tt);
 	}
 }

@@ -9,6 +9,17 @@ public class TrainTime {
 	private int price;
 	private CityTrain nodeid;
 	
+	public TrainTime() {
+		super();
+	}
+	
+	public TrainTime(Date ttStartTime, Train tCode, int price, CityTrain nodeid) {
+		this.ttStartTime = ttStartTime;
+		this.tCode = tCode;
+		this.price = price;
+		this.nodeid = nodeid;
+	}
+
 	public int getTtNo() {
 		return ttNo;
 	}

@@ -446,5 +446,18 @@ create view SaleReservation as
 select tct.*, r.res_cla_num, r.mem_id, r.res_date, r.res_people, r.ts_car, r.ts_no, s.*, ti.ti_name, tt.tt_no from traincitytrain tct 
 join reservation r join sale s join train_info ti join train_time tt;
 
+-- trigger
+delimiter $$
+create trigger after_train_insert
+	after insert on train
+	for each row
+begin
+	insert into train_seat(ts_car, ts_no, t_code) values 
+	(1,1,new.t_code),(1,2,new.t_code),(1,3,new.t_code),(1,4,new.t_code),(1,5,new.t_code),(1,6,new.t_code),(1,7,new.t_code),(1,8,new.t_code),
+	(2,1,new.t_code),(2,2,new.t_code),(2,3,new.t_code),(2,4,new.t_code),(2,5,new.t_code),(2,6,new.t_code),(2,7,new.t_code),(2,8,new.t_code),
+	(3,1,new.t_code),(3,2,new.t_code),(3,3,new.t_code),(3,4,new.t_code),(3,5,new.t_code),(3,6,new.t_code),(3,7,new.t_code),(3,8,new.t_code),
+	(4,1,new.t_code),(4,2,new.t_code),(4,3,new.t_code),(4,4,new.t_code),(4,5,new.t_code),(4,6,new.t_code),(4,7,new.t_code),(4,8,new.t_code);
+end $$
+delimiter ;
 
 -- 마지막값 뽑는거 => select max(no) from table명. 마지막값+1뽑는거 => select max(no)+1 from table명

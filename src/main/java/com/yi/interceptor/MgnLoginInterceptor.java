@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class LoginInterceptor extends HandlerInterceptorAdapter {
-	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+public class MgnLoginInterceptor extends HandlerInterceptorAdapter {
+	private static final Logger logger = LoggerFactory.getLogger(MgnLoginInterceptor.class);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.info("LoginInterceptor preHandler");
+		logger.info("MgnLoginInterceptor preHandler");
 		//return super.preHandle(request, response, handler);
 		return true;
 	}
@@ -23,23 +23,25 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		//super.postHandle(request, response, handler, modelAndView);
 		
-		logger.info("LoginInterceptor postHandler");
+		logger.info("MgnLoginInterceptor postHandler");
 
 		HttpSession session = request.getSession();
 		
-		Object login = modelAndView.getModel().get("login");
+		Object manager = modelAndView.getModel().get("manager");
 		
-		System.out.println(login);
+		System.out.println(manager);
 		
-		if(login != null) {
-			session.setAttribute("Auth", login);
+		if(manager != null) {
+			session.setAttribute("Mgn", manager);
 			
 			Object dest = session.getAttribute("dest");
-			String path = (dest != null) ? (String) dest : request.getContextPath();
+			String path = (dest != null) ? (String) dest : request.getContextPath()+"/manager/korail";
 			response.sendRedirect(path);
-		} else if(login == null){ //로그인에 실패했을 경우
+			
+			System.out.println(path);
+		} else if(manager == null){ //로그인에 실패했을 경우
 			session.setAttribute("error", "notMatch");
-			response.sendRedirect(request.getContextPath() + "/login/login");
+			response.sendRedirect(request.getContextPath() + "/manager/login");
 		} 
 	}
 

@@ -46,7 +46,9 @@
 	
 	$(function() {
 		$("#navmenu li").eq(0).removeClass("active");
+		$("#navmenu li").eq(0).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
 		$("#navmenu li").eq(1).addClass("active");
+		$("#navmenu li").eq(1).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
 		
 		$('.cal').datepicker({
 			beforeShowDay: noBefore
@@ -179,7 +181,7 @@
 												<option>${start.nodename}</option>
 											</c:forEach>
 										</select>
-										<label class="col-md-2 control-label" for="name">도착역</label>
+										<label class="col-md-2 control-label" for="name">종착역</label>
 										<select class="form-control wid50" name="tArrive.nodeid">
 											<c:forEach var="arrive" items="${ctList}">
 												<option>${arrive.nodename}</option>

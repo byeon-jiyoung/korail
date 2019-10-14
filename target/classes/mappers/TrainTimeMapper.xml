@@ -25,4 +25,8 @@
 	<insert id="insertTrainTime">
 		insert into train_time(tt_start_time, t_code, price, nodeid) values (#{ttStartTime},#{tCode.tCode},#{price},#{nodeid.nodeid});
 	</insert>
+	
+	<select id="selectTrainTimeByCode" resultMap="resultTrainTime">
+		select * from train_time where t_code = #{tCode}
+	</select>
 </mapper>

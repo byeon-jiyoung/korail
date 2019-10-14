@@ -227,4 +227,19 @@ public class ReservationServiceImpl implements ReservationService {
 		rDao.updateSalNoNull(resClaNum);
 		sDao.updateSalCancel(salNo);
 	}
+
+	@Override
+	public Train selectTrainByTCode(String tCode) throws Exception {
+		return tDao.selectTrainByTCode(tCode);
+	}
+
+	@Override
+	public List<Train> listTrainBiggerNow() throws Exception {
+		return tDao.listTrainBiggerNow();
+	}
+
+	@Override
+	public TrainTime selectTrainTimeByCode(String tCode) throws Exception {
+		return ttDao.selectTrainTimeByCode(tCode);
+	}
 }

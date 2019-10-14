@@ -42,60 +42,79 @@
 	
 	$(function() {
 		$("#navmenu li").eq(0).removeClass("active");
-		$("#navmenu li").eq(1).addClass("active");
+		$("#navmenu li").eq(0).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
+		$("#navmenu li").eq(1).removeClass("active");
+		$("#navmenu li").eq(1).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
+		$("#navmenu li").eq(2).addClass("active");
+		$("#navmenu li").eq(2).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
 		
 		$('.cal').datepicker({
 			beforeShowDay: noBefore
 		})
 		$('.cal').datepicker("setDate", new Date());
+
+		$("select[name='tCode.tCode']").change(function() {
+			$.ajax({
+				url: "${pageContext.request.contextPath}/manager/searchTrain?tCode="+$("select[name='tCode.tCode']").val(),
+				type: "get",
+				dataType: "json",
+				success: function(res) {
+					console.log(res);
+					
+					var time = new Date(res.train.tStartTime);
+					var st_time = time.getFullYear()+"-"+("00" + (time.getMonth()+1)).slice(-2)+"-"+("00" + time.getDate()).slice(-2)+" "+
+								("00"+ time.getHours()).slice(-2)+":"+("00" + time.getMinutes()).slice(-2);
+					var time2 = new Date(res.train.tArriveTime);
+					var ar_time = time2.getFullYear()+"-"+("00" + (time2.getMonth()+1)).slice(-2)+"-"+("00" + time2.getDate()).slice(-2)+" "+
+								("00"+ time2.getHours()).slice(-2)+":"+("00" + time2.getMinutes()).slice(-2);
+					
+								
+					$("#start").val(res.train.tStart.nodename);
+					$("#arrive").val(res.train.tArrive.nodename);
+					$("#startT").val(st_time);
+					$("#arriveT").val(ar_time);
+					$("input[name='price']").attr("placeholder", res.traintime.price).attr("data-oriPrice", res.traintime.price);
+				}
+			})
+		})
 		
-		$("#trainSubmit").click(function() {
-			var date = new Date();
-			var strDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+("00" + date.getDate()).slice(-2)+" "+
-						  ("00" + date.getHours()).slice(-2)+":"+("00" + date.getMinutes()).slice(-2);
-			
-			var tCode = $("input[name='tCode']").val();
-			var tiNo = $("select[name='tTiNo.tiNo']").val();
+		$("#trainTimeForm").submit(function() {
+			if($("select[name='tCode.tCode']").val() == "열차번호를 선택하세요") {
+				alert("열차번호를 선택하세요");
+				return false;
+			}
+			if($("#start").val() == $("select[name='nodeid.nodeid']").attr("data-name")) {
+				alert("출발역과 경유지가 같습니다");
+				return false;
+			}
+			if($("#arrive").val() == $("select[name='nodeid.nodeid']").attr("data-name")) {
+				alert("종착역과 경유지가 같습니다");
+				return false;
+			}
 			
 			var start = $("input[name='startday']").val() + " " + $("select[name='starthour']").val() + ":" + $("select[name='startminutes']").val();
-			$("input[name='startTime']").attr("value",start);
+			$("input[name='ttstartTime']").attr("value",start);
 			
-			var arrive = $("input[name='arriveday']").val() + " " + $("select[name='arrivehour']").val() + ":" + $("select[name='arriveminutes']").val();
-			$("input[name='arriveTime']").attr("value",arrive);
-			
-			$(".reg").css("display", "none");
-			
-			if(tCode=="") {
-				$("input[name='tCode']").next(".reg").css("display", "inline-block");
+			if($("#startT").val() > start) {
+				alert("경유지 출발시간이 더 작습니다. 시간을 다시 입력하세요.");
 				return false;
 			}
-			
-			if($("select[name='tStart.nodeid']").val() == $("select[name='tArrive.nodeid']").val()) {
-				$("select[name='tArrive.nodeid']").next(".reg").css("display", "inline-block");
+			if($("#arriveT").val() < start) {
+				alert("경유지 출발시간이 더 큽니다. 시간을 다시 입력하세요.");
 				return false;
 			}
 			
-			/* if($("select[name='starthour']").val()=="00") {
-				$("select[name='startminutes']").nextAll(".reg").css("display", "inline-block");
+			if($("input[name='price']").val() == "") {
+				alert("가격을 입력하세요");
 				return false;
 			}
-			if($("select[name='arrivehour']").val()=="00") {
-				$("select[name='arriveminutes']").nextAll(".reg").css("display", "inline-block");
-				return false;
-			} */
-
-			if(start < strDate) {
-				$("select[name='startminutes']").nextAll(".reg").css("display", "inline-block");
+			
+			if($("input[name='price']").val() > $("input[name='price']").attr("data-oriPrice")) {
+				alert("최대"+$("input[name='price']").attr("data-oriPrice")+"원을 넘을 수 없습니다.");
 				return false;
 			}
-			if(start > arrive) {
-				$("select[name='arriveminutes']").nextAll(".reg").css("display", "inline-block");
-				return false;
-			}
-			if(start == arrive) {
-				$("select[name='arriveminutes']").nextAll(".reg2").css("display", "inline-block");
-				return false;
-			}
+			
+			alert("추가되었습니다.");
 		})
 	})
 </script>
@@ -112,114 +131,6 @@
 		
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Train information<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em>
-					</span></div>
-					<div class="panel-body">
-						<form class="form-horizontal" action="train" method="post" id="trainForm">
-							<fieldset>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">열차종류</label>
-									<div class="col-md-9">
-										<select class="form-control wid50" name="tTiNo.tiNo">
-											<c:forEach var="ti" items="${tiList}">
-												<option value="${ti.tiNo}">${ti.tiName}</option>
-											</c:forEach>
-										</select>
-										<label class="col-md-2 control-label" for="name">열차번호</label>
-										<input type="text" class="form-control wid50" name="tCode">
-										<span class="reg">열차이름을 입력하세요</span>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">출발역</label>
-									<div class="col-md-9">
-										<select class="form-control wid50" name="tStart.nodeid">
-											<c:forEach var="start" items="${ctList}">
-												<option>${start.nodename}</option>
-											</c:forEach>
-										</select>
-										<label class="col-md-2 control-label" for="name">도착역</label>
-										<select class="form-control wid50" name="tArrive.nodeid">
-											<c:forEach var="arrive" items="${ctList}">
-												<option>${arrive.nodename}</option>
-											</c:forEach>
-										</select>
-										<span class="reg">출발역과 도착역이 같습니다.</span>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">가격</label>
-									<div class="col-md-9">
-										<input type="text" class="form-control price wid30" name="price">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="email">출발시간</label>
-									<div class="col-md-9">
-										<input type="text" class="cal form-control wid30" name="startday">
-										<select name="starthour" class="form-control wid30">
-											<c:forEach var="t" begin="0" end="23">
-												<c:if test="${t < 10}">
-													<option value="0${t}">${t}</option>
-												</c:if>
-												<c:if test="${t >= 10}">
-													<option value="${t}">${t}</option>
-												</c:if>
-											</c:forEach>
-										</select>
-										<span class="floatleft">시</span>
-										<select class="form-control wid30" name="startminutes">
-											<option>00</option>
-											<option>15</option>
-											<option>30</option>
-											<option>45</option>
-										</select>
-										<span class="floatleft">분</span>
-										<span class="reg">출발시간이 현재시간보다 작습니다. 다시 입력하세요</span>
-									</div>
-									<input type="hidden" name="startTime">
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="email">도착시간</label>
-									<div class="col-md-9">
-										<input type="text" class="cal form-control wid30" name="arriveday">
-										<select name="arrivehour" class="form-control wid30">
-											<c:forEach var="t" begin="0" end="23">
-												<c:if test="${t <= 10}">
-													<option value="0${t}">${t}</option>
-												</c:if>
-												<c:if test="${t > 10}">
-													<option value="${t}">${t}</option>
-												</c:if>
-											</c:forEach>
-										</select>
-										<span class="floatleft">시</span>
-										<select class="form-control wid30" name="arriveminutes">
-											<option>00</option>
-											<option>15</option>
-											<option>30</option>
-											<option>45</option>
-										</select>
-										<span class="floatleft">분</span>
-										<span class="reg">도착시간이 출발시간보다 작습니다. 다시 입력하세요</span>
-										<span class="reg2">출발시간과 도착시간이 같습니다. 다시 입력하세요</span>
-									</div>
-									<input type="hidden" name="arriveTime">
-								</div>
-								<div class="form-group">
-									<div class="col-md-12 widget-right">
-										<button class="btn btn-default btn-md pull-right" id="trainSubmit">등록</button>
-									</div>
-								</div>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div><!--/.col-->
-
-			<div class="col-md-12">
 				<div class="panel panel-default" id="tt">
 					<div class="panel-heading">
 						Train Time information<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em>
@@ -228,41 +139,48 @@
 						<form class="form-horizontal" action="traintime" method="post" id="trainTimeForm">
 							<fieldset>
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">열차종류</label>
-									<div class="col-md-9">
-										<input type="text" class="form-control wid50" readonly="readonly" id="tTiNo">
-										<label class="col-md-2 control-label" for="name">열차번호</label>
-										<input type="text" class="form-control wid50" readonly="readonly" id="tCode" name="tCode.tCode">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">출발역</label>
-									<div class="col-md-9">
-										<input type="text" class="form-control wid50" readonly="readonly" id="tStart">
-										<label class="col-md-2 control-label" for="name">도착역</label>
-										<input type="text" class="form-control wid50" id="tArrive" readonly="readonly">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">가격</label>
-									<div class="col-md-9">
-										<input type="text" class="form-control price wid30" name="price">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="name">경유지</label>
+									<label class="col-md-2 control-label" for="name">열차번호</label>
 									<div class="col-md-8">
-										<select class="form-control" name="nodeid.nodeid">
-											<c:forEach var="arrive" items="${ctList}">
-												<option value="${arrive.nodeid}">${arrive.nodename}</option>
+										<select class="form-control" name="tCode.tCode">
+											<option>열차번호를 선택하세요</option>
+											<c:forEach var="train" items="${tList}">
+												<option>${train.tCode}</option>
 											</c:forEach>
 										</select>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="email">도착시간</label>
+									<label class="col-md-2 control-label" for="name">출발역</label>
 									<div class="col-md-9">
-										<input type="text" class="cal form-control wid30" name="startday" readonly="readonly">
+										<input type="text" class="form-control price wid50" id="start" readonly="readonly">
+										<label class="col-md-2 control-label" for="name">출발시간</label>
+										<input type="text" class="form-control price wid50" id="startT" readonly="readonly">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="name">종착역</label>
+									<div class="col-md-9">
+										<input type="text" class="form-control price wid50" id="arrive" readonly="readonly">
+										<label class="col-md-2 control-label" for="name">도착시간</label>
+										<input type="text" class="form-control price wid50" id="arriveT" readonly="readonly">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="name">가격</label>
+									<div class="col-md-9">
+										<input type="text" class="form-control price wid50" name="price">
+										<label class="col-md-2 control-label" for="name">경유지</label>
+										<select class="form-control wid50" name="nodeid.nodeid">
+											<c:forEach var="arrive" items="${ctList}">
+												<option value="${arrive.nodeid}" data-name="${arrive.nodename}">${arrive.nodename}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="email">경유지 출발시간</label>
+									<div class="col-md-9">
+										<input type="text" class="cal form-control wid30" name="startday">
 										<select name="starthour" class="form-control wid30">
 											<c:forEach var="t" begin="0" end="23">
 												<c:if test="${t < 11}">
@@ -282,7 +200,7 @@
 										</select>
 										<span class="floatleft">분</span>
 									</div>
-									<input type="hidden" name="startTime">
+									<input type="hidden" name="ttstartTime">
 								</div>
 								<div class="form-group">
 									<div class="col-md-12 widget-right">

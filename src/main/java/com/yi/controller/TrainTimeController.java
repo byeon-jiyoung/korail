@@ -3,7 +3,9 @@ package com.yi.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,12 +73,11 @@ public class TrainTimeController {
 		return train;
 	}
 	
-	/*
 	@RequestMapping(value="traintime", method=RequestMethod.GET)
-	public String traintimeGet(String tCode, Model model) throws Exception {
+	public void traintimeGet(String tCode, Model model) throws Exception {
 		logger.info("---------- traintimeGet ----------");
 		
-		List<Train> tList = rService.listTrain();
+		List<Train> tList = rService.listTrainBiggerNow();
 		for(Train t : tList) {
 			logger.info(t.toString());
 		}
@@ -84,10 +85,7 @@ public class TrainTimeController {
 		
 		model.addAttribute("tList", tList);
 		model.addAttribute("ctList", ctList);
-		
-		return "/manager/train";
 	}
-	*/
 	
 	@RequestMapping(value="traintime", method=RequestMethod.POST)
 	public String traintimePost(TrainTime tt, String ttstartTime) throws Exception {
@@ -99,6 +97,22 @@ public class TrainTimeController {
 		logger.info("=================>"+tt.toString());
 		rService.insertTrainTime(tt);
 		
-		return "/manager/train";
+		return "/manager/traintime";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="searchTrain", method=RequestMethod.GET)
+	public Map<String, Object> searchTrainGet(String tCode) throws Exception {
+		logger.info("---------- searchTrainGet ----------");
+		
+		Train train = rService.selectTrainByTCode(tCode);
+		TrainTime tt = rService.selectTrainTimeByCode(tCode);
+		logger.info(tt.toString());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("train", train);
+		map.put("traintime", tt);
+		
+		return map;
 	}
 }

@@ -552,8 +552,8 @@ a.label:hover, a.label:focus {
   min-width: 390px;
 }
 
-.article:first-child {
-  padding: 0 0 10px 0; }
+/* .article:first-child {
+  padding: 0 0 10px 0; } */
 
 .article h4 {
   margin-bottom: 10px; }

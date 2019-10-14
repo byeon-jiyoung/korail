@@ -52,4 +52,14 @@ public class TrainDaoImpl implements TrainDao {
 		sqlsession.insert(namespace + ".insertTrain", train);
 	}
 
+	@Override
+	public Train selectTrainByTCode(String tCode) throws Exception {
+		return sqlsession.selectOne(namespace + ".selectTrainByTCode", tCode);
+	}
+
+	@Override
+	public List<Train> listTrainBiggerNow() throws Exception {
+		return sqlsession.selectList(namespace + ".listTrainBiggerNow");
+	}
+
 }

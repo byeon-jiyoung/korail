@@ -57,35 +57,6 @@ public class EventController {
 		model.addAttribute("pageMaker", pageMaker);
 	}
 	
-	@RequestMapping(value="insert", method=RequestMethod.GET)
-	public void insertGet() throws Exception {
-		logger.info("---------- insertGet ----------");
-	}
-	
-	@RequestMapping(value="insert", method=RequestMethod.POST)
-	public String insertPost(Event event, List<MultipartFile> imgFiles) throws Exception {
-		logger.info("---------- insertPost ----------");
-		
-		for(MultipartFile file : imgFiles) {
-			logger.info("file name : " + file.getOriginalFilename());
-			logger.info("file size : " + file.getSize());
-			
-			if(file.getSize() <= 0) {
-				logger.info("이미지없음");
-				event.seteWriter("a");
-				service.insertEvent(event);
-				continue;
-			}
-			
-			String savedName = UploadFileUtils.upladFile(uploadPath, file.getOriginalFilename(), file.getBytes()); //파일 업로드하고, 썸네일 파일까지 다 만들어줌
-			event.seteImg(savedName);
-			event.seteWriter("a");
-			service.insertEvent(event);
-		}
-		
-		return "redirect:/event/event";
-	}
-	
 	@RequestMapping(value="read", method=RequestMethod.GET)
 	public void readGet(int eNo, Criteria cri, Model model) throws Exception {
 		logger.info("---------- readGet ---------- & eNo : " + eNo);
@@ -134,5 +105,50 @@ public class EventController {
 			}
 		}
 		return entity;
+	}
+	
+	/*------------------------------------관리자--------------------------------------------*/
+	@RequestMapping(value="mgnEvent", method=RequestMethod.GET)
+	public void mgnEventPage(@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
+		logger.info("---------- mgnEventPage ----------");
+		
+		List<Event> list = service.listEvent(cri);
+		model.addAttribute("list", list);
+		
+		System.out.println(list);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(service.listEventCount()); //count에 cri없앴음. 에러뜨면 다시 넣어라
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	
+	@RequestMapping(value="mgnInsert", method=RequestMethod.GET)
+	public void mgnInsertGet() throws Exception {
+		logger.info("---------- mgnInsertGet ----------");
+	}
+	
+	@RequestMapping(value="mgnInsert", method=RequestMethod.POST)
+	public String mgnInsertPost(Event event, List<MultipartFile> imgFiles) throws Exception {
+		logger.info("---------- mgnInsertPost ----------");
+		
+		for(MultipartFile file : imgFiles) {
+			logger.info("file name : " + file.getOriginalFilename());
+			logger.info("file size : " + file.getSize());
+			
+			if(file.getSize() <= 0) {
+				logger.info("이미지없음");
+				event.seteWriter("a");
+				service.insertEvent(event);
+				continue;
+			}
+			
+			String savedName = UploadFileUtils.upladFile(uploadPath, file.getOriginalFilename(), file.getBytes()); //파일 업로드하고, 썸네일 파일까지 다 만들어줌
+			event.seteImg(savedName);
+			event.seteWriter("a");
+			service.insertEvent(event);
+		}
+		
+		return "redirect:/event/mgnEvent";
 	}
 }

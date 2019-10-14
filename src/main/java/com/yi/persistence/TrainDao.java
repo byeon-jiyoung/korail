@@ -13,5 +13,7 @@ public interface TrainDao {
 	public List<Train> listTrainByArriveS(String tArrive) throws Exception;*/
 	public List<Train> listTrainNodeName() throws Exception;
 	public void insertTrain(Train train) throws Exception;
+	public Train selectTrainByTCode(String tCode) throws Exception;
+	public List<Train> listTrainBiggerNow() throws Exception;
 	
 }

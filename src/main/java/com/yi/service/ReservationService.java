@@ -36,6 +36,8 @@ public interface ReservationService {
 	public List<Train> listTrainByArriveS(String tArrive) throws Exception;*/
 	public List<Train> listTrainNodeName() throws Exception;
 	public void insertTrain(Train train) throws Exception;
+	public Train selectTrainByTCode(String tCode) throws Exception;
+	public List<Train> listTrainBiggerNow() throws Exception;
 	
 	//trainInfo
 	public void insertTrainInfo(TrainInfo ti) throws Exception;
@@ -47,6 +49,7 @@ public interface ReservationService {
 	/*public List<TrainTime> listNodeByTCode(String train) throws Exception;*/
 	public List<TrainTime> listTrainTimeNodeName() throws Exception;
 	public void insertTrainTime(TrainTime tt) throws Exception;
+	public TrainTime selectTrainTimeByCode(String tCode) throws Exception;
 	
 	//cityTrain
 	public List<CityTrain> listCityTrain() throws Exception;

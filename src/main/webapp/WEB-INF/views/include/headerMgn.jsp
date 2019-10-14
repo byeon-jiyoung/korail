@@ -100,31 +100,13 @@
 			<div class="clear"></div>
 		</div>
 		<div class="divider"></div>
-		<form role="search">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-		</form>
 		<ul class="nav menu" id="navmenu">
-			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-dashboard">&nbsp;</em> Main</a></li>
-			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-calendar">&nbsp;</em> Train</a></li>
-			<li><a href=""><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
-			<li><a href=""><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
-			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-				<em class="fa fa-navicon">&nbsp;</em> Multilevel <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
-				</a>
-				<ul class="children collapse" id="sub-item-1">
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 1
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 2
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 3
-					</a></li>
-				</ul>
-			</li>
+			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-toggle-on">&nbsp;</em> Main</a></li>
+			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-toggle-off">&nbsp;</em> Train</a></li>
+			<li><a href="${pageContext.request.contextPath}/manager/traintime"><em class="fa fa-toggle-off">&nbsp;</em> Train Waypoint</a></li>
+			<li><a href=""><em class="fa fa-toggle-off">&nbsp;</em> Member</a></li>
+			<li><a href="${pageContext.request.contextPath}/event/mgnEvent"><em class="fa fa-toggle-off">&nbsp;</em> Event</a></li>
+			<li><a href="${pageContext.request.contextPath}/notice/mgnNotice"><em class="fa fa-toggle-off">&nbsp;</em> Notice</a></li>
 		</ul>
 	</div><!--/.sidebar-->
 	

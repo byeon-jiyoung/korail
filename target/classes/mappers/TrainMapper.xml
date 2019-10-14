@@ -38,4 +38,12 @@
 	<insert id="insertTrain">
 		insert into train values (#{tCode},#{tTiNo.tiNo},#{tStartTime},#{tArriveTime},#{tStart.nodeid},#{tArrive.nodeid})
 	</insert>
+	
+	<select id="selectTrainByTCode" resultMap="resultTrain2">
+		select * from traincitytrain where t_code = #{tCode}
+	</select>
+	
+	<select id="listTrainBiggerNow" resultMap="resultTrain2">
+		select * from TrainCityTrain where t_arrive_time > now();	
+	</select>
 </mapper>

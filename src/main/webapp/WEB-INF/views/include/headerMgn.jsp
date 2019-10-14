@@ -106,8 +106,8 @@
 			</div>
 		</form>
 		<ul class="nav menu" id="navmenu">
-			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
-			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-calendar">&nbsp;</em> Widgets</a></li>
+			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-dashboard">&nbsp;</em> Main</a></li>
+			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-calendar">&nbsp;</em> Train</a></li>
 			<li><a href=""><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
 			<li><a href=""><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
 			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">

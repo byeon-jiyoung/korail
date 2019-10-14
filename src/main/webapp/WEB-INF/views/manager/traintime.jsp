@@ -31,10 +31,6 @@
 		color: red;
 		margin-top: 10px;
 	}
-	
-	#tt {
-		display: none;
-	}
 </style>
 <script>
 	//이전 날짜들은 선택막기
@@ -100,41 +96,6 @@
 				$("select[name='arriveminutes']").nextAll(".reg2").css("display", "inline-block");
 				return false;
 			}
-			
-			$("#tt").css("display", "block");
-			
-			$.ajax({
-				url: "${pageContext.request.contextPath}/manager/train",
-				type: "post",
-				data: {tCode:tCode, tTiNo:tiNo, startTime:start, arriveTime:arrive, price:$("input[name='price']").val(),
-						tStart:$("select[name='tStart.nodeid']").val(), tArrive:$("select[name='tArrive.nodeid']").val()},
-				dataType: "json",
-				success: function(res) {
-					console.log(res);
-					console.log(res.tStart.nodename);
-					console.log(res.tArrive.nodename);
-					
-					$("#tCode").attr("value", tCode);
-					$("#tTiNo").attr("value", res.tTiNo.tiName);
-					$("#tStart").attr("value", res.tStart.nodename);
-					$("#tArrive").attr("value", res.tArrive.nodename);
-				}
-			})
-		})
-		
-		$("#trainTimeForm").submit(function() {
-			var start = $("input[name='startday']").val() + " " + $("select[name='starthour']").val() + ":" + $("select[name='startminutes']").val();
-			$("input[name='ttstartTime']").attr("value",start);
-			
-			$.ajax({
-				url: "${pageContext.request.contextPath}/manager/traintime",
-				type: "post",
-				data: {traintime:{tCode:$("#tCode").val(),price:$("input[name='price')").val(),nodeid:$("input[name='nodeid.nodeid']").val()},ttstartTime:$("input[name='ttstartTime']").val()},
-				dataType: "json",
-				success: function(res) {
-					console.log(res);
-				}
-			})
 		})
 	})
 </script>
@@ -156,7 +117,7 @@
 						Train information<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em>
 					</span></div>
 					<div class="panel-body">
-						<div class="form-horizontal" action="train" method="post" id="trainForm">
+						<form class="form-horizontal" action="train" method="post" id="trainForm">
 							<fieldset>
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="name">열차종류</label>
@@ -253,7 +214,7 @@
 									</div>
 								</div>
 							</fieldset>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div><!--/.col-->
@@ -321,7 +282,7 @@
 										</select>
 										<span class="floatleft">분</span>
 									</div>
-									<input type="hidden" name="ttstartTime">
+									<input type="hidden" name="startTime">
 								</div>
 								<div class="form-group">
 									<div class="col-md-12 widget-right">

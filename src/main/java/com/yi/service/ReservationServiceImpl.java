@@ -16,6 +16,7 @@ import com.yi.domain.TrainTime;
 import com.yi.domain.TrainTrainTime;
 import com.yi.persistence.CityTrainDao;
 import com.yi.persistence.ReservationDao;
+import com.yi.persistence.SaleDao;
 import com.yi.persistence.TrainDao;
 import com.yi.persistence.TrainInfoDao;
 import com.yi.persistence.TrainSeatDao;
@@ -42,6 +43,8 @@ public class ReservationServiceImpl implements ReservationService {
 	TrainTrainTimeDao tttDao;
 	@Autowired
 	TrainSeatTrainTimeDao tsttDao;
+	@Autowired
+	SaleDao sDao;
 	
 	@Override
 	public List<Reservation> listReservation() throws Exception {
@@ -216,5 +219,12 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public void insertTrainTime(TrainTime tt) throws Exception {
 		ttDao.insertTrainTime(tt);
+	}
+	
+	@Override
+	@Transactional
+	public void updateSalNoNull(String resClaNum, String salNo) throws Exception {
+		rDao.updateSalNoNull(resClaNum);
+		sDao.updateSalCancel(salNo);
 	}
 }

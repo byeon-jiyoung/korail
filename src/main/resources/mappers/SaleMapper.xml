@@ -7,6 +7,7 @@
 		<result column="sal_price" property="salPrice"/>
 		<result column="sal_discount" property="salDiscount"/>
 		<result column="sal_classify" property="salClassify"/>
+		<result column="sal_cancel" property="salCancel"/>
 	</resultMap>
 	
 	<select id="listSale" resultMap="resultSale">
@@ -26,4 +27,7 @@
 		join city_train ct on ct.nodeid = t.t_arrive where s.sal_no = #{salNo}
 	</select>
 	
+	<update id="updateSalCancel">
+		update sale set sal_cancel = true where sal_no = #{salNo}
+	</update>
 </mapper>

@@ -165,4 +165,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return sqlsession.selectList(namespace + ".selectTsCarTsNoTCode2");
 	}
 
+	@Override
+	public void updateSalNoNull(String resClaNum) throws Exception {
+		sqlsession.update(namespace + ".updateSalNoNull", resClaNum);
+	}
+
 }

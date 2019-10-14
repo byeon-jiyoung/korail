@@ -24,5 +24,6 @@ public interface ReservationDao {
 	public void updateNoMember(String nomemPhone, int salNo) throws Exception;
 	public int lastSalNo() throws Exception;
 	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception;
+	public void updateSalNoNull(String resClaNum) throws Exception;
 	
 }

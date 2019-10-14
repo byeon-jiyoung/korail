@@ -27,6 +27,7 @@ public interface ReservationService {
 	public List<Reservation> selectTsCarTsNoTCode2() throws Exception;
 	public List<Reservation> selectTicket(String id) throws Exception;
 	public List<Reservation> selectResByNomemPhone(Reservation res) throws Exception;
+	public void updateSalNoNull(String resClaNum, String salNo) throws Exception;
 	
 	//train
 	public List<Train> listTrain() throws Exception;

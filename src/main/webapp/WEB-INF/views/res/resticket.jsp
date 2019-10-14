@@ -118,7 +118,7 @@
 		padding: 30px 0;
 	}
 	
-	#resCancel {
+	#resCancel, #salCancel {
 		background: url(/korail/resources/images/login/btn_wit.png) repeat-x;
 	    border: 1.5px solid #9e9e9e;
 	    border-radius: 5px;
@@ -156,9 +156,10 @@
 				<td>{{ttNo.nodeid.nodename}} <br> {{tempdate ttNo.tCode.tArriveTime}}</td>
 				<td>
 					{{#if salNo}}
-   						완료
+   						완료 <br>
+						<button id="salCancel" data-claNum="${res.resClaNum}" data-salNo="${res.salNo.salNo}">결제취소</button>
  					{{else}}
-						<button id="resCancel" data-claNum="{{resClaNum}}">예약취소</button>
+						<button id="resCancel" data-claNum="{resClaNum}">예약취소</button>
 					{{/if}}
 				</td>
 			</tr>
@@ -179,7 +180,7 @@
 	
 	$(function() {
 		$(document).on("click", "#resCancel", function() {
-			var res = confirm("취소하시겠습니까?");
+			var res = confirm("예약을 취소하시겠습니까?");
 			
 			if(res == true) {
 				var resClaNum = $(this).attr("data-claNum");
@@ -188,6 +189,34 @@
 				
 				$.ajax({
 					url : "${pageContext.request.contextPath}/res/resCancel2?resClaNum="+resClaNum,
+					type : "get",
+					dataType: "json",
+					success : function(res) {
+						console.log(res);
+						
+						var source = $("#template").html();
+						var func = Handlebars.compile(source);
+						var str = func(res);
+						$("table").append(str); 
+					}
+				})
+			}
+		})
+		
+		$(document).on("click", "#salCancel", function() {
+			var res = confirm("결제를 취소하시겠습니까?");
+			
+			if(res == true) {
+				var resClaNum = $(this).attr("data-claNum");
+				var salNo = $(this).attr("data-salNo");
+				
+				alert(resClaNum);
+				alert(salNo);
+				
+				$("table").empty();
+				
+				$.ajax({
+					url : "${pageContext.request.contextPath}/res/saleCancel?resClaNum="+resClaNum+"&salNo="+salNo,
 					type : "get",
 					dataType: "json",
 					success : function(res) {
@@ -260,7 +289,10 @@
 										<fmt:formatDate pattern="MM월 dd일  HH시 mm분" value="${res.ttNo.ttStartTime}"/>
 									</td>
 									<c:if test="${res.salNo != null}">
-										<td>완료</td>
+										<td>
+											완료 <br>
+											<button id="salCancel" data-claNum="${res.resClaNum}" data-salNo="${res.salNo.salNo}">결제취소</button>
+										</td>
 									</c:if>
 									<c:if test="${res.salNo == null}">
 										<td>

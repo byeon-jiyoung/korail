@@ -3,6 +3,10 @@
     pageEncoding="UTF-8"%>
     
 <%@ include file="include/header.jsp" %>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+
 
 <style>
 	/* ====================================== section ====================================== */	
@@ -109,9 +113,11 @@
 	}
 	#article_notice_img {
 		height: 440px;
-		border: 1px solid black;
 	}
-	
+	#article_notice_img img {
+		width: 100%;
+		height: 430px;
+	}
 	.more {
 		float: right;
 		cursor: pointer;
@@ -194,8 +200,24 @@
 		float: left;
 		height: 110px;
 	}
+	
+	/*---------------------bxSlider------------------------*/
+	.bx-wrapper {
+		border: none;
+	}
 </style>
-
+<script>
+    $(function() {
+    	$('.slider').bxSlider({
+    		mode: 'horizontal', //가로방향수평슬라이드
+    		auto: true,
+		    pause: 3000,
+		    pager: true,
+		    autoHover: true, //마우스 오버시 정지여부
+		    controls: false //이전, 다음 버튼 노출여부
+    	});
+	})
+  </script>
 	<section>
 		<article>
 			<div class="article_div1">
@@ -273,7 +295,13 @@
 				</div>
 			</div>
 			<div class="article_div2">
-				<div id="article_notice_img"></div>
+				<div id="article_notice_img">
+					<%-- <img src="${pageContext.request.contextPath}/resources/images/main.png"> --%>
+					<div class="slider">
+						<div><img src="${pageContext.request.contextPath}/resources/images/main2.jpg"></div>
+						<div><img src="${pageContext.request.contextPath}/resources/images/main3.jpg"></div>
+					</div>
+				</div>
 			</div>
 			<div class="article_div3">
 				<c:forEach var="event" items="${eventList}">

@@ -69,4 +69,5 @@ public class SaleServiceImpl implements SaleService {
 	public int lastSalNo() throws Exception {
 		return rDao.lastSalNo();
 	}
+
 }

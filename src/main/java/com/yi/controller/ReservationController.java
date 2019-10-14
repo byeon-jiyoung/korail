@@ -325,4 +325,26 @@ public class ReservationController {
 		return rList;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="saleCancel", method=RequestMethod.GET)
+	public List<Reservation> saleCancelGet(String resClaNum, String salNo, RedirectAttributes redirect, HttpSession session) throws Exception {
+		logger.info("------------------- saleCancelGet --------------------");
+		logger.info("resClaNum : " + resClaNum);
+		logger.info("salNo : " + salNo);
+		
+		rService.updateResCancel(resClaNum);
+		rService.updateSalNoNull(resClaNum, salNo);
+		
+		Login login =  (Login) session.getAttribute("Auth");
+		String id = "";
+		if(login != null) {
+			id = login.getMemId();
+		}
+		redirect.addAttribute("id", id);
+		
+		List<Reservation> rList = rService.selectTicket(id);
+		System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+		System.out.println(rList.toString());
+		return rList;
+	}
 }

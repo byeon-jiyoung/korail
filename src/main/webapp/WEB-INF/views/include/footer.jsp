@@ -92,9 +92,9 @@
 			<div>
 				<div>
 					<ul>
-						<li><a href="">이벤트</a></li>
+						<li><a href="${pageContext.request.contextPath}/event/event">이벤트</a></li>
 						<li> | </li>
-						<li><a href="">이벤트</a></li>
+						<li><a href="${pageContext.request.contextPath}/notice/notice">공지사항</a></li>
 					</ul>
 				</div>
 				<div id="footer2_select">

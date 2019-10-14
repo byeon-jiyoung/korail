@@ -105,4 +105,8 @@
 	<select id="selectTsCarTsNoTCode2" resultMap="resultReservation">
 		select * from reservation where res_date is not null
 	</select>
+	
+	<update id="updateSalNoNull">
+		update reservation set sal_no = null where res_cla_num = #{resClaNum}
+	</update>
 </mapper>

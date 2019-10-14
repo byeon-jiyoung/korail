@@ -90,9 +90,15 @@ public class TrainTimeController {
 	*/
 	
 	@RequestMapping(value="traintime", method=RequestMethod.POST)
-	public String traintimePost() throws Exception {
+	public String traintimePost(TrainTime tt, String ttstartTime) throws Exception {
 		logger.info("---------- traintimePost ----------");
+		logger.info(tt.toString());
+		Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(ttstartTime);
 		
-		return null;
+		tt.setTtStartTime(date);
+		logger.info("=================>"+tt.toString());
+		rService.insertTrainTime(tt);
+		
+		return "/manager/train";
 	}
 }

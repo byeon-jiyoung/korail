@@ -5,6 +5,7 @@ public class Sale {
 	private int salPrice;
 	private int salDiscount;
 	private boolean salClassify;
+	private boolean salCancel;
 	
 	public int getSalNo() {
 		return salNo;
@@ -30,10 +31,16 @@ public class Sale {
 	public void setSalClassify(boolean salClassify) {
 		this.salClassify = salClassify;
 	}
-
+	public boolean isSalCancel() {
+		return salCancel;
+	}
+	public void setSalCancel(boolean salCancel) {
+		this.salCancel = salCancel;
+	}
+	
 	@Override
 	public String toString() {
-		return "Sale [salNo=" + salNo + ", salPrice=" + salPrice + ", salDiscount=" + salDiscount + ", salClassify="
-				+ salClassify + "]";
+		return String.format("Sale [salNo=%s, salPrice=%s, salDiscount=%s, salClassify=%s, salCancel=%s]", salNo,
+				salPrice, salDiscount, salClassify, salCancel);
 	}
 }

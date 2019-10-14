@@ -224,7 +224,7 @@
 	})
 	
 	$(function() {
-		$("button").click(function() {
+		$("#btn").click(function() {
 			$(".reg").css("display", "none");
 			
 			var reg_tel = /^(010|011|016|017|018)[-]{1}[0-9]{3,4}[-]{1}[0-9]{4}$/;
@@ -292,7 +292,7 @@
 			<div id="res_list">
 				<img src="${pageContext.request.contextPath}/resources/images/login/but.gif"> <span>휴대폰 번호를 입력하시면, 결제하신 예매내역을 확인하실 수 있습니다.</span> <br>
 				<input type="text" name="nomemPhone"><span class="pt"> (-를 포함한 휴대폰번호) </span>
-				<button>조회</button><br>
+				<button id="btn">조회</button><br>
 				<span class="reg">-를 포함한 휴대폰번호를 다시 입력해주세요</span>
 				
 				<div>

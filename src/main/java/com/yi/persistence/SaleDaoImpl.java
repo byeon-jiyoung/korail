@@ -35,4 +35,9 @@ public class SaleDaoImpl implements SaleDao {
 		return sqlsession.selectList(namespace + ".resultSale", salNo);
 	}
 
+	@Override
+	public void updateSalCancel(String salNo) throws Exception {
+		sqlsession.update(namespace + ".updateSalCancel", salNo);
+	}
+
 }

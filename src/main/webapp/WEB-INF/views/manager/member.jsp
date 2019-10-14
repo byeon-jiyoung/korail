@@ -10,38 +10,8 @@
 		height: 34px !important;
 		margin-right: 10px;
 	}
-	.reg {
-		display: none;
-		font-size: 0.9em;
-		color: red;
-		margin-top: 10px;
-	}
-	.none {
-		display: none;
-	}
-	#imgWrap img {
-		width: 33%;
-		height: 200px;
-		float: left;
-	}
-	
-	#goInsert {
-		float: right;
-		font-size: 0.8em;
-		color: black;
-		font-weight: bold;
-	}
-	
-	#read {
-		display: none;
-	}
-	#efile {
-		width: auto;
-		height: auto;
-	}
-	.no_img {
-		width: 50%;
-		
+	.article {
+		width: 100%;
 	}
 	
 	/* ----------------- 페이징처리 css ----------------- */
@@ -128,10 +98,13 @@
 													<div class="col-md-2 date">
 														${mem.memId}
 													</div>
-													<div class="col-md-5">
+													<div class="col-md-2">
+														${mem.memName}
+													</div>
+													<div class="col-md-3">
 														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${mem.memJoin}" />
 													</div>
-													<div class="col-md-5">
+													<div class="col-md-3">
 														${mem.memPhone}
 													</div>
 												</div>

@@ -34,8 +34,8 @@ public class TrainTimeDaoImpl implements TrainTimeDao {
 	}
 
 	@Override
-	public TrainTime selectTrainTimeByCode(String tCode) throws Exception {
-		return sqlsession.selectOne(namespace + ".selectTrainTimeByCode", tCode);
+	public List<TrainTime> selectTrainTimeByCode(String tCode) throws Exception {
+		return sqlsession.selectList(namespace + ".selectTrainTimeByCode", tCode);
 	}
 
 	/*@Override

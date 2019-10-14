@@ -35,7 +35,7 @@
 	#read {
 		display: none;
 	}
-	#efile {
+	#nofile {
 		width: auto;
 		height: auto;
 	}
@@ -77,10 +77,12 @@
 		$("#navmenu li").eq(2).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
 		$("#navmenu li").eq(3).removeClass("active");
 		$("#navmenu li").eq(3).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
-		$("#navmenu li").eq(4).addClass("active");
-		$("#navmenu li").eq(4).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
+		$("#navmenu li").eq(4).removeClass("active");
+		$("#navmenu li").eq(4).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
+		$("#navmenu li").eq(5).addClass("active");
+		$("#navmenu li").eq(5).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
 		
-		$("#efile").change(function() {
+		$("#nofile").change(function() {
 			$(".none").css("display", "block");
 			
 			for(var i=0; i<$(this)[0].files.length; i++) {
@@ -96,38 +98,38 @@
 			}
 		})
 		
-		$(".eventRead").click(function() {
+		$(".noticeRead").click(function() {
 			$("#read").css("display", "block");
 			
-			var eNo = $(this).attr("data-no");
+			var noNo = $(this).attr("data-no");
 			
-			$("#eTitle").empty();
-			$("#eContent").empty();
+			$("#noTitle").empty();
+			$("#noContent").empty();
 			$("#writer").empty();
 			$("#writedate").empty();
-			$("#efile").empty();
+			$("#nofile").empty();
 			
 			$.ajax({
-				url: "${pageContext.request.contextPath}/event/mgnRead?eNo="+eNo,
+				url: "${pageContext.request.contextPath}/notice/mgnRead?noNo="+noNo,
 				type: "get",
 				dataType: "json",
 				success: function(res) {
 					console.log(res);
 					
-					var time = new Date(res.eRegdate);
+					var time = new Date(res.noRegdate);
 					var write_time = time.getFullYear()+"-"+("00" + (time.getMonth()+1)).slice(-2)+"-"+("00" + time.getDate()).slice(-2)+" "+
 								("00"+ time.getHours()).slice(-2)+":"+("00" + time.getMinutes()).slice(-2);
 					
-					$("#eTitle").val(res.eTitle);
-					$("#eContent").val(res.eContent);
-					$("#writer").val(res.eWriter);
+					$("#noTitle").val(res.noTitle);
+					$("#noContent").val(res.noContent);
+					$("#writer").val(res.noWriter);
 					$("#writedate").val(write_time);
 					
-					if(res.eImg != null) {
-						var img = $("<img>").attr("src", "displayFile?filename="+res.eImg).addClass("no_img");
-						$("#efile").append(img);
+					if(res.noImg != null) {
+						var img = $("<img>").attr("src", "displayFile?filename="+res.noImg).addClass("no_img");
+						$("#nofile").append(img);
 					}else {
-						$("#efile").append("이미지 없음")
+						$("#nofile").append("이미지 없음")
 					}
 				}
 			})
@@ -141,7 +143,7 @@
 				<li><a href="${pageContext.request.contextPath}/manager/korail">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Event</li>
+				<li class="active">Notice</li>
 			</ol>
 		</div><!--/.row-->
 		
@@ -149,20 +151,20 @@
 			<div class="col-md-12">
 				<div class="panel panel-default articles">
 					<div class="panel-heading">
-						Event<span class="pull-right clickable panel-toggle panel-button-tab-left">
+						Notice<span class="pull-right clickable panel-toggle panel-button-tab-left">
 						<em class="fa fa-toggle-up"></em></span>
-						<a href="${pageContext.request.contextPath}/event/mgnInsert" id="goInsert">이벤트추가</a>
+						<a href="${pageContext.request.contextPath}/notice/mgnInsert" id="goInsert">공지사항추가</a>
 					</div>
 					<div class="panel-body articles-container">
-						<c:forEach var="event" items="${list}">
+						<c:forEach var="notice" items="${list}">
 							<div class="article border-bottom">
 								<div class="col-xs-12">
 									<div class="row">
 										<div class="col-xs-2 col-md-3 date">
-											<div class="large"><fmt:formatDate pattern="yyyy-MM-dd" value="${event.eRegdate}"/></div>
+											<div class="large"><fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noRegdate}"/></div>
 										</div>
 										<div class="col-xs-10 col-md-9">
-											<h4><a href="#" class="eventRead" data-no="${event.eNo}">${event.eTitle}</a></h4>
+											<h4><a href="#" class="noticeRead" data-no="${notice.noNo}">${notice.noTitle}</a></h4>
 											<p>&nbsp;&nbsp;&nbsp;.....</p>
 										</div>
 									</div>
@@ -174,13 +176,13 @@
 					<div id="paging">
 						<ul class="pagination">
 							<c:if test="${pageMaker.prev}">
-								<li><a href="mgnEvent?page=${pageMaker.startPage-1}">&laquo;</a></li>
+								<li><a href="mgnNotice?page=${pageMaker.startPage-1}">&laquo;</a></li>
 							</c:if>
 							<c:forEach var="idx" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-								<li ${pageMaker.cri.page == idx ? 'class="active"' : ''}><a href="gnEvent?page=${idx}">${idx}</a></li>
+								<li ${pageMaker.cri.page == idx ? 'class="active"' : ''}><a href="mgnNotice?page=${idx}">${idx}</a></li>
 							</c:forEach>
 							<c:if test="${pageMaker.next}">
-								<li><a href="gnEvent?page=${pageMaker.endPage+1}">&raquo;</a></li>
+								<li><a href="mgnNotice?page=${pageMaker.endPage+1}">&raquo;</a></li>
 							</c:if>
 						</ul>
 					</div>
@@ -195,29 +197,29 @@
 					<div class="panel-body articles-container">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="eTitle">작성일</label>
+								<label class="col-md-2 control-label" for="noTitle">작성일</label>
 								<div class="col-md-10">
 									<input type="text" id="writedate" class="form-control wid50">
-									<label class="col-md-2 control-label" for="eTitle">작성자</label>
+									<label class="col-md-2 control-label" for="noTitle">작성자</label>
 									<input type="text" id="writer" class="form-control wid50">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="eTitle">Title</label>
+								<label class="col-md-2 control-label" for="noTitle">Title</label>
 								<div class="col-md-10">
-									<input id="eTitle" name="eTitle" type="text" class="form-control">
+									<input id="noTitle" name="noTitle" type="text" class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="eContent">Content</label>
+								<label class="col-md-2 control-label" for="noContent">Content</label>
 								<div class="col-md-10">
-									<textarea class="form-control" id="eContent" name="eContent" rows="10"></textarea>
+									<textarea class="form-control" id="noContent" name="noContent" rows="10"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="efile">Image</label>
+								<label class="col-md-2 control-label" for="nofile">Image</label>
 								<div class="col-md-10">
-									<div id="efile" class="form-control"></div>
+									<div id="nofile" class="form-control"></div>
 								</div>
 							</div>
 						</div>

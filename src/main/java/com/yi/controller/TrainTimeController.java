@@ -97,7 +97,7 @@ public class TrainTimeController {
 		logger.info("=================>"+tt.toString());
 		rService.insertTrainTime(tt);
 		
-		return "/manager/traintime";
+		return "redirect:/manager/traintime";
 	}
 	
 	@ResponseBody
@@ -106,7 +106,7 @@ public class TrainTimeController {
 		logger.info("---------- searchTrainGet ----------");
 		
 		Train train = rService.selectTrainByTCode(tCode);
-		TrainTime tt = rService.selectTrainTimeByCode(tCode);
+		List<TrainTime> tt = rService.selectTrainTimeByCode(tCode);
 		logger.info(tt.toString());
 		
 		Map<String, Object> map = new HashMap<String, Object>();

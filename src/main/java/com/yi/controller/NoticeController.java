@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yi.domain.Criteria;
+import com.yi.domain.Event;
 import com.yi.domain.Notice;
 import com.yi.domain.PageMaker;
 import com.yi.service.NoticeService;
@@ -52,35 +53,6 @@ public class NoticeController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(service.listNoticeCount()); //count에 cri없앴음. 에러뜨면 다시 넣어라
 		model.addAttribute("pageMaker", pageMaker);
-	}
-	
-	@RequestMapping(value="insert", method=RequestMethod.GET)
-	public void insertGet() throws Exception {
-		logger.info("---------- insertGet ----------");
-	}
-	
-	@RequestMapping(value="insert", method=RequestMethod.POST)
-	public String insertPost(Notice notice, List<MultipartFile> imgFiles) throws Exception {
-		logger.info("---------- insertPost ----------");
-		
-		for(MultipartFile file : imgFiles) {
-			logger.info("file name : " + file.getOriginalFilename());
-			logger.info("file size : " + file.getSize());
-			
-			if(file.getSize() <= 0) {
-				logger.info("이미지없음");
-				notice.setNoWriter("a");
-				service.insertNotice(notice);
-				continue;
-			}
-			
-			String savedName = UploadFileUtils.upladFile(uploadPath, file.getOriginalFilename(), file.getBytes()); //파일 업로드하고, 썸네일 파일까지 다 만들어줌
-			notice.setNoImg(savedName);
-			notice.setNoWriter("a");
-			service.insertNotice(notice);
-		}
-		
-		return "redirect:/notice/notice";
 	}
 	
 	@RequestMapping(value="read", method=RequestMethod.GET)
@@ -131,5 +103,60 @@ public class NoticeController {
 			}
 		}
 		return entity;
+	}
+	
+	/*------------------------------------관리자--------------------------------------------*/
+	@RequestMapping(value="mgnNotice", method=RequestMethod.GET)
+	public void mgnNoticePage(@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
+		logger.info("---------- mgnNoticePage ----------");
+		
+		List<Notice> list = service.listNotice(cri);
+		model.addAttribute("list", list);
+		
+		System.out.println(list);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(service.listNoticeCount()); //count에 cri없앴음. 에러뜨면 다시 넣어라
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	
+	@RequestMapping(value="mgnInsert", method=RequestMethod.GET)
+	public void mgnInsertGet() throws Exception {
+		logger.info("---------- mgnInsertGet ----------");
+	}
+	
+	@RequestMapping(value="mgnInsert", method=RequestMethod.POST)
+	public String mgnInsertPost(Notice notice, List<MultipartFile> imgFiles) throws Exception {
+		logger.info("---------- mgnInsertPost ----------");
+		
+		for(MultipartFile file : imgFiles) {
+			logger.info("file name : " + file.getOriginalFilename());
+			logger.info("file size : " + file.getSize());
+			
+			if(file.getSize() <= 0) {
+				logger.info("이미지없음");
+				notice.setNoWriter("a");
+				service.insertNotice(notice);
+				continue;
+			}
+			
+			String savedName = UploadFileUtils.upladFile(uploadPath, file.getOriginalFilename(), file.getBytes()); //파일 업로드하고, 썸네일 파일까지 다 만들어줌
+			notice.setNoImg(savedName);
+			notice.setNoWriter("a");
+			service.insertNotice(notice);
+		}
+		
+		return "redirect:/notice/mgnNotice";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="mgnRead", method=RequestMethod.GET)
+	public Notice mgnReadGet(int noNo) throws Exception {
+		logger.info("---------- mgnReadGet ---------- & noNo : " + noNo);
+		
+		Notice notice = service.readNotice(noNo);
+		
+		return notice;
 	}
 }

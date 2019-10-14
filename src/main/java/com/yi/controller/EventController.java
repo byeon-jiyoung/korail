@@ -151,4 +151,14 @@ public class EventController {
 		
 		return "redirect:/event/mgnEvent";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="mgnRead", method=RequestMethod.GET)
+	public Event mgnReadGet(int eNo) throws Exception {
+		logger.info("---------- mgnReadGet ---------- & eNo : " + eNo);
+		
+		Event event = service.readEvent(eNo);
+		
+		return event;
+	}
 }

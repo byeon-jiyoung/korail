@@ -239,7 +239,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public TrainTime selectTrainTimeByCode(String tCode) throws Exception {
+	public List<TrainTime> selectTrainTimeByCode(String tCode) throws Exception {
 		return ttDao.selectTrainTimeByCode(tCode);
 	}
 }

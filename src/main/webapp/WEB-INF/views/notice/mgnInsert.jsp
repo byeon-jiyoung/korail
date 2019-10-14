@@ -29,10 +29,12 @@
 		$("#navmenu li").eq(2).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
 		$("#navmenu li").eq(3).removeClass("active");
 		$("#navmenu li").eq(3).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
-		$("#navmenu li").eq(4).addClass("active");
-		$("#navmenu li").eq(4).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
+		$("#navmenu li").eq(4).removeClass("active");
+		$("#navmenu li").eq(4).find("em").removeClass("fa-toggle-on").addClass("fa-toggle-off");
+		$("#navmenu li").eq(5).addClass("active");
+		$("#navmenu li").eq(5).find("em").removeClass("fa-toggle-off").addClass("fa-toggle-on");
 		
-		$("#efile").change(function() {
+		$("#nofile").change(function() {
 			$(".none").css("display", "block");
 			
 			for(var i=0; i<$(this)[0].files.length; i++) {
@@ -48,16 +50,16 @@
 			}
 		})
 		
-		$("#eventForm").submit(function(e) {
+		$("#noticeForm").submit(function(e) {
 			$(".reg").css("display", "none");
 			
-			if($("input[name='eTitle']").val()=="") {
-				$("input[name='eTitle']").next(".reg").css("display", "inline-block");
+			if($("input[name='noTitle']").val()=="") {
+				$("input[name='noTitle']").next(".reg").css("display", "inline-block");
 				return false;
 			}
 			
-			if($("textarea[name='eContent']").val()=="") {
-				$("textarea[name='eContent']").next(".reg").css("display", "inline-block");
+			if($("textarea[name='noContent']").val()=="") {
+				$("textarea[name='noContent']").next(".reg").css("display", "inline-block");
 				return false;
 			}
 		})
@@ -70,7 +72,7 @@
 				<li><a href="${pageContext.request.contextPath}/manager/korail">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Event</li>
+				<li class="active">Notice</li>
 			</ol>
 		</div><!--/.row-->
 		
@@ -78,22 +80,22 @@
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Event<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em>
+						Notice<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em>
 					</span></div>
 					<div class="panel-body">
-						<form class="form-horizontal" action="mgnInsert" method="post" id="eventForm"  enctype="multipart/form-data">
+						<form class="form-horizontal" action="mgnInsert" method="post" id="noticeForm"  enctype="multipart/form-data">
 							<fieldset>
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="eTitle">Title</label>
+									<label class="col-md-2 control-label" for="noTitle">Title</label>
 									<div class="col-md-10">
-										<input id="eTitle" name="eTitle" type="text" placeholder="Title" class="form-control">
+										<input id="noTitle" name="noTitle" type="text" placeholder="Title" class="form-control">
 										<span class="reg">제목을 입력하세요.</span>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="efile">Image</label>
+									<label class="col-md-2 control-label" for="nofile">Image</label>
 									<div class="col-md-10">
-										<input id="efile" name="imgFiles" type="file" placeholder="Your Image" class="form-control">
+										<input id="nofile" name="imgFiles" type="file" placeholder="Your Image" class="form-control">
 									</div>
 								</div>
 								<div class="form-group none">
@@ -102,15 +104,15 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="eContent">Content</label>
+									<label class="col-md-2 control-label" for="noContent">Content</label>
 									<div class="col-md-10">
-										<textarea class="form-control" id="eContent" name="eContent" placeholder="Please enter your content here..." rows="10"></textarea>
+										<textarea class="form-control" id="noContent" name="noContent" placeholder="Please enter your content here..." rows="10"></textarea>
 										<span class="reg">내용을 입력하세요.</span>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-md-12 widget-right">
-										<button type="submit" class="btn btn-default btn-md pull-right">이벤트 등록</button>
+										<button type="submit" class="btn btn-default btn-md pull-right">공지사항 등록</button>
 									</div>
 								</div>
 							</fieldset>

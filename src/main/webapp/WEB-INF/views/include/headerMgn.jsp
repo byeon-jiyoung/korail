@@ -104,7 +104,7 @@
 			<li class="active"><a href="${pageContext.request.contextPath}/manager/korail"><em class="fa fa-toggle-on">&nbsp;</em> Main</a></li>
 			<li><a href="${pageContext.request.contextPath}/manager/train"><em class="fa fa-toggle-off">&nbsp;</em> Train</a></li>
 			<li><a href="${pageContext.request.contextPath}/manager/traintime"><em class="fa fa-toggle-off">&nbsp;</em> Train Waypoint</a></li>
-			<li><a href=""><em class="fa fa-toggle-off">&nbsp;</em> Member</a></li>
+			<li><a href="${pageContext.request.contextPath}/manager/member"><em class="fa fa-toggle-off">&nbsp;</em> Member</a></li>
 			<li><a href="${pageContext.request.contextPath}/event/mgnEvent"><em class="fa fa-toggle-off">&nbsp;</em> Event</a></li>
 			<li><a href="${pageContext.request.contextPath}/notice/mgnNotice"><em class="fa fa-toggle-off">&nbsp;</em> Notice</a></li>
 		</ul>

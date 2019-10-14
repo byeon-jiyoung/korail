@@ -64,6 +64,7 @@
 		<interceptor>
 			<mapping path="/manager/korail"/>
 			<mapping path="/manager/train"/>
+			<mapping path="/manager/traintime"/>
 			<beans:ref bean="mgnInterceptor"/>
 		</interceptor>
 	</interceptors>

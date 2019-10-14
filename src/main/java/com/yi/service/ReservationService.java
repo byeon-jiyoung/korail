@@ -49,7 +49,7 @@ public interface ReservationService {
 	/*public List<TrainTime> listNodeByTCode(String train) throws Exception;*/
 	public List<TrainTime> listTrainTimeNodeName() throws Exception;
 	public void insertTrainTime(TrainTime tt) throws Exception;
-	public TrainTime selectTrainTimeByCode(String tCode) throws Exception;
+	public List<TrainTime> selectTrainTimeByCode(String tCode) throws Exception;
 	
 	//cityTrain
 	public List<CityTrain> listCityTrain() throws Exception;

@@ -27,6 +27,6 @@
 	</insert>
 	
 	<select id="selectTrainTimeByCode" resultMap="resultTrainTime">
-		select * from train_time where t_code = #{tCode}
+		select * from train_time tt join city_train ct on tt.nodeid = ct.nodeid where t_code = #{tCode}
 	</select>
 </mapper>

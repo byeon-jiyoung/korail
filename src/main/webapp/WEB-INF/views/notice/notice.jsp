@@ -252,14 +252,7 @@
 			<div id="notice_etc">
 				※ 첨부된 파일을 찾을 수 없다고 나오는 경우, <strong>웹브라우저의 '도구 > 인터넷옵션'의 고급탭을 클릭하여 'URL을 항상 UTF-8로 보냄(다시 시작해야 함)'</strong>의 설정을 <strong>체크해제</strong> 하신 후 웹브라우저를 다시 실행시키시면 정상적으로 다운로드 가능합니다.
 			</div>
-			<button>글쓰기</button>
 		</div>
-		
-		<script>
-			$("button").click(function() {
-				location.href="${pageContext.request.contextPath}/notice/insert";
-			})
-		</script>
 	</section>
     
 <%@ include file="../include/footer.jsp" %>

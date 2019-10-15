@@ -31,6 +31,16 @@
 		color: red;
 		margin-top: 10px;
 	}
+	
+	#table {
+		width: 50%;
+		margin: 0 auto;
+		border-collapse: collapse;
+	}
+	#table td, #table th {
+		padding: 5px;
+		border: 1px solid #aaa;
+	}
 </style>
 <script>
 	//이전 날짜들은 선택막기
@@ -74,6 +84,24 @@
 					$("#startT").val(st_time);
 					$("#arriveT").val(ar_time);
 					$("input[name='price']").attr("placeholder", res.traintime.price).attr("data-oriPrice", res.traintime.price);
+					
+					$("#table").empty();
+					$("#table").append("<tr><th>도착정보</th><th>도착시간</th><th>가격</th></tr>");
+					
+					$(res.traintime).each(function(i, obj) {
+						var $tr = $("<tr>");
+						var $nodename = $("<td>").text(obj.nodeid.nodename);
+						
+						var time = new Date(obj.ttStartTime);
+						var st_time = time.getFullYear()+"-"+("00" + (time.getMonth()+1)).slice(-2)+"-"+("00" + time.getDate()).slice(-2)+" "+
+									("00"+ time.getHours()).slice(-2)+":"+("00" + time.getMinutes()).slice(-2);
+						
+						var $time = $("<td>").text(st_time);
+						var $price = $("<td>").text(obj.price);
+						
+						$tr.append($nodename).append($time).append($price);
+						$("#table").append($tr);
+					})
 				}
 			})
 		})
@@ -212,7 +240,18 @@
 					</div>
 				</div>
 			</div><!--/.col-->
-			
+		</div><!--/.row-->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default" id="tt">
+					<div class="panel-body">
+						<div class="form-horizontal">
+							<table id="table">
+							</table>
+						</div>
+					</div>
+				</div>
+			</div><!--/.col-->
 		</div><!--/.row-->
 	</div>	<!--/.main-->
 	

@@ -4,6 +4,15 @@
 <%@ include file="../include/headerMgn.jsp" %>
 
 <style>
+	.w3-black {
+		background-color: #3069E1 !important;
+		padding: 5px 0;
+		overflow: hidden;
+	}
+	.w3-gray {
+		font-weight: bold;
+		background-color: #3069E1 !important;
+	}
 	.wid50 {
 		width: 35%;
 		float: left;
@@ -85,12 +94,13 @@
 					</div>
 					<div class="panel-body articles-container">
 						<div class="w3-bar w3-black">
-								<button class="w3-bar-item w3-button tablink w3-gray" onclick="openCity(event,'ALL')">ALL</button>
-								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'MEMBER')">MEMBER</button>
-								<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'NOMEMBER')">NOMEMBER</button>
-							</div>
-							<div id="All" class="w3-container w3-border city">
-								<c:forEach var="mem" items="${memList}">
+							<button class="w3-bar-item w3-button tablink w3-gray" onclick="openCity(event,'MEMBER')">MEMBER</button>
+							<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'NOMEMBER')">NOMEMBER</button>
+							<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'ALL')">ALL</button>
+						</div>
+						<div id="MEMBER" class="w3-container w3-border city">
+							<c:forEach var="mem" items="${memList}">
+								<c:if test="${mem.memPw != null}">
 									<p>
 										<div class="article border-bottom">
 											<div class="h">
@@ -101,10 +111,34 @@
 													<div class="col-md-2">
 														${mem.memName}
 													</div>
-													<div class="col-md-3">
+													<div class="col-md-2">
+														${mem.memPhone}
+													</div>
+													<div class="col-md-2">
+														<fmt:formatNumber pattern="###,###" value="${mem.memMileage}" />
+													</div>
+													<div class="col-md-2">
 														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${mem.memJoin}" />
 													</div>
-													<div class="col-md-3">
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div><!--End .article-->
+									</p>
+								</c:if>
+							</c:forEach>
+						</div>
+						<div id="NOMEMBER" class="w3-container w3-border city" style="display:none">
+							<c:forEach var="mem" items="${memList}">
+								<c:if test="${mem.memPw == null}">
+									<p>
+										<div class="article border-bottom">
+											<div class="h">
+												<div class="row">
+													<div class="col-md-2 date">
+														${mem.memId}
+													</div>
+													<div class="col-md-9">
 														${mem.memPhone}
 													</div>
 												</div>
@@ -112,35 +146,38 @@
 											<div class="clear"></div>
 										</div><!--End .article-->
 									</p>
-								</c:forEach>
-							</div>
-							<div id="KTX" class="w3-container w3-border city" style="display:none">
-								<c:forEach var="train" items="${tList}">
-									<c:if test="${train.tTiNo.tiNo == 1}">
-										<p>
-											<div class="article border-bottom">
-												<div class="col-xs-12">
-													<div class="row">
-														<div class="col-xs-2 col-md-2 date">
-															<div class="large">${train.tCode}</div>
-															<div class="text-muted">KTX</div>
-														</div>
-														<div class="col-xs-10 col-md-10">
-															<h4><a href="#">${train.tStart.nodename} ⇒ ${train.tArrive.nodename}</a></h4>
-															<p>	
-																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tStartTime}" /> ⇒
-																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${train.tArriveTime}" />
-															</p>
-														</div>
-													</div>
-												</div>
-												<div class="clear"></div>
-											</div><!--End .article-->
-										</p>
-									</c:if>
-								</c:forEach>
-							</div>
+								</c:if>
+							</c:forEach>
 						</div>
+						<div id="ALL" class="w3-container w3-border city" style="display:none">
+							<c:forEach var="mem" items="${memList}">
+								<p>
+									<div class="article border-bottom">
+										<div class="h">
+											<div class="row">
+												<div class="col-md-2 date">
+													${mem.memId}
+												</div>
+												<div class="col-md-2">
+													${mem.memName}
+												</div>
+												<div class="col-md-2">
+													${mem.memPhone}
+												</div>
+												<div class="col-md-2">
+													<fmt:formatNumber pattern="###,###" value="${mem.memMileage}" />
+												</div>
+												<div class="col-md-2">
+													<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${mem.memJoin}" />
+												</div>
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div><!--End .article-->
+								</p>
+							</c:forEach>
+						</div>
+					</div>
 					</div>
 					<div id="paging">
 						<ul class="pagination">

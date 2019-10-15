@@ -226,7 +226,7 @@
 				</div><!--/.col-->
 			</div><!--/.row-->
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -240,7 +240,7 @@
 					</div>
 				</div>
 			</div>
-		</div><!--/.row-->
+		</div>/.row
 		
 		<div class="row">
 			<div class="col-xs-6 col-md-3">
@@ -275,11 +275,11 @@
 					</div>
 				</div>
 			</div>
-		</div><!--/.row-->
+		</div>/.row -->
 	</div>	<!--/.main-->
 	
 	<script>
-		window.onload = function () {
+		/* window.onload = function () {
 			var chart1 = document.getElementById("line-chart").getContext("2d");
 			window.myLine = new Chart(chart1).Line(lineChartData, {
 				responsive: true,
@@ -287,7 +287,7 @@
 				scaleGridLineColor: "rgba(0,0,0,.05)",
 				scaleFontColor: "#c5c7cc"
 			});
-		};
+		}; */
 	</script>
 
 </body>

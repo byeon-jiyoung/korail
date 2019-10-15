@@ -210,9 +210,6 @@
 				var resClaNum = $(this).attr("data-claNum");
 				var salNo = $(this).attr("data-salNo");
 				
-				alert(resClaNum);
-				alert(salNo);
-				
 				$("table").empty();
 				
 				$.ajax({
